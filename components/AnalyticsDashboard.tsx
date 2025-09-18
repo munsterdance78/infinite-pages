@@ -455,17 +455,18 @@ if (loading) {
                     </div>
                   )}
 
-                  {analytics.userStats.totalStories === 0 && analytics.userStats.totalWords === 0 && (
-                    <div className="text-center py-8">
-                      <Award className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600">Start writing to unlock achievements!</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
+                 {analytics.userStats.totalStories === 0 && analytics.userStats.totalWords === 0 && (
+            <div className="text-center py-8">
+              <Award className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">Start writing to unlock achievements!</p>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</TabsContent>
+</Tabs>
+</div>
+);
+}
