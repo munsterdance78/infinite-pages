@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Database } from '@/lib/supabase/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,21 +23,7 @@ import {
 import { formatDate, formatCurrency } from '@/lib/utils';
 import { STORY_STATUS, type StoryStatus } from '@/lib/constants';
 
-interface Chapter {
-  id: string;
-  story_id: string;
-  chapter_number: number;
-  title: string | null;
-  content: string | null;
-  summary: string | null;
-  word_count: number;
-  tokens_used_input: number;
-  tokens_used_output: number;
-  generation_cost_usd: number;
-  prompt_type: string | null;
-  created_at: string;
-  updated_at: string;
-}
+type Chapter = Database['public']['Tables']['chapters']['Row'];
 
 interface Story {
   id: string;
