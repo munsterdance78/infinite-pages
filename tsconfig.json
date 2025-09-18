@@ -1,0 +1,69 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+
+
+Create new file: lib/config.ts Content:
+
+// Environment variable validation and configuration
+function validateEnvVar(name: string, value: string | undefined): string {
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`)
+  }
+  return value
+}
+
+function validateOptionalEnvVar(name: string, value: string | undefined, defaultValue: string): string {
+  return value || defaultValue
+}
+
+// Validate all required environment variables at startup
+export const config = {
+  // Supabase
+  supabaseUrl: validateEnvVar('NEXT_PUBLIC_SUPABASE_URL', process.env.NEXT_PUBLIC_SUPABASE_URL),
+  supabaseAnonKey: validateEnvVar('NEXT_PUBLIC_SUPABASE_ANON_KEY', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+  supabaseServiceKey: validateEnvVar('SUPABASE_SERVICE_ROLE_KEY', process.env.SUPABASE_SERVICE_ROLE_KEY),
+  
+  // Anthropic
+  anthropicApiKey: validateEnvVar('ANTHROPIC_API_KEY', process.env.ANTHROPIC_API_KEY),
+  
+  // Stripe
+  stripeSecretKey: validateEnvVar('STRIPE_SECRET_KEY', process.env.STRIPE_SECRET_KEY),
+  stripeWebhookSecret: validateEnvVar('STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET),
+  stripePriceId: validateEnvVar('STRIPE_PRO_PRICE_ID', process.env.STRIPE_PRO_PRICE_ID),
+  
+  // App
+  siteUrl: validateEnvVar('NEXT_PUBLIC_SITE_URL', process.env.NEXT_PUBLIC_SITE_URL),
+  nodeEnv: validateOptionalEnvVar('NODE_ENV', process.env.NODE_ENV, 'development'),
+  
+  // Optional
+  redisUrl: process.env.REDIS_URL,
+  slackWebhookUrl: process.env.SLACK_WEBHOOK_URL
+}
+
+export default config
