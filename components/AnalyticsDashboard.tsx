@@ -469,4 +469,3 @@ if (loading) {
       </Tabs>
     </div>
   );
-}
