@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
     // Check user profile and permissions
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('tokens_remaining, subscription_tier, stories_created')
+      .select('tokens_remaining, subscription_tier, stories_created, tokens_used_total, words_generated')
       .eq('id', user.id)
       .single()
 
@@ -324,7 +324,7 @@ Make this comprehensive and engaging. This is the foundation for a complete stor
       }
       
       return NextResponse.json({ 
-        error: ERROR_MESSAGES.SERVICE_UNAVAILABLE,
+        error: 'Service temporarily unavailable',
         details: ['Please try again in a few moments.']
       }, { status: 503 })
     }

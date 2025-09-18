@@ -213,7 +213,7 @@ function validateErrorReport(data: any): { isValid: boolean; errors: string[]; s
       version: data.deviceInfo.version ? sanitizeString(data.deviceInfo.version) : undefined,
       mobile: typeof data.deviceInfo.mobile === 'boolean' ? data.deviceInfo.mobile : undefined
     } : undefined,
-    tags: Array.isArray(data.tags) ? data.tags.map(tag => sanitizeString(tag)).slice(0, 10) : undefined,
+    tags: Array.isArray(data.tags) ? data.tags.map((tag: string) => sanitizeString(tag)).slice(0, 10) : undefined,
     customData: data.customData && typeof data.customData === 'object' ? 
       Object.fromEntries(
         Object.entries(data.customData)

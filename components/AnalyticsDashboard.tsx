@@ -1,4 +1,201 @@
-if (loading) {
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  BookOpen,
+  FileText,
+  Target,
+  DollarSign,
+  TrendingUp,
+  BarChart,
+  Zap,
+  Calendar,
+  Award,
+  Eye,
+  Coins,
+  Activity
+} from 'lucide-react';
+
+interface UserProfile {
+  id: string;
+  email: string;
+  full_name: string;
+  subscription_tier: 'free' | 'pro';
+  subscription_status: string;
+  tokens_remaining: number;
+  tokens_used_total: number;
+  stories_created: number;
+  words_generated: number;
+  current_period_end?: string;
+  onboarding_complete?: boolean;
+}
+
+interface AnalyticsData {
+  userStats: {
+    totalStories: number;
+    totalChapters: number;
+    totalWords: number;
+    totalTokensUsed: number;
+    totalCostUSD: number;
+    averageWordsPerStory: number;
+    efficiency: number;
+    daysActive: number;
+  };
+  operationBreakdown: Array<{
+    type: string;
+    count: number;
+    totalTokens: number;
+  }>;
+  usageHistory: Array<{
+    date: string;
+    tokensUsed: number;
+    costUSD: number;
+  }>;
+}
+
+const OPERATION_LABELS = {
+  'story_creation': 'Story Creation',
+  'chapter_generation': 'Chapter Generation',
+  'story_improvement': 'Story Improvement',
+  'character_development': 'Character Development',
+  'plot_development': 'Plot Development',
+  'setting_description': 'Setting Description'
+};
+
+interface AnalyticsDashboardProps {
+  userProfile: UserProfile;
+}
+
+export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardProps) {
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState('30');
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [timeRange]);
+
+  const fetchAnalytics = async () => {
+    try {
+      setLoading(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const daysAgo = parseInt(timeRange);
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysAgo);
+
+      // Fetch generation logs
+      const { data: logs } = await supabase
+        .from('generation_logs')
+        .select('*')
+        .eq('user_id', user.id)
+        .gte('created_at', startDate.toISOString())
+        .order('created_at', { ascending: false });
+
+      // Fetch stories and chapters
+      const { data: stories } = await supabase
+        .from('stories')
+        .select(`
+          id, word_count, created_at,
+          chapters (id, word_count, created_at)
+        `)
+        .eq('user_id', user.id)
+        .gte('created_at', startDate.toISOString());
+
+      if (logs && stories) {
+        const userStats = {
+          totalStories: stories.length,
+          totalChapters: stories.reduce((sum, story) => sum + (story.chapters?.length || 0), 0),
+          totalWords: stories.reduce((sum, story) => sum + (story.word_count || 0), 0),
+          totalTokensUsed: logs.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0),
+          totalCostUSD: logs.reduce((sum, log) => sum + (log.cost_usd || 0), 0),
+          averageWordsPerStory: stories.length > 0
+            ? stories.reduce((sum, story) => sum + (story.word_count || 0), 0) / stories.length
+            : 0,
+          efficiency: logs.length > 0
+            ? stories.reduce((sum, story) => sum + (story.word_count || 0), 0) / logs.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0)
+            : 0,
+          daysActive: new Set(logs.map(log => new Date(log.created_at).toDateString())).size
+        };
+
+        const operationBreakdown = logs.reduce((acc: any[], log) => {
+          const existing = acc.find(item => item.type === log.operation_type);
+          if (existing) {
+            existing.count++;
+            existing.totalTokens += log.tokens_input + log.tokens_output;
+          } else {
+            acc.push({
+              type: log.operation_type,
+              count: 1,
+              totalTokens: log.tokens_input + log.tokens_output
+            });
+          }
+          return acc;
+        }, []);
+
+        const usageHistory = Array.from({ length: Math.min(daysAgo, 30) }, (_, i) => {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          const dateStr = date.toISOString().split('T')[0];
+
+          const dayLogs = logs.filter(log =>
+            new Date(log.created_at).toISOString().split('T')[0] === dateStr
+          );
+
+          return {
+            date: dateStr,
+            tokensUsed: dayLogs.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0),
+            costUSD: dayLogs.reduce((sum, log) => sum + (log.cost_usd || 0), 0)
+          };
+        }).reverse();
+
+        setAnalytics({
+          userStats,
+          operationBreakdown,
+          usageHistory
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch analytics:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toString();
+  };
+
+  const formatCurrency = (amount: number) => {
+    return `$${amount.toFixed(3)}`;
+  };
+
+  const getEfficiencyColor = (efficiency: number) => {
+    if (efficiency >= 400) return 'bg-green-100 text-green-800';
+    if (efficiency >= 250) return 'bg-yellow-100 text-yellow-800';
+    return 'bg-red-100 text-red-800';
+  };
+
+  const getEfficiencyLabel = (efficiency: number) => {
+    if (efficiency >= 400) return 'Excellent';
+    if (efficiency >= 250) return 'Good';
+    return 'Needs Improvement';
+  };
+
+  if (loading) {
     return (
       <Card>
         <CardContent className="p-6">
@@ -469,3 +666,4 @@ if (loading) {
 </Tabs>
 </div>
 );
+}

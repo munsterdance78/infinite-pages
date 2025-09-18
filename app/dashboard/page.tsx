@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import OnboardingFlow from '@/components/OnboardingFlow';
-import WorkspaceManager from '@/components/WorkspaceManager';
 import StoryCreator from '@/components/StoryCreator';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import SubscriptionManager from '@/components/SubscriptionManager';
@@ -167,10 +165,19 @@ export default function DashboardPage() {
 
   if (!user?.onboarding_complete) {
     return (
-      <OnboardingFlow
-        user={user!}
-        onComplete={handleOnboardingComplete}
-      />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Welcome to Infinite Pages!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600 mb-4">Complete your profile setup to get started.</p>
+            <Button onClick={handleOnboardingComplete} className="w-full">
+              Continue to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 

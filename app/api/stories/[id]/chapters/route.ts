@@ -37,7 +37,7 @@ export async function POST(
     // Check user tokens
     const { data: profile } = await supabase
       .from('profiles')
-      .select('tokens_remaining, tokens_used_total')
+      .select('tokens_remaining, tokens_used_total, words_generated')
       .eq('id', user.id)
       .single()
 
