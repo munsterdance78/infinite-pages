@@ -1,200 +1,4 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
-import {
-  BarChart,
-  TrendingUp,
-  Target,
-  Clock,
-  Coins,
-  BookOpen,
-  FileText,
-  Award,
-  Calendar,
-  Zap,
-  Eye,
-  DollarSign,
-  Activity
-} from 'lucide-react';
-
-interface AnalyticsDashboardProps {
-  userProfile: {
-    id: string;
-    subscription_tier: string;
-    tokens_remaining: number;
-    tokens_used_total: number;
-    stories_created: number;
-    words_generated: number;
-    created_at: string;
-  };
-}
-
-interface AnalyticsData {
-  userStats: {
-    totalStories: number;
-    totalChapters: number;
-    totalWords: number;
-    totalTokensUsed: number;
-    totalCostUSD: number;
-    averageWordsPerStory: number;
-    efficiency: number;
-    daysActive: number;
-  };
-  usageHistory: Array<{
-    date: string;
-    tokensUsed: number;
-    storiesCreated: number;
-    chaptersCreated: number;
-    costUSD: number;
-  }>;
-  operationBreakdown: Array<{
-    type: string;
-    count: number;
-    totalTokens: number;
-    totalCost: number;
-  }>;
-  achievements: Array<{
-    id: string;
-    name: string;
-    description: string;
-    unlockedAt: string;
-    category: string;
-  }>;
-}
-
-const OPERATION_LABELS = {
-  'foundation': 'Story Foundations',
-  'chapter': 'Chapter Generation',
-  'improvement': 'Chapter Improvements'
-};
-
-export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardProps) {
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [timeRange, setTimeRange] = useState('30');
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
-
-  const supabase = createClientComponentClient();
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange]);
-
-  const fetchAnalytics = async () => {
-    setLoading(true);
-    try {
-      // Fetch user statistics
-      const { data: stories } = await supabase
-        .from('stories')
-        .select('id, word_count, total_cost_usd, created_at, chapters(id)')
-        .eq('user_id', userProfile.id);
-
-      const { data: generationLogs } = await supabase
-        .from('generation_logs')
-        .select('*')
-        .eq('user_id', userProfile.id)
-        .gte('created_at', new Date(Date.now() - parseInt(timeRange) * 24 * 60 * 60 * 1000).toISOString());
-
-      // Calculate analytics
-      const totalStories = stories?.length || 0;
-      const totalChapters = stories?.reduce((sum, story) => sum + (story.chapters?.length || 0), 0) || 0;
-      const totalWords = stories?.reduce((sum, story) => sum + story.word_count, 0) || 0;
-      const totalCostUSD = stories?.reduce((sum, story) => sum + story.total_cost_usd, 0) || 0;
-      const efficiency = userProfile.tokens_used_total > 0 ? totalWords / userProfile.tokens_used_total : 0;
-      const daysActive = Math.ceil((Date.now() - new Date(userProfile.created_at).getTime()) / (1000 * 60 * 60 * 24));
-
-      // Group usage by day
-      const usageByDay = generationLogs?.reduce((acc, log) => {
-        const date = new Date(log.created_at).toISOString().split('T')[0];
-        if (!acc[date]) {
-          acc[date] = { tokensUsed: 0, operations: 0, costUSD: 0 };
-        }
-        acc[date].tokensUsed += log.tokens_input + log.tokens_output;
-        acc[date].operations += 1;
-        acc[date].costUSD += log.cost_usd;
-        return acc;
-      }, {} as Record<string, any>) || {};
-
-      // Group operations by type
-      const operationBreakdown = generationLogs?.reduce((acc, log) => {
-        const type = log.operation_type;
-        if (!acc[type]) {
-          acc[type] = { count: 0, totalTokens: 0, totalCost: 0 };
-        }
-        acc[type].count += 1;
-        acc[type].totalTokens += log.tokens_input + log.tokens_output;
-        acc[type].totalCost += log.cost_usd;
-        return acc;
-      }, {} as Record<string, any>) || {};
-
-      setAnalytics({
-        userStats: {
-          totalStories,
-          totalChapters,
-          totalWords,
-          totalTokensUsed: userProfile.tokens_used_total,
-          totalCostUSD,
-          averageWordsPerStory: totalStories > 0 ? totalWords / totalStories : 0,
-          efficiency,
-          daysActive
-        },
-        usageHistory: Object.entries(usageByDay).map(([date, data]) => ({
-          date,
-          tokensUsed: data.tokensUsed,
-          storiesCreated: 0, // Could be calculated from stories created on that day
-          chaptersCreated: 0, // Could be calculated from chapters created on that day
-          costUSD: data.costUSD
-        })),
-        operationBreakdown: Object.entries(operationBreakdown).map(([type, data]) => ({
-          type,
-          count: data.count,
-          totalTokens: data.totalTokens,
-          totalCost: data.totalCost
-        })),
-        achievements: [] // Placeholder for achievements system
-      });
-    } catch (error) {
-      console.error('Failed to fetch analytics:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num.toLocaleString();
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3
-    }).format(amount);
-  };
-
-  const getEfficiencyColor = (efficiency: number) => {
-    if (efficiency >= 400) return 'text-green-600 bg-green-100';
-    if (efficiency >= 250) return 'text-yellow-600 bg-yellow-100';
-    return 'text-red-600 bg-red-100';
-  };
-
-  const getEfficiencyLabel = (efficiency: number) => {
-    if (efficiency >= 400) return 'Excellent';
-    if (efficiency >= 250) return 'Good';
-    return 'Needs Improvement';
-  };
-
-  if (loading) {
+if (loading) {
     return (
       <Card>
         <CardContent className="p-6">
@@ -524,4 +328,145 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
                       </div>
                       <div className="text-sm text-green-700">Daily Average</div>
                     </div>
-                    <div className="text-center
+                    <div className="text-center p-4 bg-purple-50 rounded-lg">
+                      <div className="text-xl font-bold text-purple-600">
+                        {formatCurrency(analytics.usageHistory.reduce((sum, day) => sum + day.costUSD, 0))}
+                      </div>
+                      <div className="text-sm text-purple-700">Total Cost</div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600">No usage data available for this time period</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="insights" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Eye className="w-5 h-5" />
+                  Writing Insights
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="w-4 h-4 text-blue-600" />
+                      <span className="font-medium text-blue-900">Productivity Trend</span>
+                    </div>
+                    <p className="text-sm text-blue-700">
+                      You've been active for {analytics.userStats.daysActive} days and created an average of{' '}
+                      {(analytics.userStats.totalStories / Math.max(1, Math.ceil(analytics.userStats.daysActive / 7))).toFixed(1)} stories per week.
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-green-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target className="w-4 h-4 text-green-600" />
+                      <span className="font-medium text-green-900">Quality Focus</span>
+                    </div>
+                    <p className="text-sm text-green-700">
+                      Your average story length is {Math.round(analytics.userStats.averageWordsPerStory).toLocaleString()} words,{' '}
+                      {analytics.userStats.averageWordsPerStory > 10000 
+                        ? 'showing great depth in your storytelling.' 
+                        : 'consider developing longer, more detailed narratives.'}
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-purple-50 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Coins className="w-4 h-4 text-purple-600" />
+                      <span className="font-medium text-purple-900">Cost Efficiency</span>
+                    </div>
+                    <p className="text-sm text-purple-700">
+                      You're generating content at{' '}
+                      {formatCurrency(analytics.userStats.totalCostUSD / analytics.userStats.totalWords * 1000)} per 1K words,{' '}
+                      {analytics.userStats.efficiency >= 300 
+                        ? 'which is excellent value!' 
+                        : 'consider optimizing your prompts for better efficiency.'}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Award className="w-5 h-5" />
+                  Achievements & Milestones
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {analytics.userStats.totalStories >= 1 && (
+                    <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
+                      <div className="p-2 bg-blue-200 rounded-full">
+                        <BookOpen className="w-4 h-4 text-blue-700" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-blue-900">First Story</div>
+                        <div className="text-sm text-blue-700">Started your writing journey!</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {analytics.userStats.totalWords >= 10000 && (
+                    <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-lg">
+                      <div className="p-2 bg-green-200 rounded-full">
+                        <Target className="w-4 h-4 text-green-700" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-green-900">Word Master</div>
+                        <div className="text-sm text-green-700">Generated over 10K words!</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {analytics.userStats.efficiency >= 400 && (
+                    <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg">
+                      <div className="p-2 bg-purple-200 rounded-full">
+                        <Zap className="w-4 h-4 text-purple-700" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-purple-900">Efficiency Expert</div>
+                        <div className="text-sm text-purple-700">Excellent words-per-token ratio!</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {analytics.userStats.daysActive >= 7 && (
+                    <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg">
+                      <div className="p-2 bg-orange-200 rounded-full">
+                        <Calendar className="w-4 h-4 text-orange-700" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-orange-900">Consistent Writer</div>
+                        <div className="text-sm text-orange-700">Active for over a week!</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {analytics.userStats.totalStories === 0 && analytics.userStats.totalWords === 0 && (
+                    <div className="text-center py-8">
+                      <Award className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600">Start writing to unlock achievements!</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
