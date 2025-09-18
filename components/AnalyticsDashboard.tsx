@@ -9,7 +9,8 @@ if (loading) {
         </CardContent>
       </Card>
     );
-  
+  }
+
   if (!analytics) {
     return (
       <Card>
