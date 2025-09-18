@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/supabase/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,64 +42,24 @@ import {
 
 interface Story {
   id: string;
+  user_id: string;
   title: string;
-  genre?: string;
-  premise?: string;
- foundation?: {
-  title?: string;
-  genre?: string;
-  premise?: string;
-  mainCharacters?: Array<{
-    name: string;
-    role: string;
-    description: string;
-    motivation: string;
-  }>;
-  setting?: {
-    time?: string;
-    place?: string;
-    atmosphere?: string;
-  };
-  plotStructure?: {
-    incitingIncident?: string;
-    risingAction?: string;
-    climax?: string;
-    resolution?: string;
-  };
-  themes?: string[];
-  tone?: string;
-  chapterOutline?: Array<{
-    number: number;
-    title: string;
-    summary: string;
-    purpose: string;
-  }>;
-  content?: string;
-  rawResponse?: boolean;
-};
-
+  genre: string | null;
+  premise: string | null;
+  foundation: any;
+  outline: any;
+  characters: any;
+  status: StoryStatus;
   word_count: number;
   chapter_count: number;
+  total_tokens_used: number;
   total_cost_usd: number;
-  status: StoryStatus;
-  updated_at: string;
   created_at: string;
+  updated_at: string;
   chapters?: Chapter[];
 }
 
-interface Chapter {
-  id: string;
-  chapter_number: number;
-  title?: string;
-  content?: string;
-  summary?: string;
-  word_count: number;
-  tokens_used_input: number;
-  tokens_used_output: number;
-  generation_cost_usd: number;
-  created_at: string;
-  updated_at: string;
-}
+type Chapter = Database['public']['Tables']['chapters']['Row'];
 
 interface StoryCreatorProps {
   userProfile: {

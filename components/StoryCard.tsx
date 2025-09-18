@@ -24,24 +24,36 @@ import { STORY_STATUS, type StoryStatus } from '@/lib/constants';
 
 interface Chapter {
   id: string;
+  story_id: string;
   chapter_number: number;
-  title?: string;
+  title: string | null;
+  content: string | null;
+  summary: string | null;
   word_count: number;
+  tokens_used_input: number;
+  tokens_used_output: number;
   generation_cost_usd: number;
+  prompt_type: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 interface Story {
   id: string;
+  user_id: string;
   title: string;
-  genre?: string;
-  premise?: string;
+  genre: string | null;
+  premise: string | null;
+  foundation: any;
+  outline: any;
+  characters: any;
+  status: StoryStatus;
   word_count: number;
   chapter_count: number;
+  total_tokens_used: number;
   total_cost_usd: number;
-  status: StoryStatus;
-  updated_at: string;
   created_at: string;
+  updated_at: string;
   chapters?: Chapter[];
 }
 
