@@ -77,16 +77,22 @@ class ErrorBoundary extends Component<Props, State> {
       timestamp: new Date().toISOString(),
       userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
       url: typeof window !== 'undefined' ? window.location.href : 'SSR',
-      eventId: this.state.eventId
+      eventId: this.state.eventId,
+      level: this.props.level || 'component',
+      context: this.props.level === 'page' ? 'root_layout' : 'component'
     };
 
-    // Example: Send to monitoring service
+    // Send to monitoring service in production
     if (process.env.NODE_ENV === 'production') {
-      // fetch('/api/errors', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(errorData)
-      // }).catch(console.error);
+      try {
+        fetch('/api/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(errorData)
+        }).catch(console.error);
+      } catch (reportingError) {
+        console.error('Failed to report error:', reportingError);
+      }
     }
 
     console.error('Error logged:', errorData);

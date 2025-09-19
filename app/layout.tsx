@@ -5,12 +5,16 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'Infinite-Pages - AI Story Generation Platform',
   description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.',
   keywords: ['AI', 'story generation', 'writing', 'creative writing', 'artificial intelligence'],
   authors: [{ name: 'Infinite-Pages Team' }],
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
     title: 'Infinite-Pages - AI Story Generation Platform',
@@ -27,43 +31,6 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode
-}
-
-// Custom error handler for the root error boundary
-function handleRootError(error: Error, errorInfo: React.ErrorInfo) {
-  // Log to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.error('Root Error Boundary caught an error:', error, errorInfo);
-  }
-
-  // In production, you would send this to your error monitoring service
-  if (process.env.NODE_ENV === 'production') {
-    // Example: Send to error monitoring service
-    const errorData = {
-      message: error.message,
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
-      url: typeof window !== 'undefined' ? window.location.href : 'SSR',
-      level: 'critical',
-      context: 'root_layout'
-    };
-
-    // You would replace this with your actual error reporting service
-    // Examples: Sentry, LogRocket, Bugsnag, etc.
-    try {
-      fetch('/api/errors', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(errorData)
-      }).catch(console.error);
-    } catch (reportingError) {
-      console.error('Failed to report error:', reportingError);
-    }
-  }
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -96,7 +63,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ErrorBoundary
           level="page"
           showDetails={process.env.NODE_ENV === 'development'}
-          onError={handleRootError}
           fallback={
             // Custom fallback for critical errors
             <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
