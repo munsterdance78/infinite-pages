@@ -112,17 +112,29 @@ export async function POST(request: NextRequest) {
       distributionResults.push(result)
 
       if (!dryRun) {
-        // Add credits to user's balance
-        const { error: updateError } = await supabase
+        // Get current balance first
+        const { data: currentProfile } = await supabase
           .from('profiles')
-          .update({
-            credits_balance: supabase.raw(`credits_balance + ${creditsToDistribute}`),
-            credits_earned_total: supabase.raw(`credits_earned_total + ${creditsToDistribute}`)
-          })
+          .select('credits_balance, credits_earned_total')
           .eq('id', subscriber.id)
+          .single()
 
-        if (updateError) {
-          console.error(`Failed to update credits for user ${subscriber.id}:`, updateError)
+        if (currentProfile) {
+          // Add credits to user's balance
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({
+              credits_balance: (currentProfile.credits_balance || 0) + creditsToDistribute,
+              credits_earned_total: (currentProfile.credits_earned_total || 0) + creditsToDistribute
+            })
+            .eq('id', subscriber.id)
+
+          if (updateError) {
+            console.error(`Failed to update credits for user ${subscriber.id}:`, updateError)
+            continue
+          }
+        } else {
+          console.error(`Profile not found for user ${subscriber.id}`)
           continue
         }
 
