@@ -87,7 +87,8 @@ export async function POST(
       }
     }
 
-    const limits = SUBSCRIPTION_LIMITS[profile?.subscription_tier || 'free']
+    const tier = (profile?.subscription_tier || 'free') as keyof typeof SUBSCRIPTION_LIMITS
+    const limits = SUBSCRIPTION_LIMITS[tier]
 
     // Check style access
     if (!limits.styles.includes(style)) {
@@ -223,7 +224,8 @@ export async function GET(
       .eq('id', user.id)
       .single()
 
-    const limits = SUBSCRIPTION_LIMITS[profile?.subscription_tier || 'free']
+    const tier = (profile?.subscription_tier || 'free') as keyof typeof SUBSCRIPTION_LIMITS
+    const limits = SUBSCRIPTION_LIMITS[tier]
 
     return NextResponse.json({
       covers: covers || [],
