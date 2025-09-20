@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       const payoutSchedule = account.settings?.payouts?.schedule
 
       // Get recent account activity (if available)
-      let recentPayouts = []
+      let recentPayouts: any[] = []
       if (onboardingComplete) {
         try {
           const payoutsResponse = await stripe.payouts.list({
