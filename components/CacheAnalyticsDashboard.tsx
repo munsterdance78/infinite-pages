@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -61,7 +61,7 @@ export default function CacheAnalyticsDashboard({ userProfile }: CacheAnalyticsD
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
   const [activeTimeRange, setActiveTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
 
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
 
   useEffect(() => {
     loadAnalytics()
