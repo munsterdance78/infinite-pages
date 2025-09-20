@@ -171,9 +171,9 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
       const { data, error } = await supabase
         .from('creator_earnings')
         .select(`
-          amount,
+          credits_earned,
+          usd_equivalent,
           created_at,
-          earning_type,
           stories (title)
         `)
         .eq('creator_id', userProfile.id)
@@ -187,9 +187,9 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
 
       const formattedEarnings = data?.map(earning => ({
         date: earning.created_at,
-        amount: earning.amount,
-        story_title: earning.stories?.title || 'Unknown Story',
-        type: earning.earning_type as 'view' | 'download' | 'tip'
+        amount: earning.usd_equivalent || 0,
+        story_title: (earning.stories as any)?.title || 'Unknown Story',
+        type: 'view' as 'view' | 'download' | 'tip'
       })) || []
 
       setRecentEarnings(formattedEarnings)

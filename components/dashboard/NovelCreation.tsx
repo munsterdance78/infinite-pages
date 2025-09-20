@@ -120,9 +120,10 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
   const loadNovels = async () => {
     try {
       const { data, error } = await supabase
-        .from('novels')
+        .from('stories')
         .select('*')
         .eq('creator_id', userProfile.id)
+        .eq('story_type', 'novel')
         .order('updated_at', { ascending: false })
 
       if (error) {
@@ -130,9 +131,24 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
         return
       }
 
-      setNovels(data || [])
-      if (data && data.length > 0 && !selectedNovel) {
-        setSelectedNovel(data[0])
+      // Map stories to novel structure
+      const mappedNovels = data?.map(story => ({
+        id: story.id,
+        title: story.title,
+        description: story.description || '',
+        genre: story.genre,
+        target_length: story.target_word_count || 50000,
+        status: story.status as 'planning' | 'writing' | 'completed' | 'published',
+        created_at: story.created_at,
+        updated_at: story.updated_at,
+        total_chapters: story.chapter_count || 0,
+        completed_chapters: story.completed_chapters || 0,
+        total_words: story.word_count || 0
+      })) || []
+
+      setNovels(mappedNovels)
+      if (mappedNovels && mappedNovels.length > 0 && !selectedNovel) {
+        setSelectedNovel(mappedNovels[0])
       }
     } catch (error) {
       console.error('Error loading novels:', error)
@@ -146,7 +162,7 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
       const { data, error } = await supabase
         .from('chapters')
         .select('*')
-        .eq('novel_id', novelId)
+        .eq('story_id', novelId)
         .order('chapter_number', { ascending: true })
 
       if (error) {
@@ -154,7 +170,20 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
         return
       }
 
-      setChapters(data || [])
+      // Map chapters to match our interface
+      const mappedChapters = data?.map(chapter => ({
+        id: chapter.id,
+        novel_id: chapter.story_id,
+        chapter_number: chapter.chapter_number,
+        title: chapter.title || `Chapter ${chapter.chapter_number}`,
+        content: chapter.content || '',
+        word_count: chapter.word_count || 0,
+        status: chapter.status as 'draft' | 'completed' | 'published',
+        created_at: chapter.created_at,
+        updated_at: chapter.updated_at
+      })) || []
+
+      setChapters(mappedChapters)
     } catch (error) {
       console.error('Error loading chapters:', error)
     }
@@ -168,17 +197,18 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
 
     try {
       const { data, error } = await supabase
-        .from('novels')
+        .from('stories')
         .insert({
           title: newNovel.title,
           description: newNovel.description,
           genre: newNovel.genre,
-          target_length: newNovel.target_length,
+          target_word_count: newNovel.target_length,
           creator_id: userProfile.id,
-          status: 'planning',
-          total_chapters: 0,
+          status: 'draft',
+          story_type: 'novel',
+          chapter_count: 0,
           completed_chapters: 0,
-          total_words: 0
+          word_count: 0
         })
         .select()
         .single()
@@ -189,8 +219,23 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
         return
       }
 
-      setNovels(prev => [data, ...prev])
-      setSelectedNovel(data)
+      // Map the created story to novel structure
+      const novelData = {
+        id: data.id,
+        title: data.title,
+        description: data.description || '',
+        genre: data.genre,
+        target_length: data.target_word_count || 50000,
+        status: data.status as 'planning' | 'writing' | 'completed' | 'published',
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+        total_chapters: data.chapter_count || 0,
+        completed_chapters: data.completed_chapters || 0,
+        total_words: data.word_count || 0
+      }
+
+      setNovels(prev => [novelData, ...prev])
+      setSelectedNovel(novelData)
       setShowNewNovelForm(false)
       setNewNovel({ title: '', description: '', genre: 'fantasy', target_length: 50000 })
     } catch (error) {
@@ -214,23 +259,20 @@ export default function NovelCreation({ userProfile }: NovelCreationProps) {
     setGenerating(true)
 
     try {
-      const response = await fetch('/api/novels/chapters/generate', {
+      const response = await fetch('/api/stories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          novel_id: selectedNovel.id,
-          chapter_number: chapters.length + 1,
           title: chapterRequest.title,
-          outline: chapterRequest.outline,
-          previous_context: chapterRequest.previous_context,
-          target_words: chapterRequest.target_words,
-          novel_context: {
-            title: selectedNovel.title,
-            genre: selectedNovel.genre,
-            description: selectedNovel.description
-          }
+          prompt: `Chapter ${chapters.length + 1}: ${chapterRequest.outline}\n\nPrevious context: ${chapterRequest.previous_context}\n\nNovel context - Title: ${selectedNovel.title}, Genre: ${selectedNovel.genre}, Description: ${selectedNovel.description}`,
+          genre: selectedNovel.genre,
+          length: chapterRequest.target_words > 3000 ? 'long' : chapterRequest.target_words > 1500 ? 'medium' : 'short',
+          user_id: userProfile.id,
+          story_type: 'chapter',
+          parent_story_id: selectedNovel.id,
+          chapter_number: chapters.length + 1
         }),
       })
 
