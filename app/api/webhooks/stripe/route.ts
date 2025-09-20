@@ -60,13 +60,14 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     const { userId, packageId, creditsAmount, bonusCredits } = paymentIntent.metadata
 
     // Update payment record
-    const { error: paymentUpdateError } = await supabase
+    const updateData = {
+      status: 'succeeded',
+      payment_method: paymentIntent.payment_method_types[0],
+      processed_at: new Date().toISOString()
+    }
+    const { error: paymentUpdateError } = await (supabase as any)
       .from('payments')
-      .update({
-        status: 'succeeded',
-        payment_method: paymentIntent.payment_method_types[0],
-        processed_at: new Date().toISOString()
-      })
+      .update(updateData)
       .eq('stripe_payment_intent_id', paymentIntent.id)
 
     if (paymentUpdateError) {
