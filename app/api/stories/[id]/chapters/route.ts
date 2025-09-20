@@ -14,12 +14,30 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // Validate Accept header to prevent 406 errors
+  const acceptHeader = request.headers.get('accept')
+  if (acceptHeader && !acceptHeader.includes('application/json') && !acceptHeader.includes('*/*')) {
+    return NextResponse.json(
+      { error: 'Not Acceptable - This endpoint only supports application/json' },
+      {
+        status: 406,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    )
+  }
+
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-  
+
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
 
   try {
@@ -34,7 +52,10 @@ export async function POST(
       .single()
 
     if (!story) {
-      return NextResponse.json({ error: 'Story not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Story not found' }, {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // Check user tokens
@@ -47,7 +68,10 @@ export async function POST(
     if (!profile || profile.tokens_remaining < TOKEN_COSTS.CHAPTER_GENERATION) {
       return NextResponse.json({
         error: `Insufficient tokens (${TOKEN_COSTS.CHAPTER_GENERATION} tokens required for chapter generation)`
-      }, { status: 400 })
+      }, {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // PRIORITY 2: Generate chapter with caching for 60% cost savings
@@ -158,7 +182,10 @@ Make this chapter compelling and well-written.`;
 
     } catch (error) {
       console.error('Chapter generation error:', error);
-      return NextResponse.json({ error: 'Failed to generate chapter' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to generate chapter' }, {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     const chapterData = chapterResult;
@@ -171,7 +198,10 @@ Make this chapter compelling and well-written.`;
     if (!isContentSafe) {
       return NextResponse.json({
         error: 'Generated content violates content policy'
-      }, { status: 400 })
+      }, {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     const wordCount = chapterData.wordCount || (chapterData.content || '').split(/\s+/).length
@@ -203,7 +233,10 @@ Make this chapter compelling and well-written.`;
       .single()
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      return NextResponse.json({ error: error.message }, {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     // Update user tokens and story stats - account for cache savings
@@ -251,11 +284,32 @@ Make this chapter compelling and well-written.`;
       message: fromCache
         ? `Chapter ${chapter_number} generated successfully (${tokensSaved} tokens saved from cache)`
         : `Chapter ${chapter_number} generated successfully`
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      }
     })
   } catch (error) {
     console.error('Chapter generation error:', error)
-    return NextResponse.json({ error: 'Failed to generate chapter' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to generate chapter' }, {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
   }
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '3600',
+      'Content-Type': 'application/json'
+    }
+  })
 }
 
 async function moderateContent(content: string): Promise<boolean> {
