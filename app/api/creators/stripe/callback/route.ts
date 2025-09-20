@@ -9,6 +9,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
 })
 
+// Environment variable validation
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
+
 // Handle Stripe Connect onboarding completion callback
 export async function GET(request: NextRequest) {
   try {
@@ -18,7 +21,7 @@ export async function GET(request: NextRequest) {
 
     if (!accountId) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=missing_account_id`
+        `${SITE_URL}/creator/dashboard?error=missing_account_id`
       )
     }
 
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/auth/signin?redirect_to=/creator/stripe/callback`
+        `${SITE_URL}/auth/signin?redirect_to=/creator/stripe/callback`
       )
     }
 
@@ -41,13 +44,13 @@ export async function GET(request: NextRequest) {
 
     if (!profile?.is_creator) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=not_creator`
+        `${SITE_URL}/creator/dashboard?error=not_creator`
       )
     }
 
     if (profile.stripe_connect_account_id !== accountId) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=account_mismatch`
+        `${SITE_URL}/creator/dashboard?error=account_mismatch`
       )
     }
 
@@ -80,29 +83,29 @@ export async function GET(request: NextRequest) {
           })
 
         return NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?onboarding=success&payouts_enabled=true`
+          `${SITE_URL}/creator/dashboard?onboarding=success&payouts_enabled=true`
         )
       } else if (requiresAction) {
         return NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?onboarding=incomplete&action_required=true`
+          `${SITE_URL}/creator/dashboard?onboarding=incomplete&action_required=true`
         )
       } else {
         return NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?onboarding=pending`
+          `${SITE_URL}/creator/dashboard?onboarding=pending`
         )
       }
 
     } catch (stripeError) {
       console.error('Error retrieving Stripe account in callback:', stripeError)
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=stripe_error`
+        `${SITE_URL}/creator/dashboard?error=stripe_error`
       )
     }
 
   } catch (error) {
     console.error('Stripe Connect callback error:', error)
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=callback_failed`
+      `${SITE_URL}/creator/dashboard?error=callback_failed`
     )
   }
 }

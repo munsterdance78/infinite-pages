@@ -9,6 +9,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
 })
 
+// Environment variable validation
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
+
 interface OnboardingRequest {
   country?: string
   business_type?: 'individual' | 'company'
@@ -71,8 +74,8 @@ export async function POST(request: NextRequest) {
           // Account exists but not fully onboarded - create new onboarding link
           const accountLink = await stripe.accountLinks.create({
             account: profile.stripe_connect_account_id,
-            refresh_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/refresh`,
-            return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/success`,
+            refresh_url: `${SITE_URL}/creator/stripe/refresh`,
+            return_url: `${SITE_URL}/creator/stripe/success`,
             type: 'account_onboarding'
           })
 
@@ -127,8 +130,8 @@ export async function POST(request: NextRequest) {
     // Create account link for onboarding
     const accountLink = await stripe.accountLinks.create({
       account: account.id,
-      refresh_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/refresh`,
-      return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/success`,
+      refresh_url: `${SITE_URL}/creator/stripe/refresh`,
+      return_url: `${SITE_URL}/creator/stripe/success`,
       type: 'account_onboarding'
     })
 

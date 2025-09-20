@@ -7,6 +7,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16'
 })
 
+// Environment variable validation
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
+
 export async function POST() {
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
@@ -35,7 +38,7 @@ export async function POST() {
 
     const session = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
-      return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
+      return_url: `${SITE_URL}/dashboard`
     })
 
     return NextResponse.json(

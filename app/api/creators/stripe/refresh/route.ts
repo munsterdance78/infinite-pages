@@ -9,6 +9,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
 })
 
+// Environment variable validation
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
+
 // Handle Stripe Connect onboarding refresh (when user needs to restart onboarding)
 export async function GET(request: NextRequest) {
   try {
@@ -21,7 +24,7 @@ export async function GET(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/auth/signin?redirect_to=/creator/stripe/refresh`
+        `${SITE_URL}/auth/signin?redirect_to=/creator/stripe/refresh`
       )
     }
 
@@ -34,13 +37,13 @@ export async function GET(request: NextRequest) {
 
     if (!profile?.is_creator) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=not_creator`
+        `${SITE_URL}/creator/dashboard?error=not_creator`
       )
     }
 
     if (profile.subscription_tier !== 'premium') {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=subscription_required`
+        `${SITE_URL}/creator/dashboard?error=subscription_required`
       )
     }
 
@@ -49,14 +52,14 @@ export async function GET(request: NextRequest) {
 
     if (!targetAccountId) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=no_account`
+        `${SITE_URL}/creator/dashboard?error=no_account`
       )
     }
 
     // Verify account ownership if account ID was provided in URL
     if (accountId && profile.stripe_connect_account_id !== accountId) {
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=account_mismatch`
+        `${SITE_URL}/creator/dashboard?error=account_mismatch`
       )
     }
 
@@ -64,8 +67,8 @@ export async function GET(request: NextRequest) {
       // Create a new account link for refreshed onboarding
       const accountLink = await stripe.accountLinks.create({
         account: targetAccountId,
-        refresh_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/refresh`,
-        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/success`,
+        refresh_url: `${SITE_URL}/creator/stripe/refresh`,
+        return_url: `${SITE_URL}/creator/stripe/success`,
         type: 'account_onboarding'
       })
 
@@ -78,19 +81,19 @@ export async function GET(request: NextRequest) {
       if (stripeError instanceof Stripe.errors.StripeInvalidRequestError) {
         // Account might be fully onboarded or have issues
         return NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=refresh_failed&reason=invalid_account`
+          `${SITE_URL}/creator/dashboard?error=refresh_failed&reason=invalid_account`
         )
       }
 
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=refresh_failed`
+        `${SITE_URL}/creator/dashboard?error=refresh_failed`
       )
     }
 
   } catch (error) {
     console.error('Stripe Connect refresh error:', error)
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/creator/dashboard?error=refresh_error`
+      `${SITE_URL}/creator/dashboard?error=refresh_error`
     )
   }
 }
@@ -156,8 +159,8 @@ export async function POST(request: NextRequest) {
       // Create new account link for refresh
       const accountLink = await stripe.accountLinks.create({
         account: profile.stripe_connect_account_id,
-        refresh_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/refresh`,
-        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/creator/stripe/success`,
+        refresh_url: `${SITE_URL}/creator/stripe/refresh`,
+        return_url: `${SITE_URL}/creator/stripe/success`,
         type: 'account_onboarding'
       })
 
