@@ -6,6 +6,7 @@ import StoryCreator from '@/components/StoryCreator'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 import CacheAnalyticsDashboard from '@/components/CacheAnalyticsDashboard'
 import SubscriptionManager from '@/components/SubscriptionManager'
+import StripeConnectOnboarding from '@/components/StripeConnectOnboarding'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -30,7 +31,8 @@ import {
   ArrowLeft,
   Clock,
   RefreshCw,
-  AlertTriangle
+  AlertTriangle,
+  DollarSign
 } from 'lucide-react'
 
 interface UserProfile {
@@ -358,6 +360,7 @@ export default function DashboardPage() {
     { id: 'stories', label: 'Stories', icon: BookOpen },
     { id: 'analytics', label: 'Analytics', icon: BarChart },
     { id: 'cache-analytics', label: 'Cache Analytics', icon: Zap },
+    { id: 'creator', label: 'Creator Payouts', icon: DollarSign },
     { id: 'subscription', label: 'Subscription', icon: Crown },
     { id: 'settings', label: 'Settings', icon: Settings }
   ]
@@ -522,6 +525,7 @@ export default function DashboardPage() {
                   {activeTab === 'stories' && 'Manage and create your AI-generated stories'}
                   {activeTab === 'analytics' && 'Track your writing progress and insights'}
                   {activeTab === 'cache-analytics' && 'Monitor cache performance and cost savings'}
+                  {activeTab === 'creator' && 'Set up creator payouts and manage your earnings'}
                   {activeTab === 'subscription' && 'Manage your subscription and billing'}
                   {activeTab === 'settings' && 'Customize your account preferences'}
                 </p>
@@ -730,6 +734,12 @@ export default function DashboardPage() {
           {activeTab === 'cache-analytics' && (
             <ErrorBoundary level="section" showDetails={true}>
               <CacheAnalyticsDashboard userProfile={user} />
+            </ErrorBoundary>
+          )}
+
+          {activeTab === 'creator' && (
+            <ErrorBoundary level="section" showDetails={true}>
+              <StripeConnectOnboarding />
             </ErrorBoundary>
           )}
 

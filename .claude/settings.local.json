@@ -22,7 +22,8 @@
       "Bash(xargs ls:*)",
       "Bash(git reset:*)",
       "Bash(npm run start:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
