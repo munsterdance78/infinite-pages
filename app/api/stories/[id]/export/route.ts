@@ -90,7 +90,7 @@ export async function POST(
 
     const downloadsThisMonth = monthlyUsage?.downloads_this_month || 0
 
-    if (downloadsThisMonth >= restrictions.max_downloads_per_month) {
+    if ('max_downloads_per_month' in restrictions && downloadsThisMonth >= restrictions.max_downloads_per_month) {
       return NextResponse.json({
         error: 'Monthly download limit reached',
         limit: restrictions.max_downloads_per_month,
