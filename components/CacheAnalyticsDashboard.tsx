@@ -19,7 +19,7 @@ import {
   Database,
   Award
 } from 'lucide-react'
-import { infinitePagesCache } from '@/lib/claude/infinitePagesCache'
+// Removed direct cache import - will use API endpoint instead
 import LoadingFallback from '@/components/LoadingFallback'
 
 interface CacheAnalytics {
@@ -75,13 +75,14 @@ export default function CacheAnalyticsDashboard({ userProfile }: CacheAnalyticsD
       setLoading(true)
       setError(null)
 
-      // Load comprehensive analytics with timeout
-      const analyticsPromise = infinitePagesCache.getInfinitePagesAnalytics(userProfile.id)
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Analytics request timeout')), 10000)
-      )
+      // Load comprehensive analytics via API endpoint
+      const response = await fetch('/api/cache/analytics')
 
-      const analyticsData = await Promise.race([analyticsPromise, timeoutPromise]) as CacheAnalytics
+      if (!response.ok) {
+        throw new Error('Failed to fetch cache analytics')
+      }
+
+      const analyticsData = await response.json() as CacheAnalytics
       setAnalytics(analyticsData)
 
       // Load foundation fingerprint efficiency analytics with fallback
