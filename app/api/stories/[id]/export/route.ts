@@ -52,7 +52,8 @@ export async function POST(
       return NextResponse.json({ error: 'User profile not found' }, { status: 404 })
     }
 
-    const restrictions = DOWNLOAD_RESTRICTIONS[profile.subscription_tier]
+    const tier = profile.subscription_tier as keyof typeof DOWNLOAD_RESTRICTIONS
+    const restrictions = DOWNLOAD_RESTRICTIONS[tier]
 
     // Check if downloads are allowed for this tier
     if (!restrictions.allowed) {
