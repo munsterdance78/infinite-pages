@@ -85,11 +85,34 @@ export interface CacheConfig {
 }
 
 class InfinitePagesCache {
-  private supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  private supabase: ReturnType<typeof createClient>;
   private memoryCache = new Map<string, InfinitePagesCacheRecord>();
+  private isDbAvailable: boolean = true;
+
+  constructor() {
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!supabaseUrl || !serviceRoleKey) {
+        console.warn('[InfinitePages Cache] Supabase environment variables not available - cache disabled');
+        this.isDbAvailable = false;
+        // Create a dummy client to avoid type issues
+        this.supabase = null as any;
+        return;
+      }
+
+      this.supabase = createClient(supabaseUrl, serviceRoleKey);
+    } catch (error) {
+      console.warn('[InfinitePages Cache] Failed to initialize Supabase client - cache disabled:', error);
+      this.isDbAvailable = false;
+      this.supabase = null as any;
+    }
+  }
+
+  private isAvailable(): boolean {
+    return this.isDbAvailable && this.supabase !== null;
+  }
 
   private config: CacheConfig = {
     tokenCosts: {
@@ -230,6 +253,15 @@ class InfinitePagesCache {
     cacheType: 'exact' | 'genre-similar' | 'theme-similar' | 'none';
     tokensSaved: number;
   }> {
+    // Return cache miss if Supabase is not available
+    if (!this.isAvailable()) {
+      return {
+        foundation: null,
+        fromCache: false,
+        cacheType: 'none',
+        tokensSaved: 0
+      };
+    }
 
     const premiseHash = crypto.createHash('md5').update(premise).digest('hex');
 
@@ -428,6 +460,10 @@ class InfinitePagesCache {
   ): Promise<InfinitePagesCacheRecord[]> {
 
     try {
+      if (!this.isAvailable()) {
+        return [];
+      }
+
       const { data, error } = await this.supabase
         .from('infinite_pages_cache')
         .select('*')
@@ -462,6 +498,10 @@ class InfinitePagesCache {
     storyId?: string,
     foundationDependency?: string
   ): Promise<void> {
+    // Skip caching if Supabase is not available
+    if (!this.isAvailable()) {
+      return;
+    }
 
     try {
       const cacheKey = this.generateCacheKey(prompt, contentType, metadata);
@@ -487,7 +527,8 @@ class InfinitePagesCache {
         token_cost_saved: 0
       };
 
-      const { error } = await this.supabase
+      // Type assertion to bypass schema mismatch
+      const { error } = await (this.supabase as any)
         .from('infinite_pages_cache')
         .upsert(entry);
 
@@ -515,12 +556,12 @@ class InfinitePagesCache {
       }
 
       // Then update with incremented values
-      const { error } = await this.supabase
+      const { error } = await (this.supabase as any)
         .from('infinite_pages_cache')
         .update({
-          hit_count: (current.hit_count || 0) + 1,
+          hit_count: ((current as any).hit_count || 0) + 1,
           last_accessed: new Date().toISOString(),
-          token_cost_saved: (current.token_cost_saved || 0) + 1
+          token_cost_saved: ((current as any).token_cost_saved || 0) + 1
         })
         .eq('id', entryId);
 
@@ -962,9 +1003,19 @@ class InfinitePagesCache {
     foundationReuseRate: number;
     costSavingsThisMonth: number;
   }> {
+    // Return empty analytics if Supabase is not available
+    if (!this.isAvailable()) {
+      return {
+        totalTokensSaved: 0,
+        cacheHitRateByType: {},
+        topGenres: [],
+        foundationReuseRate: 0,
+        costSavingsThisMonth: 0
+      };
+    }
 
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await (this.supabase as any)
         .rpc('get_infinite_pages_analytics', { user_id: userId });
 
       if (error) {
