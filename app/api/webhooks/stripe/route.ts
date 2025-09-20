@@ -7,13 +7,27 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
 })
 
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Initialize Supabase client with environment variable validation
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !serviceRoleKey) {
+  console.error('[Webhook] Missing Supabase environment variables');
+  console.error('[Webhook] Required: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY');
+}
+
+const supabase = supabaseUrl && serviceRoleKey
+  ? createClient<Database>(supabaseUrl, serviceRoleKey)
+  : null;
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Supabase is properly configured
+    if (!supabase) {
+      console.error('[Webhook] Supabase not initialized - cannot process payment webhooks');
+      return NextResponse.json({ error: 'Database configuration error' }, { status: 500 });
+    }
+
     const body = await request.text()
     const signature = request.headers.get('stripe-signature')!
 
@@ -57,6 +71,11 @@ export async function POST(request: NextRequest) {
 
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   try {
+    if (!supabase) {
+      console.error('[Webhook] Cannot process payment success - Supabase not initialized');
+      return;
+    }
+
     const { userId, packageId, creditsAmount, bonusCredits } = paymentIntent.metadata
 
     // Update payment record
@@ -133,6 +152,11 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
 async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
   try {
+    if (!supabase) {
+      console.error('[Webhook] Cannot process payment failure - Supabase not initialized');
+      return;
+    }
+
     const { error } = await (supabase as any)
       .from('payments')
       .update({

@@ -94,15 +94,23 @@ class InfinitePagesCache {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-      if (!supabaseUrl || !serviceRoleKey) {
-        console.warn('[InfinitePages Cache] Supabase environment variables not available - cache disabled');
+      if (!supabaseUrl) {
+        console.warn('[InfinitePages Cache] NEXT_PUBLIC_SUPABASE_URL not available - cache disabled');
         this.isDbAvailable = false;
-        // Create a dummy client to avoid type issues
+        this.supabase = null as any;
+        return;
+      }
+
+      if (!serviceRoleKey) {
+        console.warn('[InfinitePages Cache] SUPABASE_SERVICE_ROLE_KEY not available - cache disabled');
+        console.warn('[InfinitePages Cache] Please add SUPABASE_SERVICE_ROLE_KEY to your Vercel environment variables');
+        this.isDbAvailable = false;
         this.supabase = null as any;
         return;
       }
 
       this.supabase = createClient(supabaseUrl, serviceRoleKey);
+      console.log('[InfinitePages Cache] Successfully initialized with Supabase');
     } catch (error) {
       console.warn('[InfinitePages Cache] Failed to initialize Supabase client - cache disabled:', error);
       this.isDbAvailable = false;

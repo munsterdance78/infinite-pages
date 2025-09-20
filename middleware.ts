@@ -263,6 +263,12 @@ function logSecurityViolation(threat: SecurityThreat, request: NextRequest): voi
 
 async function getUserSubscriptionTier(userId: string): Promise<'free' | 'pro'> {
   try {
+    // Check if required environment variables are available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.warn('[Middleware] Supabase environment variables not available, defaulting to free tier');
+      return 'free';
+    }
+
     // This would typically be cached in Redis/memory for performance
     const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}&select=subscription_tier`, {
       headers: {
