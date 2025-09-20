@@ -222,14 +222,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User profile not found' }, { status: 404 })
     }
 
-    const subscriptionTier = profile.subscription_tier as SubscriptionTier
-
     // Enforce Premium-only story creation
-    if (subscriptionTier !== 'premium') {
+    if (profile.subscription_tier !== 'premium') {
       return NextResponse.json({
         error: 'Premium subscription required for story creation',
         upgrade_required: true,
-        current_tier: subscriptionTier,
+        current_tier: profile.subscription_tier,
         feature: 'story_creation'
       }, { status: 403 })
     }
