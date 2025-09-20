@@ -114,11 +114,11 @@ export async function GET(request: NextRequest) {
     const storyEarningsMap = new Map()
     storyPerformance?.forEach(earning => {
       const storyId = earning.story_id
-      const story = getRelationData(earning.stories)
+      const storyData = getRelationData(earning.stories)
       if (!storyEarningsMap.has(storyId)) {
         storyEarningsMap.set(storyId, {
           story_id: storyId,
-          story_title: story.title || 'Unknown',
+          story_title: storyData.title || 'Unknown',
           total_credits: 0,
           total_usd: 0,
           purchase_count: 0,
