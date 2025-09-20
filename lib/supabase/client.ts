@@ -1,22 +1,26 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import type { Database } from './types'
 
-export const createClient = () => {
-  // Debug environment variables in browser BEFORE creating client
-  if (typeof window !== 'undefined') {
-    console.log('🔍 SUPABASE CLIENT DEBUG - BEFORE CLIENT CREATION:');
-    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY length:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length || 0);
-    console.log('All NEXT_PUBLIC vars:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_')));
-    console.log('Full process.env keys count:', Object.keys(process.env).length);
+// Debug environment variables at module load time
+console.log('🔍 MODULE LOAD DEBUG:');
+console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+console.log('All NEXT_PUBLIC vars:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_')));
 
-    // Check what Supabase is actually looking for
-    console.log('Process.env dump:', process.env);
+export const createClient = () => {
+  console.log('🚀 createClient() called');
+
+  // Check if environment variables are missing and provide fallback
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('❌ Environment variables missing in production!');
+    console.log('Available env vars:', Object.keys(process.env));
+
+    // For now, throw a more helpful error
+    throw new Error('Supabase environment variables are not available in production. Check Vercel configuration.');
   }
 
   try {
-    console.log('🚀 Creating Supabase client...');
+    console.log('🚀 Creating Supabase client with available env vars...');
     const client = createClientComponentClient<Database>();
     console.log('✅ Supabase client created successfully');
     return client;
