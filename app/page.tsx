@@ -1,5 +1,13 @@
 'use client'
 
+// Add this to the top of any page component
+console.log('Environment Debug:', {
+  NODE_ENV: process.env.NODE_ENV,
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'PRESENT' : 'MISSING',
+  allNextPublic: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_'))
+});
+
 import React, { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
