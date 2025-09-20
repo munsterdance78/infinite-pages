@@ -6,7 +6,7 @@ import type { Database } from '@/lib/supabase/types'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { storyId: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const cookieStore = cookies()
@@ -18,7 +18,7 @@ export async function POST(
     }
 
     const { chapterIds, purchaseType = 'chapter' } = await request.json()
-    const storyId = params.storyId
+    const storyId = params.id
 
     // Get story and pricing info
     const { data: story } = await supabase
