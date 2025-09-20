@@ -263,7 +263,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { title, genre, premise } = validation.sanitizedData
-    const limits = getSubscriptionLimits(subscriptionTier)
+    const limits = getSubscriptionLimits(profile.subscription_tier)
 
     // Check story limits based on subscription
     const monthStart = new Date()
@@ -288,7 +288,7 @@ export async function POST(request: NextRequest) {
         error: ERROR_MESSAGES.MONTHLY_LIMIT_REACHED,
         details: [
           `You have created ${monthlyCount} stories this month. ` +
-          (subscriptionTier === SUBSCRIPTION_TIERS.FREE 
+          (profile.subscription_tier === SUBSCRIPTION_TIERS.FREE 
             ? 'Upgrade to Pro for more stories.' 
             : 'Contact support if you need a higher limit.')
         ]
