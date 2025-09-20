@@ -20,6 +20,14 @@ interface PayoutProcessingResult {
   errors: string[]
 }
 
+// Helper function to safely access profiles data
+function getProfileData(profiles: any) {
+  if (Array.isArray(profiles)) {
+    return profiles[0] || {}
+  }
+  return profiles || {}
+}
+
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = cookies()
@@ -82,12 +90,15 @@ export async function POST(request: NextRequest) {
         total_amount: totalAmount,
         minimum_payout,
         processing_date: processingDate.toISOString().split('T')[0],
-        creators: eligibleCreators?.map(c => ({
-          creator_id: c.creator_id,
-          email: c.profiles?.email,
-          amount: c.total_accumulated_usd,
-          has_stripe_customer: !!c.profiles?.stripe_customer_id
-        }))
+        creators: eligibleCreators?.map(c => {
+          const profile = getProfileData(c.profiles)
+          return {
+            creator_id: c.creator_id,
+            email: profile.email,
+            amount: c.total_accumulated_usd,
+            has_stripe_customer: !!profile.stripe_customer_id
+          }
+        })
       })
     }
 
@@ -157,11 +168,12 @@ export async function POST(request: NextRequest) {
     // Process Stripe transfers
     for (const payout of payouts) {
       try {
-        const stripeCustomerId = payout.profiles?.stripe_customer_id
+        const profile = getProfileData(payout.profiles)
+        const stripeCustomerId = profile.stripe_customer_id
 
         if (!stripeCustomerId) {
           result.failed_transfers++
-          result.errors.push(`Creator ${payout.profiles?.email} has no Stripe customer ID`)
+          result.errors.push(`Creator ${profile.email} has no Stripe customer ID`)
 
           await supabase
             .from('individual_payouts')
@@ -178,7 +190,7 @@ export async function POST(request: NextRequest) {
         const customer = await stripe.customers.retrieve(stripeCustomerId)
         if (!customer || customer.deleted) {
           result.failed_transfers++
-          result.errors.push(`Creator ${payout.profiles?.email} Stripe customer not found`)
+          result.errors.push(`Creator ${profile.email} Stripe customer not found`)
 
           await supabase
             .from('individual_payouts')
@@ -197,7 +209,7 @@ export async function POST(request: NextRequest) {
 
         if (transferAmount <= 0) {
           result.failed_transfers++
-          result.errors.push(`Creator ${payout.profiles?.email} amount too small after fees`)
+          result.errors.push(`Creator ${profile.email} amount too small after fees`)
 
           await supabase
             .from('individual_payouts')
@@ -232,11 +244,11 @@ export async function POST(request: NextRequest) {
 
         result.successful_transfers++
 
-        console.log(`Simulated transfer for creator ${payout.profiles?.email}: $${payout.amount_usd}`)
+        console.log(`Simulated transfer for creator ${profile.email}: $${payout.amount_usd}`)
 
       } catch (error) {
         result.failed_transfers++
-        result.errors.push(`Creator ${payout.profiles?.email}: ${error instanceof Error ? error.message : 'Unknown error'}`)
+        result.errors.push(`Creator ${profile.email}: ${error instanceof Error ? error.message : 'Unknown error'}`)
 
         await supabase
           .from('individual_payouts')
@@ -314,10 +326,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       recent_batches: batches?.map(batch => ({
         ...batch,
-        individual_payouts: batch.individual_payouts?.map(payout => ({
-          ...payout,
-          creator_email: payout.profiles?.email
-        }))
+        individual_payouts: batch.individual_payouts?.map(payout => {
+          const payoutProfile = getProfileData(payout.profiles)
+          return {
+            ...payout,
+            creator_email: payoutProfile.email
+          }
+        })
       })) || []
     })
 
