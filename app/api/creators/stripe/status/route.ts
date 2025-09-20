@@ -78,10 +78,10 @@ export async function GET(request: NextRequest) {
       let recentPayouts: any[] = []
       if (onboardingComplete) {
         try {
-          const payoutsResponse = await stripe.payouts.list({
-            stripeAccount: profile.stripe_connect_account_id,
-            limit: 5
-          })
+          const payoutsResponse = await stripe.payouts.list(
+            { limit: 5 },
+            { stripeAccount: profile.stripe_connect_account_id }
+          )
           recentPayouts = payoutsResponse.data.map(payout => ({
             id: payout.id,
             amount: payout.amount / 100, // Convert from cents
