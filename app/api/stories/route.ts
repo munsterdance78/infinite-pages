@@ -224,6 +224,16 @@ export async function POST(request: NextRequest) {
 
     const subscriptionTier = profile.subscription_tier as SubscriptionTier
 
+    // Enforce Premium-only story creation
+    if (subscriptionTier !== 'premium') {
+      return NextResponse.json({
+        error: 'Premium subscription required for story creation',
+        upgrade_required: true,
+        current_tier: subscriptionTier,
+        feature: 'story_creation'
+      }, { status: 403 })
+    }
+
     // Apply rate limiting for story creation with subscription awareness
     const rateLimitResult = await subscriptionAwareRateLimit(
       request,

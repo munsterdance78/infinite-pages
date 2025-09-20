@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import StoryCard from '@/components/StoryCard'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import PremiumUpgradePrompt from '@/components/PremiumUpgradePrompt'
 import {
   BookOpen,
   Plus,
@@ -74,6 +75,20 @@ type ViewMode = 'list' | 'create' | 'edit';
 type SortOption = 'updated_desc' | 'updated_asc' | 'created_desc' | 'created_asc' | 'title_asc' | 'word_count_desc';
 
 export default function StoryCreator({ userProfile, onStoryChange }: StoryCreatorProps) {
+  // Enforce Premium subscription for story creation
+  if (userProfile.subscription_tier !== 'premium') {
+    return (
+      <PremiumUpgradePrompt
+        feature="story_creation"
+        currentTier={userProfile.subscription_tier}
+        onUpgrade={() => {
+          // Redirect to upgrade page or handle upgrade
+          window.location.href = '/pricing?upgrade=premium'
+        }}
+      />
+    )
+  }
+
   const [stories, setStories] = useState<Story[]>([])
   const [filteredStories, setFilteredStories] = useState<Story[]>([])
   const [selectedStory, setSelectedStory] = useState<Story | null>(null)
