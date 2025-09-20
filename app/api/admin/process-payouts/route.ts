@@ -167,8 +167,8 @@ export async function POST(request: NextRequest) {
 
     // Process Stripe transfers
     for (const payout of payouts) {
+      const profile = getProfileData(payout.profiles)
       try {
-        const profile = getProfileData(payout.profiles)
         const stripeCustomerId = profile.stripe_customer_id
 
         if (!stripeCustomerId) {
