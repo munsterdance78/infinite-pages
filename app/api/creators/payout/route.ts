@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Get creator profile
     const { data: profile } = await supabase
       .from('profiles')
-      .select('is_creator, pending_payout_usd, stripe_connect_account_id, email')
+      .select('is_creator, pending_payout_usd, stripe_connect_account_id, email, total_earnings_usd')
       .eq('id', user.id)
       .single()
 
