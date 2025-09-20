@@ -324,9 +324,9 @@ export async function GET(request: NextRequest) {
       .limit(12) // Last 12 months
 
     return NextResponse.json({
-      recent_batches: batches?.map(batch => ({
+      recent_batches: batches?.map((batch: any) => ({
         ...batch,
-        individual_payouts: batch.individual_payouts?.map(payout => {
+        individual_payouts: batch.individual_payouts?.map((payout: any) => {
           const payoutProfile = getProfileData(payout.profiles)
           return {
             ...payout,
