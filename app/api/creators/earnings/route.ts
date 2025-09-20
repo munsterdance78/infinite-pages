@@ -4,6 +4,14 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { ERROR_MESSAGES } from '@/lib/constants'
 import type { Database } from '@/lib/supabase/types'
 
+// Helper function to safely access relation data
+function getRelationData(relation: any) {
+  if (Array.isArray(relation)) {
+    return relation[0] || {}
+  }
+  return relation || {}
+}
+
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = cookies()
