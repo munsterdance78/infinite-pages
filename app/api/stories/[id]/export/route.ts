@@ -247,7 +247,7 @@ export async function GET(
       subscription_tier: profile?.subscription_tier,
       credits_required: restrictions.credits_required,
       credits_available: profile?.credits_balance || 0,
-      monthly_limit: restrictions.max_downloads_per_month,
+      monthly_limit: ('max_downloads_per_month' in restrictions) ? restrictions.max_downloads_per_month : null,
       downloads_used_this_month: monthlyUsage?.downloads_this_month || 0,
       message: restrictions.message,
       library_message: 'Reading in our library is free and provides the best experience!'
