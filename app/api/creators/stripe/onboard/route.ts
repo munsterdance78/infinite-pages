@@ -271,8 +271,8 @@ export async function GET(request: NextRequest) {
       const account = await stripe.accounts.retrieve(profile.stripe_connect_account_id)
 
       const onboardingComplete = account.charges_enabled && account.payouts_enabled
-      const requiresAction = account.requirements?.currently_due?.length > 0 ||
-                           account.requirements?.eventually_due?.length > 0
+      const requiresAction = (account.requirements?.currently_due?.length || 0) > 0 ||
+                           (account.requirements?.eventually_due?.length || 0) > 0
 
       return NextResponse.json({
         onboarding_status: onboardingComplete ? 'complete' : 'incomplete',
