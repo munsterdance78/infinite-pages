@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import { ALLOWED_GENRES } from '@/lib/constants';
 
@@ -85,8 +85,11 @@ export interface CacheConfig {
 }
 
 class InfinitePagesCache {
-  private supabase = createClient();
-  private memoryCache = new Map<string, InfinitePagesCache>();
+  private supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+  private memoryCache = new Map<string, InfinitePagesCacheRecord>();
 
   private config: CacheConfig = {
     tokenCosts: {
