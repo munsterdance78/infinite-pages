@@ -107,7 +107,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     // Create credit transaction record
-    const { error: transactionError } = await (supabase as any)
+    const { error: transactionError } = await supabase
       .from('credit_transactions')
       .insert({
         user_id: userId,
@@ -117,7 +117,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
         description: `Credit purchase: ${creditsAmount} credits + ${bonusCredits} bonus`,
         reference_id: paymentIntent.id,
         reference_type: 'purchase'
-      })
+      } as any)
 
     if (transactionError) {
       console.error('Transaction creation error:', transactionError)
