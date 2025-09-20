@@ -126,8 +126,8 @@ export async function GET(request: NextRequest) {
 
         // Capabilities
         capabilities: {
-          card_payments: capabilities.card_payments?.status,
-          transfers: capabilities.transfers?.status
+          card_payments: typeof capabilities.card_payments === 'string' ? capabilities.card_payments : (capabilities.card_payments as any)?.status,
+          transfers: typeof capabilities.transfers === 'string' ? capabilities.transfers : (capabilities.transfers as any)?.status
         },
 
         // Payout settings
