@@ -16,7 +16,12 @@
       "Bash(tree:*)",
       "Bash(dir:*)",
       "Bash(npm ls:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Read(//c/Users/thoma/infinite-pages/**)",
+      "Read(//c/Users/thoma/**)",
+      "Bash(xargs ls:*)",
+      "Bash(git reset:*)",
+      "Bash(npm run start:*)"
     ],
     "deny": [],
     "ask": []
