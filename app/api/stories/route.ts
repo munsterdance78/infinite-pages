@@ -237,7 +237,7 @@ export async function POST(request: NextRequest) {
       request,
       'STORY_CREATION',
       user.id,
-      subscriptionTier
+      profile.subscription_tier
     )
 
     if (!rateLimitResult.success) {
