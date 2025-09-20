@@ -13,6 +13,14 @@ import {
 import { MINIMUM_PAYOUT_USD } from '@/lib/subscription-config'
 import type { Database } from '@/lib/supabase/types'
 
+// Helper function to safely access relation data
+function getRelationData(relation: any) {
+  if (Array.isArray(relation)) {
+    return relation[0] || {}
+  }
+  return relation || {}
+}
+
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = cookies()
@@ -106,10 +114,11 @@ export async function GET(request: NextRequest) {
     const storyEarningsMap = new Map()
     storyPerformance?.forEach(earning => {
       const storyId = earning.story_id
+      const story = getRelationData(earning.stories)
       if (!storyEarningsMap.has(storyId)) {
         storyEarningsMap.set(storyId, {
           story_id: storyId,
-          story_title: earning.stories?.title || 'Unknown',
+          story_title: story.title || 'Unknown',
           total_credits: 0,
           total_usd: 0,
           purchase_count: 0,

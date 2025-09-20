@@ -5,6 +5,14 @@ import { ERROR_MESSAGES } from '@/lib/constants'
 import { CREATOR_REVENUE_SHARE } from '@/lib/subscription-config'
 import type { Database } from '@/lib/supabase/types'
 
+// Helper function to safely access relation data
+function getRelationData(relation: any) {
+  if (Array.isArray(relation)) {
+    return relation[0] || {}
+  }
+  return relation || {}
+}
+
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = cookies()
@@ -89,10 +97,11 @@ export async function GET(request: NextRequest) {
     const storyEarningsMap = new Map()
     earnings?.forEach(earning => {
       const storyId = earning.story_id
+      const story = getRelationData(earning.stories)
       if (!storyEarningsMap.has(storyId)) {
         storyEarningsMap.set(storyId, {
           story_id: storyId,
-          story_title: earning.stories?.title || 'Unknown',
+          story_title: story.title || 'Unknown',
           total_credits_earned: 0,
           total_usd_earned: 0,
           unique_readers: new Set(),
@@ -119,15 +128,19 @@ export async function GET(request: NextRequest) {
     })).sort((a, b) => b.total_usd_earned - a.total_usd_earned)
 
     // Format recent transactions
-    const recentTransactions = earnings?.slice(0, 20).map(earning => ({
-      id: earning.id,
-      story_title: earning.stories?.title || 'Unknown',
-      reader_email: earning.profiles?.email || 'Unknown',
-      credits_earned: earning.credits_earned,
-      usd_equivalent: earning.usd_equivalent,
-      purchase_type: 'story_access', // This could be expanded based on your business model
-      created_at: earning.created_at
-    })) || []
+    const recentTransactions = earnings?.slice(0, 20).map(earning => {
+      const story = getRelationData(earning.stories)
+      const profile = getRelationData(earning.profiles)
+      return {
+        id: earning.id,
+        story_title: story.title || 'Unknown',
+        reader_email: profile.email || 'Unknown',
+        credits_earned: earning.credits_earned,
+        usd_equivalent: earning.usd_equivalent,
+        purchase_type: 'story_access', // This could be expanded based on your business model
+        created_at: earning.created_at
+      }
+    }) || []
 
     // Calculate monthly trend (last 6 months)
     const monthlyTrend = []

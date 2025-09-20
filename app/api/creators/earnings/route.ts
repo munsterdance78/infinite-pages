@@ -59,9 +59,10 @@ export async function GET(request: NextRequest) {
 
     const storyPerformance = storyStats?.reduce((acc, purchase) => {
       const storyId = purchase.story_id
+      const story = getRelationData(purchase.stories)
       if (!acc[storyId]) {
         acc[storyId] = {
-          title: purchase.stories?.title || 'Unknown',
+          title: story.title || 'Unknown',
           totalRevenue: 0,
           purchaseCount: 0
         }
