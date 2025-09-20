@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import StoryCreator from '@/components/StoryCreator'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 import CacheAnalyticsDashboard from '@/components/CacheAnalyticsDashboard'
@@ -67,7 +67,7 @@ export default function DashboardPage() {
   const [tokenBalance, setTokenBalance] = useState<TokenBalance | null>(null)
   const [recentActivity, setRecentActivity] = useState<any[]>([])
 
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
 
   useEffect(() => {
     loadDashboardData()
