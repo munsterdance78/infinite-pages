@@ -166,7 +166,7 @@ export async function POST(
       description: `Cover generation: ${story.title} (${style})`,
       reference_id: storyId,
       reference_type: 'cover_generation'
-    })
+    } as any)
 
     // Start generation process
     processGenerationQueue(queueItem.id)
@@ -323,7 +323,7 @@ async function processGenerationQueue(queueId: string) {
         is_primary: true,
         generation_cost: 5,
         sd_model_used: styleConfig.model
-      })
+      } as any)
 
       // Update queue status
       await supabase

@@ -151,7 +151,7 @@ export async function POST(
       description: `Story download: ${story.title} (${format.toUpperCase()})`,
       reference_id: storyId,
       reference_type: 'download'
-    })
+    } as any)
 
     // Update monthly usage
     await supabase
