@@ -151,7 +151,7 @@ export async function POST(
     }
 
     // Deduct credits
-    const newBalance = profile.credits_balance - limits.cost_credits
+    const newBalance = (profile?.credits_balance || 0) - limits.cost_credits
     await supabase
       .from('profiles')
       .update({ credits_balance: newBalance })
