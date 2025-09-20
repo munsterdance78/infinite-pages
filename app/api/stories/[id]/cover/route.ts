@@ -343,7 +343,7 @@ async function processGenerationQueue(queueId: string) {
         .from('cover_generation_queue')
         .update({
           status: 'failed',
-          error_message: error.message,
+          error_message: error instanceof Error ? error.message : String(error),
           retry_count: 0
         })
         .eq('id', queueId)
