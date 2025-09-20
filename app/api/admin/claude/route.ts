@@ -1,7 +1,7 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { claudeService } from '@/lib/claude'
+// import { claudeService } from '@/lib/claude'
 import { ERROR_MESSAGES } from '@/lib/constants'
 
 export async function GET(_request: NextRequest) {
@@ -27,15 +27,12 @@ export async function GET(_request: NextRequest) {
   }
 
   try {
-    // Return Claude service health status and analytics
-    const healthStatus = await claudeService.getHealthStatus()
-    const cacheStats = claudeService.getCacheStats()
-
+    // Temporarily disabled - Claude service import causing build issues
     return NextResponse.json({
-      health: healthStatus,
-      cache: cacheStats,
-      models: claudeService.getAvailableModels(),
-      templates: claudeService.getPromptTemplates()
+      health: { status: 'disabled', message: 'Admin endpoint temporarily disabled' },
+      cache: {},
+      models: [],
+      templates: []
     })
   } catch (error) {
     console.error('Admin Claude endpoint error:', error)
@@ -70,25 +67,19 @@ export async function POST(request: NextRequest) {
 
     switch (action) {
       case 'clear_cache':
-        claudeService.clearCache()
-        return NextResponse.json({ message: 'Cache cleared successfully' })
+        // claudeService.clearCache()
+        return NextResponse.json({ message: 'Cache cleared successfully (disabled)' })
 
       case 'get_analytics':
         const { timeRange } = body
-        const analytics = await claudeService.getAnalytics(timeRange)
-        return NextResponse.json({ analytics })
+        // const analytics = await claudeService.getAnalytics(timeRange)
+        return NextResponse.json({ analytics: { disabled: true } })
 
       case 'test_connection':
         // Test Claude API connection
-        const testResult = await claudeService.generateContent({
-          prompt: 'Test connection',
-          maxTokens: 10,
-          userId: user.id,
-          operation: 'admin_test'
-        })
         return NextResponse.json({
-          message: 'Connection test successful',
-          test: testResult
+          message: 'Connection test disabled',
+          test: { disabled: true }
         })
 
       default:
