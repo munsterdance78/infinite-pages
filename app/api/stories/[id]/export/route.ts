@@ -193,7 +193,9 @@ export async function POST(
       expires_at: exportRecord.expires_at,
       credits_charged: restrictions.credits_required,
       new_balance: newBalance,
-      downloads_remaining_this_month: restrictions.max_downloads_per_month - downloadsThisMonth - 1,
+      downloads_remaining_this_month: ('max_downloads_per_month' in restrictions)
+        ? restrictions.max_downloads_per_month - downloadsThisMonth - 1
+        : null,
       watermark: watermark,
       message: 'Download generated. File expires in 24 hours. Continue enjoying our library!',
       library_encouragement: 'Remember: Reading in our library saves credits and provides the best experience!'
