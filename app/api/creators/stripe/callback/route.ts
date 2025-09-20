@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
       const account = await stripe.accounts.retrieve(accountId)
 
       const onboardingComplete = account.charges_enabled && account.payouts_enabled
+      // Ensure safe access to possibly undefined arrays
       const requiresAction = (account.requirements?.currently_due?.length || 0) > 0
 
       // Update profile with onboarding completion status
