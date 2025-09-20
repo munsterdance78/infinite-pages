@@ -143,7 +143,7 @@ export function useAIGeneration({ operation, contentLength, customPrompt }: UseA
         setState(prev => ({
           ...prev,
           stage: 'completed',
-          tokensUsed: result.tokensUsed,
+          tokensUsed: result.tokensUsed || 0,
           actualResults: costData ? {
             inputTokens,
             outputTokens,

@@ -134,9 +134,9 @@ export default function TransparentStoryGenerator({
               type: 'foundation',
               complexity: premise.length > 500 ? 'complex' : premise.length > 200 ? 'medium' : 'simple'
             }}
-            stage={generationState.stage}
+            stage={generationState.stage === 'idle' ? 'estimate' : generationState.stage === 'estimating' ? 'estimate' : generationState.stage}
             tokensUsed={generationState.tokensUsed}
-            actualResults={generationState.actualResults}
+            actualResults={generationState.actualResults || undefined}
             onProceed={handleGeneration}
             showMarketComparison={true}
           />

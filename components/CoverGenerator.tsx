@@ -301,7 +301,7 @@ export default function CoverGenerator({
                 </div>
                 <div className="absolute bottom-1 left-1 right-1">
                   <div className="bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded text-center">
-                    {coverStyles[cover.cover_style]?.name}
+                    {coverStyles[cover.cover_style as keyof typeof coverStyles]?.name}
                   </div>
                 </div>
               </div>

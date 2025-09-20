@@ -36,10 +36,10 @@ import {
   STORY_STATUS,
   ERROR_MESSAGES,
   SUCCESS_MESSAGES,
-  type SubscriptionTier,
   type StoryStatus,
   type ExportFormat
 } from '@/lib/constants'
+import type { SubscriptionTier } from '@/lib/subscription-config'
 
 interface Story {
   id: string;
@@ -66,7 +66,7 @@ interface StoryCreatorProps {
   userProfile: {
     id: string;
     tokens_remaining: number;
-    subscription_tier: SubscriptionTier;
+    subscription_tier: SubscriptionTier | 'free' | 'pro';
   };
   onStoryChange: () => void;
 }
@@ -75,12 +75,21 @@ type ViewMode = 'list' | 'create' | 'edit';
 type SortOption = 'updated_desc' | 'updated_asc' | 'created_desc' | 'created_asc' | 'title_asc' | 'word_count_desc';
 
 export default function StoryCreator({ userProfile, onStoryChange }: StoryCreatorProps) {
+  // Map subscription tier values for compatibility
+  const mapSubscriptionTier = (tier: string): SubscriptionTier => {
+    if (tier === 'pro') return 'premium'
+    if (tier === 'free') return 'basic'
+    return tier as SubscriptionTier
+  }
+
+  const mappedTier = mapSubscriptionTier(userProfile.subscription_tier as string)
+
   // Enforce Premium subscription for story creation
-  if (userProfile.subscription_tier !== 'premium') {
+  if (mappedTier !== 'premium') {
     return (
       <PremiumUpgradePrompt
         feature="story_creation"
-        currentTier={userProfile.subscription_tier}
+        currentTier={mappedTier}
         onUpgrade={() => {
           // Redirect to upgrade page or handle upgrade
           window.location.href = '/pricing?upgrade=premium'
