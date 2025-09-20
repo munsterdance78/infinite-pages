@@ -22,14 +22,14 @@ export async function POST(request: NextRequest) {
     const { packageId } = await request.json()
 
     // Get credit package details
-    const { data: package, error: packageError } = await supabase
+    const { data: creditPackage, error: packageError } = await supabase
       .from('credit_packages')
       .select('*')
       .eq('id', packageId)
       .eq('is_active', true)
       .single()
 
-    if (packageError || !package) {
+    if (packageError || !creditPackage) {
       return NextResponse.json({ error: 'Credit package not found' }, { status: 404 })
     }
 
@@ -57,14 +57,14 @@ export async function POST(request: NextRequest) {
 
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(package.price_usd * 100), // Convert to cents
+      amount: Math.round(creditPackage.price_usd * 100), // Convert to cents
       currency: 'usd',
       customer: customerId,
       metadata: {
         userId: user.id,
-        packageId: package.id,
-        creditsAmount: package.credits_amount.toString(),
-        bonusCredits: package.bonus_credits.toString()
+        packageId: creditPackage.id,
+        creditsAmount: creditPackage.credits_amount.toString(),
+        bonusCredits: creditPackage.bonus_credits.toString()
       }
     })
 
@@ -75,10 +75,10 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
         stripe_payment_intent_id: paymentIntent.id,
         stripe_customer_id: customerId,
-        package_id: package.id,
-        amount_usd: package.price_usd,
-        credits_purchased: package.credits_amount,
-        bonus_credits: package.bonus_credits,
+        package_id: creditPackage.id,
+        amount_usd: creditPackage.price_usd,
+        credits_purchased: creditPackage.credits_amount,
+        bonus_credits: creditPackage.bonus_credits,
         status: 'pending'
       })
 
