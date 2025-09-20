@@ -244,7 +244,7 @@ async function generateCoverPrompt(story: any, style: string, customPrompt: stri
   const basePrompt = customPrompt ||
     `Book cover for "${story.title}", a ${story.genre} story. ${story.premise.substring(0, 200)}`
 
-  const styleConfig = COVER_STYLES[style] || COVER_STYLES.artistic
+  const styleConfig = COVER_STYLES[style as keyof typeof COVER_STYLES] || COVER_STYLES.artistic
   return `${basePrompt}${styleConfig.prompt_suffix}`
 }
 
