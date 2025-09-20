@@ -88,14 +88,16 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     const totalCredits = parseInt(creditsAmount) + parseInt(bonusCredits)
-    const newBalance = profile.credits_balance + totalCredits
+    const currentBalance = (profile as any)?.credits_balance || 0
+    const currentEarnings = (profile as any)?.credits_earned_total || 0
+    const newBalance = currentBalance + totalCredits
 
     // Update user balance and stats
-    const { error: profileUpdateError } = await supabase
+    const { error: profileUpdateError } = await (supabase as any)
       .from('profiles')
       .update({
         credits_balance: newBalance,
-        credits_earned_total: profile.credits_earned_total + totalCredits
+        credits_earned_total: currentEarnings + totalCredits
       })
       .eq('id', userId)
 
