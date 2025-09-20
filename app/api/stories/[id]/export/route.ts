@@ -227,7 +227,8 @@ export async function GET(
       .eq('id', user.id)
       .single()
 
-    const restrictions = DOWNLOAD_RESTRICTIONS[profile?.subscription_tier || 'free']
+    const getTier = (profile?.subscription_tier || 'free') as keyof typeof DOWNLOAD_RESTRICTIONS
+    const restrictions = DOWNLOAD_RESTRICTIONS[getTier]
 
     // Get monthly usage
     const currentMonth = new Date()
