@@ -1,5 +1,5 @@
-import { Database } from '@/lib/supabase/types';
-import { StoryStatus } from '@/lib/constants';
+import type { Database } from '@/lib/supabase/types'
+import type { StoryStatus } from '@/lib/constants'
 
 // Shared types to ensure consistency across components
 export type Chapter = Database['public']['Tables']['chapters']['Row'];

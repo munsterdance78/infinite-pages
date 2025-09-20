@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import {
   BookOpen,
   Sparkles,
@@ -20,42 +20,47 @@ import {
   Rocket,
   Brain,
   Wand2
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function LandingPage() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const supabase = createClientComponentClient();
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-  }, []);
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+  }, [])
 
   const handleSignIn = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
+      const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`
+      console.log('Redirect URL:', redirectUrl)
+      console.log('Environment URL:', process.env.NEXT_PUBLIC_SITE_URL)
+      console.log('Window origin:', window.location.origin)
+
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: redirectUrl
         }
-      });
+      })
     } catch (error) {
-      console.error('Sign in error:', error);
+      console.error('Sign in error:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (user) {
-    router.push('/dashboard');
-    return null;
+    router.push('/dashboard')
+    return null
   }
 
   return (
@@ -448,5 +453,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

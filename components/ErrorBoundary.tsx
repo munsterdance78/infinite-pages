@@ -1,9 +1,10 @@
-'use client';
+'use client'
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import type { ErrorInfo, ReactNode } from 'react'
+import React, { Component } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { 
   AlertTriangle, 
   RefreshCw, 
@@ -12,7 +13,7 @@ import {
   ExternalLink,
   Copy,
   CheckCircle
-} from 'lucide-react';
+} from 'lucide-react'
 
 interface Props {
   children: ReactNode;
@@ -31,7 +32,7 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  private retryTimeoutId: NodeJS.Timeout | null = null;
+  private retryTimeoutId: NodeJS.Timeout | null = null
 
   public state: State = {
     hasError: false,
@@ -39,7 +40,7 @@ class ErrorBoundary extends Component<Props, State> {
     errorInfo: null,
     eventId: null,
     copied: false
-  };
+  }
 
   public static getDerivedStateFromError(error: Error): Partial<State> {
     // Update state so the next render will show the fallback UI
@@ -47,25 +48,25 @@ class ErrorBoundary extends Component<Props, State> {
       hasError: true, 
       error,
       eventId: `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    };
+    }
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Error Boundary caught an error:', error, errorInfo);
+    console.error('Error Boundary caught an error:', error, errorInfo)
     
     this.setState({
       error,
       errorInfo,
       eventId: `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    });
+    })
 
     // Call custom error handler if provided
     if (this.props.onError) {
-      this.props.onError(error, errorInfo);
+      this.props.onError(error, errorInfo)
     }
 
     // Log error to monitoring service (would integrate with Sentry, LogRocket, etc.)
-    this.logErrorToService(error, errorInfo);
+    this.logErrorToService(error, errorInfo)
   }
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
@@ -80,7 +81,7 @@ class ErrorBoundary extends Component<Props, State> {
       eventId: this.state.eventId,
       level: this.props.level || 'component',
       context: this.props.level === 'page' ? 'root_layout' : 'component'
-    };
+    }
 
     // Send to monitoring service in production
     if (process.env.NODE_ENV === 'production') {
@@ -89,14 +90,14 @@ class ErrorBoundary extends Component<Props, State> {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(errorData)
-        }).catch(console.error);
+        }).catch(console.error)
       } catch (reportingError) {
-        console.error('Failed to report error:', reportingError);
+        console.error('Failed to report error:', reportingError)
       }
     }
 
-    console.error('Error logged:', errorData);
-  };
+    console.error('Error logged:', errorData)
+  }
 
   private handleRetry = () => {
     // Clear error state to retry rendering
@@ -106,23 +107,23 @@ class ErrorBoundary extends Component<Props, State> {
       errorInfo: null,
       eventId: null,
       copied: false
-    });
-  };
+    })
+  }
 
   private handleGoHome = () => {
     if (typeof window !== 'undefined') {
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard'
     }
-  };
+  }
 
   private handleReload = () => {
     if (typeof window !== 'undefined') {
-      window.location.reload();
+      window.location.reload()
     }
-  };
+  }
 
   private copyErrorDetails = async () => {
-    if (!this.state.error) return;
+    if (!this.state.error) return
 
     const errorText = `
 Error ID: ${this.state.eventId}
@@ -132,56 +133,56 @@ Stack: ${this.state.error.stack}
 Component Stack: ${this.state.errorInfo?.componentStack || 'N/A'}
 URL: ${typeof window !== 'undefined' ? window.location.href : 'SSR'}
 User Agent: ${typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR'}
-    `.trim();
+    `.trim()
 
     try {
-      await navigator.clipboard.writeText(errorText);
-      this.setState({ copied: true });
+      await navigator.clipboard.writeText(errorText)
+      this.setState({ copied: true })
       
       // Reset copied state after 2 seconds
       setTimeout(() => {
-        this.setState({ copied: false });
-      }, 2000);
+        this.setState({ copied: false })
+      }, 2000)
     } catch (err) {
-      console.error('Failed to copy error details:', err);
+      console.error('Failed to copy error details:', err)
     }
-  };
+  }
 
   private getErrorSeverity = (): 'low' | 'medium' | 'high' => {
-    if (!this.state.error) return 'low';
+    if (!this.state.error) return 'low'
     
-    const errorMessage = this.state.error.message.toLowerCase();
+    const errorMessage = this.state.error.message.toLowerCase()
     
     // High severity errors
     if (errorMessage.includes('chunk') || 
         errorMessage.includes('network') ||
         errorMessage.includes('auth') ||
         errorMessage.includes('payment')) {
-      return 'high';
+      return 'high'
     }
     
     // Medium severity errors
     if (errorMessage.includes('render') ||
         errorMessage.includes('hook') ||
         errorMessage.includes('state')) {
-      return 'medium';
+      return 'medium'
     }
     
-    return 'low';
-  };
+    return 'low'
+  }
 
   private getSeverityColor = (severity: 'low' | 'medium' | 'high') => {
     switch (severity) {
-      case 'high': return 'bg-red-100 text-red-800 border-red-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'high': return 'bg-red-100 text-red-800 border-red-200'
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'low': return 'bg-blue-100 text-blue-800 border-blue-200'
     }
-  };
+  }
 
   private renderFallbackUI = () => {
-    const { level = 'component', showDetails = false } = this.props;
-    const severity = this.getErrorSeverity();
-    const isPageLevel = level === 'page';
+    const { level = 'component', showDetails = false } = this.props
+    const severity = this.getErrorSeverity()
+    const isPageLevel = level === 'page'
 
     // For component-level errors, render a minimal fallback
     if (level === 'component' || level === 'section') {
@@ -215,7 +216,7 @@ User Agent: ${typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR'
             </div>
           </div>
         </div>
-      );
+      )
     }
 
     // For page-level errors, render a full-page fallback
@@ -359,25 +360,25 @@ User Agent: ${typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR'
           </CardContent>
         </Card>
       </div>
-    );
-  };
+    )
+  }
 
   public render() {
     if (this.state.hasError) {
       // If a custom fallback is provided, use it
       if (this.props.fallback) {
-        return this.props.fallback;
+        return this.props.fallback
       }
       
       // Otherwise, render our built-in fallback UI
-      return this.renderFallbackUI();
+      return this.renderFallbackUI()
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary
 
 // Higher-order component for easy wrapping
 export function withErrorBoundary<P extends object>(
@@ -388,24 +389,24 @@ export function withErrorBoundary<P extends object>(
     <ErrorBoundary {...errorBoundaryProps}>
       <Component {...props} />
     </ErrorBoundary>
-  );
+  )
 
-  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
+  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`
   
-  return WrappedComponent;
+  return WrappedComponent
 }
 
 // Hook for manually triggering error boundary (for testing)
 export function useErrorHandler() {
   return (error: Error) => {
-    throw error;
-  };
+    throw error
+  }
 }
 
 // Utility component for testing error boundaries
 export function ErrorTrigger({ error }: { error?: string }) {
   if (error) {
-    throw new Error(error);
+    throw new Error(error)
   }
-  return null;
+  return null
 }

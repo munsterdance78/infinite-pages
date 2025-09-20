@@ -6,7 +6,17 @@
       "Bash(git push:*)",
       "Bash(vercel:*)",
       "Bash(npm run type-check:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm install:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(node:*)",
+      "Bash(chmod:*)",
+      "Bash(npx tsc:*)",
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(npm ls:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

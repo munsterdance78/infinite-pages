@@ -1,6 +1,6 @@
-import { type ClassValue, clsx } from "clsx"
+import { type ClassValue, clsx } from 'clsx'
 import { ERROR_MESSAGES } from './constants'
-import { twMerge } from "tailwind-merge"
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

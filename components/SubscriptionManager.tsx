@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Progress } from '@/components/ui/progress';
+import React, { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Progress } from '@/components/ui/progress'
 import {
   Crown,
   Check,
@@ -21,7 +21,7 @@ import {
   Users,
   Download,
   BarChart
-} from 'lucide-react';
+} from 'lucide-react'
 
 interface SubscriptionManagerProps {
   user: {
@@ -77,43 +77,43 @@ const SUBSCRIPTION_PLANS = {
     color: 'purple',
     popular: true
   }
-};
+}
 
 export default function SubscriptionManager({ user, onSubscriptionChange }: SubscriptionManagerProps) {
-  const [loading, setLoading] = useState(false);
-  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
-  const [usageStats, setUsageStats] = useState<any>(null);
+  const [loading, setLoading] = useState(false)
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false)
+  const [usageStats, setUsageStats] = useState<any>(null)
 
-  const supabase = createClientComponentClient();
-  const currentPlan = SUBSCRIPTION_PLANS[user.subscription_tier];
+  const supabase = createClientComponentClient()
+  const currentPlan = SUBSCRIPTION_PLANS[user.subscription_tier]
 
   useEffect(() => {
-    fetchUsageStats();
-  }, []);
+    fetchUsageStats()
+  }, [])
 
   const fetchUsageStats = async () => {
     try {
       // Calculate monthly usage
-      const monthStart = new Date();
-      monthStart.setDate(1);
-      monthStart.setHours(0, 0, 0, 0);
+      const monthStart = new Date()
+      monthStart.setDate(1)
+      monthStart.setHours(0, 0, 0, 0)
 
       const { data: monthlyLogs } = await supabase
         .from('generation_logs')
         .select('tokens_input, tokens_output, cost_usd')
         .eq('user_id', user.id)
-        .gte('created_at', monthStart.toISOString());
+        .gte('created_at', monthStart.toISOString())
 
       const { data: monthlyStories } = await supabase
         .from('stories')
         .select('id')
         .eq('user_id', user.id)
-        .gte('created_at', monthStart.toISOString());
+        .gte('created_at', monthStart.toISOString())
 
       const monthlyTokensUsed = monthlyLogs?.reduce((sum, log) => 
-        sum + log.tokens_input + log.tokens_output, 0) || 0;
-      const monthlyCost = monthlyLogs?.reduce((sum, log) => sum + log.cost_usd, 0) || 0;
-      const monthlyStoriesCreated = monthlyStories?.length || 0;
+        sum + log.tokens_input + log.tokens_output, 0) || 0
+      const monthlyCost = monthlyLogs?.reduce((sum, log) => sum + log.cost_usd, 0) || 0
+      const monthlyStoriesCreated = monthlyStories?.length || 0
 
       setUsageStats({
         monthlyTokensUsed,
@@ -121,82 +121,82 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
         monthlyStoriesCreated,
         tokensRemaining: user.tokens_remaining,
         maxTokens: currentPlan.tokens
-      });
+      })
     } catch (error) {
-      console.error('Failed to fetch usage stats:', error);
+      console.error('Failed to fetch usage stats:', error)
     }
-  };
+  }
 
   const createCheckoutSession = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await fetch('/api/billing/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.url;
+        const data = await response.json()
+        window.location.href = data.url
       } else {
-        const error = await response.json();
-        alert(error.error || 'Failed to create checkout session');
+        const error = await response.json()
+        alert(error.error || 'Failed to create checkout session')
       }
     } catch (error) {
-      console.error('Checkout error:', error);
-      alert('Failed to process checkout');
+      console.error('Checkout error:', error)
+      alert('Failed to process checkout')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const createPortalSession = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await fetch('/api/billing/create-portal', {
         method: 'POST'
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.url;
+        const data = await response.json()
+        window.location.href = data.url
       } else {
-        const error = await response.json();
-        alert(error.error || 'Failed to access billing portal');
+        const error = await response.json()
+        alert(error.error || 'Failed to access billing portal')
       }
     } catch (error) {
-      console.error('Portal error:', error);
-      alert('Failed to access billing portal');
+      console.error('Portal error:', error)
+      alert('Failed to access billing portal')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    });
-  };
+    })
+  }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge className="bg-green-100 text-green-800">Active</Badge>;
+        return <Badge className="bg-green-100 text-green-800">Active</Badge>
       case 'canceled':
-        return <Badge className="bg-orange-100 text-orange-800">Canceled</Badge>;
+        return <Badge className="bg-orange-100 text-orange-800">Canceled</Badge>
       case 'past_due':
-        return <Badge className="bg-red-100 text-red-800">Past Due</Badge>;
+        return <Badge className="bg-red-100 text-red-800">Past Due</Badge>
       default:
-        return <Badge variant="secondary">Inactive</Badge>;
+        return <Badge variant="secondary">Inactive</Badge>
     }
-  };
+  }
 
   const getUsagePercentage = () => {
-    if (!usageStats) return 0;
-    return (usageStats.monthlyTokensUsed / currentPlan.tokens) * 100;
-  };
+    if (!usageStats) return 0
+    return (usageStats.monthlyTokensUsed / currentPlan.tokens) * 100
+  }
 
   return (
     <div className="space-y-6">
@@ -330,7 +330,7 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {Object.entries(SUBSCRIPTION_PLANS).map(([planId, plan]) => {
-              const isCurrentPlan = planId === user.subscription_tier;
+              const isCurrentPlan = planId === user.subscription_tier
               
               return (
                 <Card 
@@ -410,7 +410,7 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
                     )}
                   </CardContent>
                 </Card>
-              );
+              )
             })}
           </div>
         </CardContent>
@@ -581,5 +581,5 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

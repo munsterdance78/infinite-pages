@@ -1,10 +1,11 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
+  apiKey: process.env.ANTHROPIC_API_KEY!
 })
 
 // Input validation schemas
@@ -236,7 +237,7 @@ export async function POST(request: NextRequest) {
 
     if (monthlyCount >= maxStories) {
       return NextResponse.json({ 
-        error: `Monthly story limit reached`,
+        error: 'Monthly story limit reached',
         details: [`You have created ${monthlyCount} stories this month. ${profile.subscription_tier === 'free' ? 'Upgrade to Pro for more stories.' : 'Contact support if you need a higher limit.'}`]
       }, { status: 400 })
     }

@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const viewport = {
   width: 'device-width',
-  initialScale: 1,
+  initialScale: 1
 }
 
 export const metadata: Metadata = {
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     title: 'Infinite-Pages - AI Story Generation Platform',
     description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.',
     type: 'website',
-    locale: 'en_US',
+    locale: 'en_US'
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Infinite-Pages - AI Story Generation Platform',
-    description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.',
+    description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.'
   }
 }
 
@@ -42,9 +42,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Security headers via meta tags (should also be set at server level) */}
+        {/* Security headers via meta tags (X-Frame-Options handled in middleware) */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
         <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
         
@@ -54,10 +53,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${inter.className} antialiased`}>
         {/* Root-level error boundary catches any errors in the entire app */}

@@ -110,6 +110,9 @@ CREATE POLICY "Users can view own profile" ON profiles
 CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
+CREATE POLICY "Users can create own profile" ON profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
 -- Stories policies
 CREATE POLICY "Users can view own stories" ON stories
   FOR SELECT USING (auth.uid() = user_id);

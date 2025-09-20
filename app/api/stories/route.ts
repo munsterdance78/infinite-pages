@@ -1,11 +1,8 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { NextResponse, type NextRequest } from 'next/server'
 import {
   TOKEN_COSTS,
-  SUBSCRIPTION_LIMITS,
-  CLAUDE_PRICING,
   CONTENT_LIMITS,
   ALLOWED_GENRES,
   GENERATION_TYPES,
@@ -15,14 +12,13 @@ import {
   ERROR_MESSAGES,
   SUCCESS_MESSAGES,
   getSubscriptionLimits,
-  calculateCost,
   type SubscriptionTier
 } from '@/lib/constants'
+import { claudeService } from '@/lib/claude'
 import { subscriptionAwareRateLimit, logRateLimitViolation } from '@/lib/rateLimit'
+import { infinitePagesCache } from '@/lib/claude/infinitePagesCache'
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-})
+// Using the centralized Claude service instead of direct Anthropic client
 
 // Input validation schemas using constants
 const createStorySchema = {
@@ -159,11 +155,11 @@ export async function GET(request: NextRequest) {
     'API_GENERAL',
     user.id,
     'free' // We'll get the actual tier below, but this is a fallback
-  );
+  )
 
   if (!rateLimitResult.success) {
-    logRateLimitViolation(`user:${user.id}`, 'API_GENERAL', request);
-    return rateLimitResult.response!;
+    logRateLimitViolation(`user:${user.id}`, 'API_GENERAL', request)
+    return rateLimitResult.response!
   }
 
   try {
@@ -185,7 +181,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Add rate limit headers to successful response
-    const response = NextResponse.json({ stories })
+    const response = NextResponse.json(
+      { stories },
+      { headers: { 'Content-Type': 'application/json' } }
+    )
     Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
       response.headers.set(key, value)
     })
@@ -231,11 +230,11 @@ export async function POST(request: NextRequest) {
       'STORY_CREATION',
       user.id,
       subscriptionTier
-    );
+    )
 
     if (!rateLimitResult.success) {
-      logRateLimitViolation(`user:${user.id}`, 'STORY_CREATION', request);
-      return rateLimitResult.response!;
+      logRateLimitViolation(`user:${user.id}`, 'STORY_CREATION', request)
+      return rateLimitResult.response!
     }
 
     // Parse and validate request body
@@ -300,74 +299,62 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Generate story foundation with Claude using constants
-    const prompt = `Create a comprehensive story foundation for a ${genre} story with this premise: "${premise}".
+    // PRIORITY 1: Generate story foundation with caching for 80% cost savings
+    let claudeResponse
+    let tokensSaved = 0
+    let fromCache = false
+    let cacheType = 'none'
 
-Please provide a structured JSON response with the following elements:
-{
-  "title": "${title || 'Untitled Story'}",
-  "genre": "${genre}",
-  "premise": "${premise}",
-  "mainCharacters": [
-    {
-      "name": "Character Name",
-      "role": "protagonist/antagonist/supporting",
-      "description": "Brief character description",
-      "motivation": "What drives this character"
-    }
-  ],
-  "setting": {
-    "time": "When the story takes place",
-    "place": "Where the story takes place",
-    "atmosphere": "Mood and tone of the setting"
-  },
-  "plotStructure": {
-    "incitingIncident": "What kicks off the story",
-    "risingAction": "Key conflicts and complications",
-    "climax": "The story's turning point",
-    "resolution": "How conflicts are resolved"
-  },
-  "themes": ["Primary themes of the story"],
-  "tone": "Overall tone and style",
-  "chapterOutline": [
-    {
-      "number": 1,
-      "title": "Chapter title",
-      "summary": "What happens in this chapter",
-      "purpose": "How this chapter serves the story"
-    }
-  ]
-}
-
-Make this comprehensive and engaging. This is the foundation for a complete story.`
-
-    let message
     try {
-      message = await anthropic.messages.create({
-        model: CLAUDE_PRICING.MODEL,
-        max_tokens: 3000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    } catch (error) {
-      console.error('Anthropic API error:', error)
-      return NextResponse.json({ 
+      // Use the caching wrapper for immediate cost savings
+      const cachedResult = await infinitePagesCache.wrapFoundationGeneration(
+        () => claudeService.generateStoryFoundation({
+          title,
+          genre,
+          premise
+        }),
+        genre as any, // Type assertion for now
+        premise,
+        user.id,
+        title,
+        { includeWritingTips: false }
+      );
+
+      claudeResponse = cachedResult.result;
+      tokensSaved = cachedResult.tokensSaved;
+      fromCache = cachedResult.fromCache;
+      cacheType = cachedResult.cacheType || 'none';
+
+      console.log(`[Foundation Generation] ${fromCache ? 'CACHE HIT' : 'NEW GENERATION'} - Tokens saved: ${tokensSaved}, Type: ${cacheType}`);
+
+    } catch (error: any) {
+      console.error('Claude service error:', error)
+      return NextResponse.json({
         error: ERROR_MESSAGES.SERVICE_UNAVAILABLE,
         details: ['Please try again in a few moments.']
       }, { status: 503 })
     }
 
-    const content = message.content[0].type === 'text' ? message.content[0].text : ''
-    const inputTokens = message.usage.input_tokens
-    const outputTokens = message.usage.output_tokens
-    const costUSD = calculateCost(inputTokens, outputTokens)
+    const content = claudeResponse.content
+    const inputTokens = claudeResponse.usage?.inputTokens || 0
+    const outputTokens = claudeResponse.usage?.outputTokens || 0
+    const costUSD = claudeResponse.cost || 0
 
-    // Parse AI response
+    // Parse AI response (cached responses may already be parsed)
     let foundation
     try {
-      foundation = JSON.parse(content)
+      if (typeof claudeResponse === 'object' && claudeResponse.content) {
+        foundation = typeof claudeResponse.content === 'string'
+          ? JSON.parse(claudeResponse.content)
+          : claudeResponse.content;
+      } else if (typeof content === 'string') {
+        foundation = JSON.parse(content)
+      } else {
+        foundation = claudeResponse; // Already parsed from cache
+      }
     } catch (parseError) {
       console.warn('Failed to parse AI response as JSON, storing as text:', parseError)
-      foundation = { content, rawResponse: true }
+      foundation = typeof claudeResponse === 'object' ? claudeResponse : { content, rawResponse: true }
     }
 
     // Enhanced content moderation using constants
@@ -405,11 +392,14 @@ Make this comprehensive and engaging. This is the foundation for a complete stor
       return NextResponse.json({ error: 'Failed to create story' }, { status: 500 })
     }
 
-    // Update user tokens and stats using constants
+    // Update user tokens and stats - account for cache savings
+    const actualTokensUsed = fromCache ? Math.max(0, requiredTokens - tokensSaved) : requiredTokens;
+    const actualCost = fromCache ? Math.max(0, costUSD - (tokensSaved * 0.000015)) : costUSD;
+
     const { error: updateError } = await supabase
       .from('profiles')
       .update({
-        tokens_remaining: profile.tokens_remaining - requiredTokens,
+        tokens_remaining: profile.tokens_remaining - actualTokensUsed,
         tokens_used_total: (profile.tokens_used_total || 0) + (inputTokens + outputTokens),
         stories_created: profile.stories_created + 1,
         words_generated: (profile.words_generated || 0) + wordCount
@@ -438,13 +428,18 @@ Make this comprehensive and engaging. This is the foundation for a complete stor
       // Non-critical error, continue
     }
 
-    // Create successful response with rate limit headers
-    const response = NextResponse.json({ 
+    // Create successful response with rate limit headers and cache info
+    const response = NextResponse.json({
       story,
-      tokensUsed: requiredTokens,
-      remainingTokens: profile.tokens_remaining - requiredTokens,
-      message: SUCCESS_MESSAGES.STORY_CREATED
-    })
+      tokensUsed: actualTokensUsed,
+      tokensSaved: tokensSaved,
+      fromCache: fromCache,
+      cacheType: cacheType,
+      remainingTokens: profile.tokens_remaining - actualTokensUsed,
+      message: fromCache
+        ? `${SUCCESS_MESSAGES.STORY_CREATED} (${tokensSaved} tokens saved from cache)`
+        : SUCCESS_MESSAGES.STORY_CREATED
+    }, { headers: { 'Content-Type': 'application/json' } })
 
     // Add rate limit headers
     Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
@@ -455,11 +450,23 @@ Make this comprehensive and engaging. This is the foundation for a complete stor
 
   } catch (error) {
     console.error('Unexpected error in POST /api/stories:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Internal server error',
       details: ['An unexpected error occurred. Please try again.']
-    }, { status: 500 })
+    }, { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '3600'
+    }
+  })
 }
 
 interface ModerationResult {

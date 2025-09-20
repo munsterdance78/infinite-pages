@@ -4,7 +4,7 @@ export const TOKEN_COSTS = {
   CHAPTER_GENERATION: 5,
   CHAPTER_IMPROVEMENT: 3,
   CONTENT_ANALYSIS: 2
-} as const;
+} as const
 
 // Subscription limits
 export const SUBSCRIPTION_LIMITS = {
@@ -26,14 +26,21 @@ export const SUBSCRIPTION_LIMITS = {
     IMPROVEMENTS_ALLOWED: true,
     PRIORITY_SUPPORT: true
   }
-} as const;
+} as const
 
 // Claude API pricing (per token)
 export const CLAUDE_PRICING = {
   INPUT_TOKEN_COST: 0.000003,  // $0.000003 per input token
   OUTPUT_TOKEN_COST: 0.000015, // $0.000015 per output token
   MODEL: 'claude-3-sonnet-20240229'
-} as const;
+} as const
+
+// Available Claude models
+export const CLAUDE_MODELS = {
+  SONNET: 'claude-3-sonnet-20240229',
+  OPUS: 'claude-3-opus-20240229', 
+  HAIKU: 'claude-3-haiku-20240307'
+} as const
 
 // Content limits
 export const CONTENT_LIMITS = {
@@ -44,7 +51,7 @@ export const CONTENT_LIMITS = {
   CHAPTER_TITLE_MAX_LENGTH: 100,
   IMPROVEMENT_FEEDBACK_MAX_LENGTH: 1000,
   MAX_CONTENT_LENGTH: 50000
-} as const;
+} as const
 
 // Allowed genres
 export const ALLOWED_GENRES = [
@@ -62,7 +69,7 @@ export const ALLOWED_GENRES = [
   'Dystopian',
   'Comedy',
   'Drama'
-] as const;
+] as const
 
 // Export formats
 export const EXPORT_FORMATS = {
@@ -70,7 +77,7 @@ export const EXPORT_FORMATS = {
   EPUB: 'epub',
   DOCX: 'docx',
   TXT: 'txt'
-} as const;
+} as const
 
 // Rate limiting
 export const RATE_LIMITS = {
@@ -78,7 +85,7 @@ export const RATE_LIMITS = {
   CHAPTER_GENERATION_PER_MINUTE: 5,
   API_REQUESTS_PER_MINUTE: 30,
   EXPORT_REQUESTS_PER_HOUR: 10
-} as const;
+} as const
 
 // Database table names
 export const TABLES = {
@@ -87,7 +94,7 @@ export const TABLES = {
   CHAPTERS: 'chapters',
   GENERATION_LOGS: 'generation_logs',
   EXPORTS: 'exports'
-} as const;
+} as const
 
 // Story statuses
 export const STORY_STATUS = {
@@ -95,20 +102,20 @@ export const STORY_STATUS = {
   IN_PROGRESS: 'in_progress',
   COMPLETED: 'completed',
   PUBLISHED: 'published'
-} as const;
+} as const
 
 // Generation operation types
 export const GENERATION_TYPES = {
   FOUNDATION: 'foundation',
   CHAPTER: 'chapter',
   IMPROVEMENT: 'improvement'
-} as const;
+} as const
 
 // Subscription tiers
 export const SUBSCRIPTION_TIERS = {
   FREE: 'free',
   PRO: 'pro'
-} as const;
+} as const
 
 // Analytics time ranges
 export const ANALYTICS_TIME_RANGES = {
@@ -116,14 +123,14 @@ export const ANALYTICS_TIME_RANGES = {
   MONTH: 30,
   QUARTER: 90,
   YEAR: 365
-} as const;
+} as const
 
 // Efficiency benchmarks
 export const EFFICIENCY_BENCHMARKS = {
   EXCELLENT_THRESHOLD: 400, // words per token
   GOOD_THRESHOLD: 250,
   POOR_THRESHOLD: 150
-} as const;
+} as const
 
 // Content moderation patterns
 export const MODERATION_PATTERNS = [
@@ -133,7 +140,7 @@ export const MODERATION_PATTERNS = [
   { pattern: /\b(suicide methods|self-harm|cutting)\b/gi, reason: 'self-harm content' },
   { pattern: /\b(hate speech|racial slurs|nazi|white supremacy)\b/gi, reason: 'hate speech' },
   { pattern: /<script[^>]*>|javascript:|on\w+=/gi, reason: 'potential script injection' }
-] as const;
+] as const
 
 // Prompt injection detection patterns
 export const INJECTION_PATTERNS = [
@@ -142,20 +149,20 @@ export const INJECTION_PATTERNS = [
   /new instructions:/gi,
   /system prompt/gi,
   /jailbreak/gi
-] as const;
+] as const
 
 // Default token grants
 export const TOKEN_GRANTS = {
   NEW_USER_BONUS: 10,
   MONTHLY_FREE: 10,
   MONTHLY_PRO: 100
-} as const;
+} as const
 
 // File size limits
 export const FILE_LIMITS = {
   MAX_EXPORT_SIZE_MB: 10,
   MAX_UPLOAD_SIZE_MB: 5
-} as const;
+} as const
 
 // Cache durations (in seconds)
 export const CACHE_DURATIONS = {
@@ -163,7 +170,7 @@ export const CACHE_DURATIONS = {
   STORY_LIST: 180,        // 3 minutes
   ANALYTICS_DATA: 600,    // 10 minutes
   EXPORT_FILE: 3600       // 1 hour
-} as const;
+} as const
 
 // Error messages
 export const ERROR_MESSAGES = {
@@ -175,7 +182,7 @@ export const ERROR_MESSAGES = {
   SERVICE_UNAVAILABLE: 'Service temporarily unavailable',
   RATE_LIMIT_EXCEEDED: 'Rate limit exceeded, please try again later',
   SUBSCRIPTION_REQUIRED: 'This feature requires a Pro subscription'
-} as const;
+} as const
 
 // Success messages
 export const SUCCESS_MESSAGES = {
@@ -184,7 +191,7 @@ export const SUCCESS_MESSAGES = {
   CHAPTER_IMPROVED: 'Chapter improved successfully',
   EXPORT_READY: 'Export file is ready for download',
   SUBSCRIPTION_UPDATED: 'Subscription updated successfully'
-} as const;
+} as const
 
 // Helper functions for type safety
 export type SubscriptionTier = typeof SUBSCRIPTION_TIERS[keyof typeof SUBSCRIPTION_TIERS];
@@ -194,36 +201,36 @@ export type ExportFormat = typeof EXPORT_FORMATS[keyof typeof EXPORT_FORMATS];
 
 // Utility function to get subscription limits
 export function getSubscriptionLimits(tier: SubscriptionTier) {
-  return tier === SUBSCRIPTION_TIERS.PRO ? SUBSCRIPTION_LIMITS.PRO : SUBSCRIPTION_LIMITS.FREE;
+  return tier === SUBSCRIPTION_TIERS.PRO ? SUBSCRIPTION_LIMITS.PRO : SUBSCRIPTION_LIMITS.FREE
 }
 
 // Utility function to calculate Claude API cost
 export function calculateCost(inputTokens: number, outputTokens: number): number {
-  return (inputTokens * CLAUDE_PRICING.INPUT_TOKEN_COST) + (outputTokens * CLAUDE_PRICING.OUTPUT_TOKEN_COST);
+  return (inputTokens * CLAUDE_PRICING.INPUT_TOKEN_COST) + (outputTokens * CLAUDE_PRICING.OUTPUT_TOKEN_COST)
 }
 
 // Utility function to check if operation is allowed for subscription
 export function isOperationAllowed(tier: SubscriptionTier, operation: string): boolean {
-  const limits = getSubscriptionLimits(tier);
+  const limits = getSubscriptionLimits(tier)
   
   switch (operation) {
     case 'export':
-      return limits.EXPORTS_ALLOWED;
+      return limits.EXPORTS_ALLOWED
     case 'improvement':
-      return limits.IMPROVEMENTS_ALLOWED;
+      return limits.IMPROVEMENTS_ALLOWED
     case 'priority_support':
-      return limits.PRIORITY_SUPPORT;
+      return limits.PRIORITY_SUPPORT
     default:
-      return true;
+      return true
   }
 }
 
 // Utility function to get efficiency rating
 export function getEfficiencyRating(wordsPerToken: number): 'excellent' | 'good' | 'fair' | 'poor' {
-  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.EXCELLENT_THRESHOLD) return 'excellent';
-  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.GOOD_THRESHOLD) return 'good';
-  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.POOR_THRESHOLD) return 'fair';
-  return 'poor';
+  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.EXCELLENT_THRESHOLD) return 'excellent'
+  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.GOOD_THRESHOLD) return 'good'
+  if (wordsPerToken >= EFFICIENCY_BENCHMARKS.POOR_THRESHOLD) return 'fair'
+  return 'poor'
 }
 
 // Environment-specific constants
@@ -238,4 +245,4 @@ export const ENV_CONFIG = {
     ENABLE_DETAILED_ERRORS: false,
     MOCK_AI_RESPONSES: false
   }
-} as const;
+} as const

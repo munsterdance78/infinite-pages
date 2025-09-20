@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/lib/supabase/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import StoryCard from '@/components/StoryCard';
-import ErrorBoundary from '@/components/ErrorBoundary';
+import React, { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import type { Database } from '@/lib/supabase/types'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import StoryCard from '@/components/StoryCard'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import {
   BookOpen,
   Plus,
@@ -27,7 +27,7 @@ import {
   Search,
   Filter,
   SortDesc
-} from 'lucide-react';
+} from 'lucide-react'
 import {
   TOKEN_COSTS,
   ALLOWED_GENRES,
@@ -38,7 +38,7 @@ import {
   type SubscriptionTier,
   type StoryStatus,
   type ExportFormat
-} from '@/lib/constants';
+} from '@/lib/constants'
 
 interface Story {
   id: string;
@@ -74,39 +74,39 @@ type ViewMode = 'list' | 'create' | 'edit';
 type SortOption = 'updated_desc' | 'updated_asc' | 'created_desc' | 'created_asc' | 'title_asc' | 'word_count_desc';
 
 export default function StoryCreator({ userProfile, onStoryChange }: StoryCreatorProps) {
-  const [stories, setStories] = useState<Story[]>([]);
-  const [filteredStories, setFilteredStories] = useState<Story[]>([]);
-  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
-  const [activeTab, setActiveTab] = useState('overview');
+  const [stories, setStories] = useState<Story[]>([])
+  const [filteredStories, setFilteredStories] = useState<Story[]>([])
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>('list')
+  const [activeTab, setActiveTab] = useState('overview')
 
   // Search and filter state
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<StoryStatus | 'all'>('all');
-  const [genreFilter, setGenreFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<SortOption>('updated_desc');
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState<StoryStatus | 'all'>('all')
+  const [genreFilter, setGenreFilter] = useState<string>('all')
+  const [sortBy, setSortBy] = useState<SortOption>('updated_desc')
 
   // Forms
   const [newStoryForm, setNewStoryForm] = useState({
     title: '',
     genre: '',
     premise: ''
-  });
+  })
   const [improvementForm, setImprovementForm] = useState({
     chapterId: '',
     feedback: ''
-  });
+  })
 
-  const supabase = createClientComponentClient();
-
-  useEffect(() => {
-    fetchStories();
-  }, []);
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
-    filterAndSortStories();
-  }, [stories, searchQuery, statusFilter, genreFilter, sortBy]);
+    fetchStories()
+  }, [])
+
+  useEffect(() => {
+    filterAndSortStories()
+  }, [stories, searchQuery, statusFilter, genreFilter, sortBy])
 
   const fetchStories = async () => {
     try {
@@ -121,65 +121,65 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           )
         `)
         .eq('user_id', userProfile.id)
-        .order('updated_at', { ascending: false });
+        .order('updated_at', { ascending: false })
 
-      if (error) throw error;
-      setStories(data || []);
+      if (error) throw error
+      setStories(data || [])
     } catch (error) {
-      console.error('Failed to fetch stories:', error);
+      console.error('Failed to fetch stories:', error)
     }
-  };
+  }
 
   const filterAndSortStories = () => {
-    let filtered = [...stories];
+    let filtered = [...stories]
 
     // Apply search filter
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase()
       filtered = filtered.filter(story => 
         story.title.toLowerCase().includes(query) ||
         story.genre?.toLowerCase().includes(query) ||
         story.premise?.toLowerCase().includes(query)
-      );
+      )
     }
 
     // Apply status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(story => story.status === statusFilter);
+      filtered = filtered.filter(story => story.status === statusFilter)
     }
 
     // Apply genre filter
     if (genreFilter !== 'all') {
-      filtered = filtered.filter(story => story.genre === genreFilter);
+      filtered = filtered.filter(story => story.genre === genreFilter)
     }
 
     // Apply sorting
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'updated_desc':
-          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
         case 'updated_asc':
-          return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime();
+          return new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
         case 'created_desc':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         case 'created_asc':
-          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         case 'title_asc':
-          return a.title.localeCompare(b.title);
+          return a.title.localeCompare(b.title)
         case 'word_count_desc':
-          return b.word_count - a.word_count;
+          return b.word_count - a.word_count
         default:
-          return 0;
+          return 0
       }
-    });
+    })
 
-    setFilteredStories(filtered);
-  };
+    setFilteredStories(filtered)
+  }
 
   const generateStoryFoundation = async () => {
-    if (!newStoryForm.premise || userProfile.tokens_remaining < TOKEN_COSTS.STORY_FOUNDATION) return;
+    if (!newStoryForm.premise || userProfile.tokens_remaining < TOKEN_COSTS.STORY_FOUNDATION) return
 
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await fetch('/api/stories', {
         method: 'POST',
@@ -189,79 +189,90 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           genre: newStoryForm.genre,
           premise: newStoryForm.premise
         })
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
-        setStories(prev => [data.story, ...prev]);
-        setSelectedStory(data.story);
-        setViewMode('edit');
-        setActiveTab('foundation');
-        setNewStoryForm({ title: '', genre: '', premise: '' });
-        onStoryChange();
+        const data = await response.json()
+        setStories(prev => [data.story, ...prev])
+        setSelectedStory(data.story)
+        setViewMode('edit')
+        setActiveTab('foundation')
+        setNewStoryForm({ title: '', genre: '', premise: '' })
+        onStoryChange()
+
+        // Show cache success message if applicable
+        if (data.fromCache && data.tokensSaved > 0) {
+          alert(`${data.message}\n\nCache Type: ${data.cacheType?.toUpperCase()}\nEfficiency: ${Math.round((data.tokensSaved / TOKEN_COSTS.STORY_FOUNDATION) * 100)}% savings`)
+        }
       } else {
-        const error = await response.json();
-        alert(error.error || ERROR_MESSAGES.SERVICE_UNAVAILABLE);
+        const error = await response.json()
+        alert(error.error || ERROR_MESSAGES.SERVICE_UNAVAILABLE)
       }
     } catch (error) {
-      console.error('Story generation failed:', error);
-      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE);
+      console.error('Story generation failed:', error)
+      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const generateChapter = async (storyId: string, chapterNumber: number) => {
     if (userProfile.tokens_remaining < TOKEN_COSTS.CHAPTER_GENERATION) {
-      alert(`${ERROR_MESSAGES.INSUFFICIENT_TOKENS} (${TOKEN_COSTS.CHAPTER_GENERATION} tokens required)`);
-      return;
+      alert(`${ERROR_MESSAGES.INSUFFICIENT_TOKENS} (${TOKEN_COSTS.CHAPTER_GENERATION} tokens required)`)
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await fetch(`/api/stories/${storyId}/chapters`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chapter_number: chapterNumber })
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setSelectedStory(prev => prev ? {
           ...prev,
           chapters: [...(prev.chapters || []), data.chapter].sort((a, b) => a.chapter_number - b.chapter_number),
           chapter_count: prev.chapter_count + 1,
           word_count: prev.word_count + data.chapter.word_count
-        } : null);
-        
+        } : null)
+
         // Update stories list
-        setStories(prev => prev.map(story => 
-          story.id === storyId 
+        setStories(prev => prev.map(story =>
+          story.id === storyId
             ? { ...story, chapter_count: story.chapter_count + 1, word_count: story.word_count + data.chapter.word_count }
             : story
-        ));
-        
-        onStoryChange();
+        ))
+
+        onStoryChange()
+
+        // Show chapter cache success message if applicable
+        if (data.fromCache && data.tokensSaved > 0) {
+          const efficiencyPercentage = Math.round((data.tokensSaved / TOKEN_COSTS.CHAPTER_GENERATION) * 100);
+          alert(`${data.message}\n\nCache Type: ${data.cacheType?.toUpperCase()}\nEfficiency: ${efficiencyPercentage}% savings\nTokens Saved: ${data.tokensSaved}`)
+        }
       } else {
-        const error = await response.json();
-        alert(error.error || ERROR_MESSAGES.SERVICE_UNAVAILABLE);
+        const error = await response.json()
+        alert(error.error || ERROR_MESSAGES.SERVICE_UNAVAILABLE)
       }
     } catch (error) {
-      console.error('Chapter generation failed:', error);
-      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE);
+      console.error('Chapter generation failed:', error)
+      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const improveChapter = async () => {
-    if (!improvementForm.chapterId || !improvementForm.feedback) return;
+    if (!improvementForm.chapterId || !improvementForm.feedback) return
     if (userProfile.tokens_remaining < TOKEN_COSTS.CHAPTER_IMPROVEMENT) {
-      alert(`${ERROR_MESSAGES.INSUFFICIENT_TOKENS} (${TOKEN_COSTS.CHAPTER_IMPROVEMENT} tokens required)`);
-      return;
+      alert(`${ERROR_MESSAGES.INSUFFICIENT_TOKENS} (${TOKEN_COSTS.CHAPTER_IMPROVEMENT} tokens required)`)
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await fetch(`/api/chapters/${improvementForm.chapterId}`, {
         method: 'PUT',
@@ -270,26 +281,26 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           operation: 'improve',
           feedback: improvementForm.feedback
         })
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setSelectedStory(prev => prev ? {
           ...prev,
           chapters: prev.chapters?.map(ch => 
             ch.id === improvementForm.chapterId ? data.chapter : ch
           )
-        } : null);
-        setImprovementForm({ chapterId: '', feedback: '' });
-        onStoryChange();
+        } : null)
+        setImprovementForm({ chapterId: '', feedback: '' })
+        onStoryChange()
       }
     } catch (error) {
-      console.error('Chapter improvement failed:', error);
-      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE);
+      console.error('Chapter improvement failed:', error)
+      alert(ERROR_MESSAGES.SERVICE_UNAVAILABLE)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const exportStory = async (storyId: string, format: string) => {
     try {
@@ -297,52 +308,52 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format })
-      });
+      })
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${selectedStory?.title || 'story'}.${format}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${selectedStory?.title || 'story'}.${format}`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
       } else {
-        const error = await response.json();
-        alert(error.error || 'Export failed');
+        const error = await response.json()
+        alert(error.error || 'Export failed')
       }
     } catch (error) {
-      console.error('Export failed:', error);
-      alert('Export failed');
+      console.error('Export failed:', error)
+      alert('Export failed')
     }
-  };
+  }
 
   const deleteStory = async (storyId: string) => {
     try {
       const response = await fetch(`/api/stories/${storyId}`, {
         method: 'DELETE'
-      });
+      })
 
       if (response.ok) {
-        setStories(prev => prev.filter(s => s.id !== storyId));
+        setStories(prev => prev.filter(s => s.id !== storyId))
         if (selectedStory?.id === storyId) {
-          setSelectedStory(null);
-          setViewMode('list');
+          setSelectedStory(null)
+          setViewMode('list')
         }
-        onStoryChange();
+        onStoryChange()
       }
     } catch (error) {
-      console.error('Failed to delete story:', error);
+      console.error('Failed to delete story:', error)
     }
-  };
+  }
 
   const handleStoryEdit = (story: Story) => {
-    setSelectedStory(story);
-    setViewMode('edit');
-    setActiveTab('overview');
-  };
+    setSelectedStory(story)
+    setViewMode('edit')
+    setActiveTab('overview')
+  }
 
   // Stories List View
   if (viewMode === 'list') {
@@ -431,9 +442,9 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      setSearchQuery('');
-                      setStatusFilter('all');
-                      setGenreFilter('all');
+                      setSearchQuery('')
+                      setStatusFilter('all')
+                      setGenreFilter('all')
                     }}
                   >
                     Clear filters
@@ -485,7 +496,7 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           )}
         </div>
       </ErrorBoundary>
-    );
+    )
   }
 
   // Create New Story View
@@ -596,7 +607,7 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           </Card>
         </div>
       </ErrorBoundary>
-    );
+    )
   }
 
   // Story Editor View (simplified - would need full implementation)
@@ -771,8 +782,8 @@ export default function StoryCreator({ userProfile, onStoryChange }: StoryCreato
           </Tabs>
         </div>
       </ErrorBoundary>
-    );
+    )
   }
 
-  return null;
+  return null
 }

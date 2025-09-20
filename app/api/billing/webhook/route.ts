@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
@@ -7,10 +7,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16'
 })
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Only create supabase client when environment variables are available
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error('Missing required Supabase environment variables')
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey)
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -56,7 +63,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (!session.metadata?.userId) return
 
   const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
-  
+  const supabase = getSupabaseClient()
+
   await supabase
     .from('profiles')
     .update({
@@ -70,8 +78,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   const customer = await stripe.customers.retrieve(subscription.customer as string)
-  
+
   if ('metadata' in customer && customer.metadata.userId) {
+    const supabase = getSupabaseClient()
     await supabase
       .from('profiles')
       .update({
@@ -84,8 +93,9 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const customer = await stripe.customers.retrieve(subscription.customer as string)
-  
+
   if ('metadata' in customer && customer.metadata.userId) {
+    const supabase = getSupabaseClient()
     await supabase
       .from('profiles')
       .update({

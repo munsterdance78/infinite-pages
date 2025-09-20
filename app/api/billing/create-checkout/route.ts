@@ -13,7 +13,10 @@ export async function POST() {
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user?.email) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    )
   }
 
   try {
@@ -55,9 +58,27 @@ export async function POST() {
       metadata: { userId: user.id }
     })
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json(
+      { url: session.url },
+      { headers: { 'Content-Type': 'application/json' } }
+    )
   } catch (error) {
     console.error('Stripe checkout error:', error)
-    return NextResponse.json({ error: 'Failed to create checkout session' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to create checkout session' },
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    )
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '3600'
+    }
+  })
 }

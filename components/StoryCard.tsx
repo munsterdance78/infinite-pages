@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { Database } from '@/lib/supabase/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import React, { useState } from 'react'
+import type { Database } from '@/lib/supabase/types'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import {
   Edit,
   Trash2,
@@ -19,9 +19,9 @@ import {
   Download,
   AlertTriangle,
   MoreVertical
-} from 'lucide-react';
-import { formatDate, formatCurrency } from '@/lib/utils';
-import { STORY_STATUS, type StoryStatus } from '@/lib/constants';
+} from 'lucide-react'
+import { formatDate, formatCurrency } from '@/lib/utils'
+import { STORY_STATUS, type StoryStatus } from '@/lib/constants'
 
 type Chapter = Database['public']['Tables']['chapters']['Row'];
 
@@ -59,14 +59,14 @@ const STATUS_COLORS = {
   [STORY_STATUS.IN_PROGRESS]: 'bg-blue-100 text-blue-800',
   [STORY_STATUS.COMPLETED]: 'bg-green-100 text-green-800',
   [STORY_STATUS.PUBLISHED]: 'bg-purple-100 text-purple-800'
-} as const;
+} as const
 
 const STATUS_LABELS = {
   [STORY_STATUS.DRAFT]: 'Draft',
   [STORY_STATUS.IN_PROGRESS]: 'In Progress',
   [STORY_STATUS.COMPLETED]: 'Completed',
   [STORY_STATUS.PUBLISHED]: 'Published'
-} as const;
+} as const
 
 export default function StoryCard({ 
   story, 
@@ -77,72 +77,72 @@ export default function StoryCard({
   isLoading = false,
   className = ''
 }: StoryCardProps) {
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
-    setIsDeleting(true);
+    setIsDeleting(true)
     try {
-      await onDelete(story.id);
-      setShowDeleteDialog(false);
+      await onDelete(story.id)
+      setShowDeleteDialog(false)
     } catch (error) {
-      console.error('Failed to delete story:', error);
+      console.error('Failed to delete story:', error)
     } finally {
-      setIsDeleting(false);
+      setIsDeleting(false)
     }
-  };
+  }
 
   const getStatusIcon = (status: StoryStatus) => {
     switch (status) {
       case STORY_STATUS.DRAFT:
-        return <FileText className="w-3 h-3" />;
+        return <FileText className="w-3 h-3" />
       case STORY_STATUS.IN_PROGRESS:
-        return <Edit className="w-3 h-3" />;
+        return <Edit className="w-3 h-3" />
       case STORY_STATUS.COMPLETED:
-        return <BookOpen className="w-3 h-3" />;
+        return <BookOpen className="w-3 h-3" />
       case STORY_STATUS.PUBLISHED:
-        return <TrendingUp className="w-3 h-3" />;
+        return <TrendingUp className="w-3 h-3" />
       default:
-        return <FileText className="w-3 h-3" />;
+        return <FileText className="w-3 h-3" />
     }
-  };
+  }
 
   const getProgressPercentage = () => {
-    if (!story.chapters || story.chapters.length === 0) return 0;
+    if (!story.chapters || story.chapters.length === 0) return 0
     
     // Estimate progress based on word count and typical chapter structure
-    const averageChapterWords = 2000; // Typical chapter length
-    const estimatedTotalChapters = Math.max(10, story.chapters.length * 1.5); // Estimate total chapters
-    const currentProgress = (story.chapters.length / estimatedTotalChapters) * 100;
+    const averageChapterWords = 2000 // Typical chapter length
+    const estimatedTotalChapters = Math.max(10, story.chapters.length * 1.5) // Estimate total chapters
+    const currentProgress = (story.chapters.length / estimatedTotalChapters) * 100
     
-    return Math.min(100, Math.max(0, currentProgress));
-  };
+    return Math.min(100, Math.max(0, currentProgress))
+  }
 
   const getWordCountColor = (wordCount: number) => {
-    if (wordCount >= 50000) return 'text-green-600'; // Novel length
-    if (wordCount >= 20000) return 'text-blue-600';  // Novella length
-    if (wordCount >= 5000) return 'text-yellow-600'; // Short story
-    return 'text-gray-600'; // Very short
-  };
+    if (wordCount >= 50000) return 'text-green-600' // Novel length
+    if (wordCount >= 20000) return 'text-blue-600'  // Novella length
+    if (wordCount >= 5000) return 'text-yellow-600' // Short story
+    return 'text-gray-600' // Very short
+  }
 
   const getEfficiencyRating = () => {
-    if (story.total_cost_usd === 0) return 'N/A';
-    const costPer1000Words = (story.total_cost_usd / story.word_count) * 1000;
-    if (costPer1000Words < 0.05) return 'Excellent';
-    if (costPer1000Words < 0.10) return 'Good';
-    if (costPer1000Words < 0.20) return 'Fair';
-    return 'Poor';
-  };
+    if (story.total_cost_usd === 0) return 'N/A'
+    const costPer1000Words = (story.total_cost_usd / story.word_count) * 1000
+    if (costPer1000Words < 0.05) return 'Excellent'
+    if (costPer1000Words < 0.10) return 'Good'
+    if (costPer1000Words < 0.20) return 'Fair'
+    return 'Poor'
+  }
 
   const getMostRecentChapter = () => {
-    if (!story.chapters || story.chapters.length === 0) return null;
+    if (!story.chapters || story.chapters.length === 0) return null
     return story.chapters.reduce((latest, current) => 
       new Date(current.created_at) > new Date(latest.created_at) ? current : latest
-    );
-  };
+    )
+  }
 
-  const recentChapter = getMostRecentChapter();
+  const recentChapter = getMostRecentChapter()
 
   return (
     <>
@@ -444,8 +444,8 @@ export default function StoryCard({
                 Close
               </Button>
               <Button onClick={() => {
-                setShowDetailsDialog(false);
-                onEdit(story);
+                setShowDetailsDialog(false)
+                onEdit(story)
               }}>
                 Edit Story
               </Button>
@@ -454,5 +454,5 @@ export default function StoryCard({
         </DialogContent>
       </Dialog>
     </>
-  );
+  )
 }

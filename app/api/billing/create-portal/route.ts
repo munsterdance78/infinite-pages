@@ -13,7 +13,10 @@ export async function POST() {
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    )
   }
 
   try {
@@ -24,7 +27,10 @@ export async function POST() {
       .single()
 
     if (!profile?.stripe_customer_id) {
-      return NextResponse.json({ error: 'No customer found' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'No customer found' },
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      )
     }
 
     const session = await stripe.billingPortal.sessions.create({
@@ -32,9 +38,27 @@ export async function POST() {
       return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
     })
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json(
+      { url: session.url },
+      { headers: { 'Content-Type': 'application/json' } }
+    )
   } catch (error) {
     console.error('Stripe portal error:', error)
-    return NextResponse.json({ error: 'Failed to create portal session' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to create portal session' },
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    )
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '3600'
+    }
+  })
 }

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+.vercel/
+out/
+build/
+dist/
+
+# Environment files
+.env*
+
+# Config files that might have specific formatting
+next.config.js
+next.config.ts
+tailwind.config.js
+tailwind.config.ts
+postcss.config.js
+postcss.config.ts
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# Database files
+*.sql
+*.db
+*.sqlite
+
+# Log files
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Storybook
+.storybook/
+storybook-static/
+
+# Generated files
+*.d.ts.map
+*.js.map
+
+# Scripts that might use different style
+scripts/

@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import React, { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   BookOpen,
   FileText,
@@ -21,7 +21,7 @@ import {
   Eye,
   Coins,
   Activity
-} from 'lucide-react';
+} from 'lucide-react'
 
 interface UserProfile {
   id: string;
@@ -67,33 +67,33 @@ const OPERATION_LABELS = {
   'character_development': 'Character Development',
   'plot_development': 'Plot Development',
   'setting_description': 'Setting Description'
-};
+}
 
 interface AnalyticsDashboardProps {
   userProfile: UserProfile;
 }
 
 export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardProps) {
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState('30');
-  const [activeTab, setActiveTab] = useState('overview');
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [timeRange, setTimeRange] = useState('30')
+  const [activeTab, setActiveTab] = useState('overview')
 
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange]);
+    fetchAnalytics()
+  }, [timeRange])
 
   const fetchAnalytics = async () => {
     try {
-      setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      setLoading(true)
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
 
-      const daysAgo = parseInt(timeRange);
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - daysAgo);
+      const daysAgo = parseInt(timeRange)
+      const startDate = new Date()
+      startDate.setDate(startDate.getDate() - daysAgo)
 
       // Fetch generation logs
       const { data: logs } = await supabase
@@ -101,7 +101,7 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
         .select('*')
         .eq('user_id', user.id)
         .gte('created_at', startDate.toISOString())
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
 
       // Fetch stories and chapters
       const { data: stories } = await supabase
@@ -111,7 +111,7 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
           chapters (id, word_count, created_at)
         `)
         .eq('user_id', user.id)
-        .gte('created_at', startDate.toISOString());
+        .gte('created_at', startDate.toISOString())
 
       if (logs && stories) {
         const userStats = {
@@ -127,73 +127,73 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
             ? stories.reduce((sum, story) => sum + (story.word_count || 0), 0) / logs.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0)
             : 0,
           daysActive: new Set(logs.map(log => new Date(log.created_at).toDateString())).size
-        };
+        }
 
         const operationBreakdown = logs.reduce((acc: any[], log) => {
-          const existing = acc.find(item => item.type === log.operation_type);
+          const existing = acc.find(item => item.type === log.operation_type)
           if (existing) {
-            existing.count++;
-            existing.totalTokens += log.tokens_input + log.tokens_output;
+            existing.count++
+            existing.totalTokens += log.tokens_input + log.tokens_output
           } else {
             acc.push({
               type: log.operation_type,
               count: 1,
               totalTokens: log.tokens_input + log.tokens_output
-            });
+            })
           }
-          return acc;
-        }, []);
+          return acc
+        }, [])
 
         const usageHistory = Array.from({ length: Math.min(daysAgo, 30) }, (_, i) => {
-          const date = new Date();
-          date.setDate(date.getDate() - i);
-          const dateStr = date.toISOString().split('T')[0];
+          const date = new Date()
+          date.setDate(date.getDate() - i)
+          const dateStr = date.toISOString().split('T')[0]
 
           const dayLogs = logs.filter(log =>
             new Date(log.created_at).toISOString().split('T')[0] === dateStr
-          );
+          )
 
           return {
             date: dateStr,
             tokensUsed: dayLogs.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0),
             costUSD: dayLogs.reduce((sum, log) => sum + (log.cost_usd || 0), 0)
-          };
-        }).reverse();
+          }
+        }).reverse()
 
         setAnalytics({
           userStats,
           operationBreakdown,
           usageHistory
-        });
+        })
       }
     } catch (error) {
-      console.error('Failed to fetch analytics:', error);
+      console.error('Failed to fetch analytics:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const formatNumber = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`
+    return num.toString()
+  }
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(3)}`;
-  };
+    return `$${amount.toFixed(3)}`
+  }
 
   const getEfficiencyColor = (efficiency: number) => {
-    if (efficiency >= 400) return 'bg-green-100 text-green-800';
-    if (efficiency >= 250) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-red-100 text-red-800';
-  };
+    if (efficiency >= 400) return 'bg-green-100 text-green-800'
+    if (efficiency >= 250) return 'bg-yellow-100 text-yellow-800'
+    return 'bg-red-100 text-red-800'
+  }
 
   const getEfficiencyLabel = (efficiency: number) => {
-    if (efficiency >= 400) return 'Excellent';
-    if (efficiency >= 250) return 'Good';
-    return 'Needs Improvement';
-  };
+    if (efficiency >= 400) return 'Excellent'
+    if (efficiency >= 250) return 'Good'
+    return 'Needs Improvement'
+  }
 
   if (loading) {
     return (
@@ -205,7 +205,7 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
           </div>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   if (!analytics) {
@@ -215,7 +215,7 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
           <p className="text-gray-600">Unable to load analytics data.</p>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -494,8 +494,8 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
                 <div className="space-y-4">
                   <div className="h-64 flex items-end justify-between gap-2">
                     {analytics.usageHistory.slice(-14).map((day, index) => {
-                      const maxTokens = Math.max(...analytics.usageHistory.map(d => d.tokensUsed), 1);
-                      const height = (day.tokensUsed / maxTokens) * 200;
+                      const maxTokens = Math.max(...analytics.usageHistory.map(d => d.tokensUsed), 1)
+                      const height = (day.tokensUsed / maxTokens) * 200
                       
                       return (
                         <div key={day.date} className="flex flex-col items-center">
@@ -508,7 +508,7 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
                             {new Date(day.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
                           </div>
                         </div>
-                      );
+                      )
                     })}
                   </div>
                   
@@ -665,5 +665,5 @@ export default function AnalyticsDashboard({ userProfile }: AnalyticsDashboardPr
 </TabsContent>
 </Tabs>
 </div>
-);
+)
 }

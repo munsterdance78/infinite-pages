@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { RATE_LIMITS, ERROR_MESSAGES } from './constants';
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import { RATE_LIMITS, ERROR_MESSAGES } from './constants'
 
 // In-memory store for development (use Redis in production)
 interface RateLimitEntry {
@@ -13,9 +14,9 @@ interface RateLimitStore {
 }
 
 class RateLimiter {
-  private store: RateLimitStore = {};
-  private redisClient: any = null;
-  private cleanupInterval: NodeJS.Timeout;
+  private store: RateLimitStore = {}
+  private redisClient: any = null
+  private cleanupInterval: NodeJS.Timeout
 
   constructor() {
     // Initialize Redis client if available
@@ -24,31 +25,31 @@ class RateLimiter {
         // Redis client would be initialized here in production
         // this.redisClient = new Redis(process.env.REDIS_URL);
       } catch (error) {
-        console.warn('Redis connection failed, falling back to memory store');
+        console.warn('Redis connection failed, falling back to memory store')
       }
     }
     
     // Clean up expired entries every 5 minutes
     this.cleanupInterval = setInterval(() => {
-      this.cleanup();
-    }, 5 * 60 * 1000);
+      this.cleanup()
+    }, 5 * 60 * 1000)
   }
 
   private cleanup() {
-    const now = Date.now();
+    const now = Date.now()
     for (const key in this.store) {
       if (this.store[key].resetTime < now) {
-        delete this.store[key];
+        delete this.store[key]
       }
     }
   }
 
   private getKey(identifier: string, operation: string): string {
-    return `${operation}:${identifier}`;
+    return `${operation}:${identifier}`
   }
 
   private getWindowStart(windowMs: number): number {
-    return Math.floor(Date.now() / windowMs) * windowMs;
+    return Math.floor(Date.now() / windowMs) * windowMs
   }
 
   check(
@@ -62,12 +63,12 @@ class RateLimiter {
     resetTime: number;
     retryAfter?: number;
   } {
-    const key = this.getKey(identifier, operation);
-    const now = Date.now();
-    const windowStart = this.getWindowStart(windowMs);
-    const resetTime = windowStart + windowMs;
+    const key = this.getKey(identifier, operation)
+    const now = Date.now()
+    const windowStart = this.getWindowStart(windowMs)
+    const resetTime = windowStart + windowMs
 
-    let entry = this.store[key];
+    let entry = this.store[key]
 
     // Create new entry or reset if window expired
     if (!entry || entry.resetTime <= now) {
@@ -75,8 +76,8 @@ class RateLimiter {
         count: 0,
         resetTime,
         firstRequest: now
-      };
-      this.store[key] = entry;
+      }
+      this.store[key] = entry
     }
 
     // Check if request is allowed
@@ -86,17 +87,17 @@ class RateLimiter {
         remaining: 0,
         resetTime: entry.resetTime,
         retryAfter: Math.ceil((entry.resetTime - now) / 1000)
-      };
+      }
     }
 
     // Increment counter
-    entry.count++;
+    entry.count++
 
     return {
       allowed: true,
       remaining: Math.max(0, limit - entry.count),
       resetTime: entry.resetTime
-    };
+    }
   }
 
   // Get current status without incrementing
@@ -110,49 +111,49 @@ class RateLimiter {
     resetTime: number;
     used: number;
   } {
-    const key = this.getKey(identifier, operation);
-    const now = Date.now();
-    const windowStart = this.getWindowStart(windowMs);
-    const resetTime = windowStart + windowMs;
+    const key = this.getKey(identifier, operation)
+    const now = Date.now()
+    const windowStart = this.getWindowStart(windowMs)
+    const resetTime = windowStart + windowMs
 
-    const entry = this.store[key];
+    const entry = this.store[key]
 
     if (!entry || entry.resetTime <= now) {
       return {
         remaining: limit,
         resetTime,
         used: 0
-      };
+      }
     }
 
     return {
       remaining: Math.max(0, limit - entry.count),
       resetTime: entry.resetTime,
       used: entry.count
-    };
+    }
   }
 
   // Reset limits for a specific identifier and operation
   reset(identifier: string, operation: string): void {
-    const key = this.getKey(identifier, operation);
-    delete this.store[key];
+    const key = this.getKey(identifier, operation)
+    delete this.store[key]
   }
 
   // Get all current limits for debugging
   getAllLimits(): Record<string, RateLimitEntry> {
-    return { ...this.store };
+    return { ...this.store }
   }
 
   destroy() {
     if (this.cleanupInterval) {
-      clearInterval(this.cleanupInterval);
+      clearInterval(this.cleanupInterval)
     }
-    this.store = {};
+    this.store = {}
   }
 }
 
 // Global rate limiter instance
-const rateLimiter = new RateLimiter();
+const rateLimiter = new RateLimiter()
 
 // Rate limit configurations by operation type
 export const RATE_LIMIT_CONFIGS = {
@@ -195,7 +196,7 @@ export const RATE_LIMIT_CONFIGS = {
     skipSuccessfulRequests: true,
     skipFailedRequests: false
   }
-} as const;
+} as const
 
 export type RateLimitOperation = keyof typeof RATE_LIMIT_CONFIGS;
 
@@ -203,15 +204,15 @@ export type RateLimitOperation = keyof typeof RATE_LIMIT_CONFIGS;
 export function getClientIdentifier(request: NextRequest, userId?: string): string {
   // Use user ID if available (authenticated requests)
   if (userId) {
-    return `user:${userId}`;
+    return `user:${userId}`
   }
 
   // Fall back to IP address for unauthenticated requests
-  const forwarded = request.headers.get('x-forwarded-for');
-  const realIP = request.headers.get('x-real-ip');
-  const ip = forwarded?.split(',')[0]?.trim() || realIP || 'unknown';
+  const forwarded = request.headers.get('x-forwarded-for')
+  const realIP = request.headers.get('x-real-ip')
+  const ip = forwarded?.split(',')[0]?.trim() || realIP || 'unknown'
   
-  return `ip:${ip}`;
+  return `ip:${ip}`
 }
 
 // Main rate limiting middleware
@@ -224,15 +225,15 @@ export async function rateLimit(
   response?: NextResponse;
   headers: Record<string, string>;
 }> {
-  const config = RATE_LIMIT_CONFIGS[operation];
-  const identifier = getClientIdentifier(request, userId);
+  const config = RATE_LIMIT_CONFIGS[operation]
+  const identifier = getClientIdentifier(request, userId)
   
   const result = rateLimiter.check(
     identifier,
     operation,
     config.limit,
     config.windowMs
-  );
+  )
 
   // Prepare headers for client
   const headers: Record<string, string> = {
@@ -240,10 +241,10 @@ export async function rateLimit(
     'X-RateLimit-Remaining': result.remaining.toString(),
     'X-RateLimit-Reset': Math.ceil(result.resetTime / 1000).toString(),
     'X-RateLimit-Window': (config.windowMs / 1000).toString()
-  };
+  }
 
   if (!result.allowed) {
-    headers['Retry-After'] = result.retryAfter?.toString() || '60';
+    headers['Retry-After'] = result.retryAfter?.toString() || '60'
     
     return {
       success: false,
@@ -267,13 +268,13 @@ export async function rateLimit(
         }
       ),
       headers
-    };
+    }
   }
 
   return {
     success: true,
     headers
-  };
+  }
 }
 
 // Get rate limit status without consuming a request
@@ -287,20 +288,20 @@ export function getRateLimitStatus(
   used: number;
   limit: number;
 } {
-  const config = RATE_LIMIT_CONFIGS[operation];
-  const identifier = getClientIdentifier(request, userId);
+  const config = RATE_LIMIT_CONFIGS[operation]
+  const identifier = getClientIdentifier(request, userId)
   
   const status = rateLimiter.status(
     identifier,
     operation,
     config.limit,
     config.windowMs
-  );
+  )
 
   return {
     ...status,
     limit: config.limit
-  };
+  }
 }
 
 // Reset rate limits for a user (admin function)
@@ -308,15 +309,15 @@ export function resetUserRateLimit(
   userId: string,
   operation?: RateLimitOperation
 ): void {
-  const identifier = `user:${userId}`;
+  const identifier = `user:${userId}`
   
   if (operation) {
-    rateLimiter.reset(identifier, operation);
+    rateLimiter.reset(identifier, operation)
   } else {
     // Reset all operations for this user
     Object.keys(RATE_LIMIT_CONFIGS).forEach(op => {
-      rateLimiter.reset(identifier, op as RateLimitOperation);
-    });
+      rateLimiter.reset(identifier, op as RateLimitOperation)
+    })
   }
 }
 
@@ -332,8 +333,8 @@ export async function burstRateLimit(
   headers: Record<string, string>;
   isBurst: boolean;
 }> {
-  const config = RATE_LIMIT_CONFIGS[operation];
-  const identifier = getClientIdentifier(request, userId);
+  const config = RATE_LIMIT_CONFIGS[operation]
+  const identifier = getClientIdentifier(request, userId)
   
   // First check normal limit
   const normalResult = rateLimiter.check(
@@ -341,7 +342,7 @@ export async function burstRateLimit(
     operation,
     config.limit,
     config.windowMs
-  );
+  )
 
   if (normalResult.allowed) {
     return {
@@ -352,27 +353,27 @@ export async function burstRateLimit(
         'X-RateLimit-Reset': Math.ceil(normalResult.resetTime / 1000).toString()
       },
       isBurst: false
-    };
+    }
   }
 
   // Check burst limit
-  const burstLimit = Math.floor(config.limit * burstMultiplier);
+  const burstLimit = Math.floor(config.limit * burstMultiplier)
   const burstResult = rateLimiter.check(
     identifier,
     `${operation}_burst`,
     burstLimit,
     config.windowMs
-  );
+  )
 
   const headers: Record<string, string> = {
     'X-RateLimit-Limit': config.limit.toString(),
     'X-RateLimit-Burst-Limit': burstLimit.toString(),
     'X-RateLimit-Remaining': Math.max(0, burstResult.remaining - config.limit).toString(),
     'X-RateLimit-Reset': Math.ceil(burstResult.resetTime / 1000).toString()
-  };
+  }
 
   if (!burstResult.allowed) {
-    headers['Retry-After'] = burstResult.retryAfter?.toString() || '60';
+    headers['Retry-After'] = burstResult.retryAfter?.toString() || '60'
     
     return {
       success: false,
@@ -391,7 +392,7 @@ export async function burstRateLimit(
       ),
       headers,
       isBurst: true
-    };
+    }
   }
 
   return {
@@ -401,7 +402,7 @@ export async function burstRateLimit(
       'X-RateLimit-Burst-Used': 'true'
     },
     isBurst: true
-  };
+  }
 }
 
 // Subscription-aware rate limiting
@@ -415,30 +416,30 @@ export async function subscriptionAwareRateLimit(
   response?: NextResponse;
   headers: Record<string, string>;
 }> {
-  const config = RATE_LIMIT_CONFIGS[operation];
+  const config = RATE_LIMIT_CONFIGS[operation]
   
   // Pro users get higher limits
-  const multiplier = subscriptionTier === 'pro' ? 3 : 1;
-  const adjustedLimit = Math.floor(config.limit * multiplier);
+  const multiplier = subscriptionTier === 'pro' ? 3 : 1
+  const adjustedLimit = Math.floor(config.limit * multiplier)
   
-  const identifier = getClientIdentifier(request, userId);
+  const identifier = getClientIdentifier(request, userId)
   
   const result = rateLimiter.check(
     identifier,
     `${operation}_${subscriptionTier}`,
     adjustedLimit,
     config.windowMs
-  );
+  )
 
   const headers: Record<string, string> = {
     'X-RateLimit-Limit': adjustedLimit.toString(),
     'X-RateLimit-Remaining': result.remaining.toString(),
     'X-RateLimit-Reset': Math.ceil(result.resetTime / 1000).toString(),
     'X-RateLimit-Tier': subscriptionTier
-  };
+  }
 
   if (!result.allowed) {
-    headers['Retry-After'] = result.retryAfter?.toString() || '60';
+    headers['Retry-After'] = result.retryAfter?.toString() || '60'
     
     return {
       success: false,
@@ -458,13 +459,13 @@ export async function subscriptionAwareRateLimit(
         }
       ),
       headers
-    };
+    }
   }
 
   return {
     success: true,
     headers
-  };
+  }
 }
 
 // Utility for logging rate limit violations
@@ -481,10 +482,10 @@ export function logRateLimitViolation(
     ip: getClientIdentifier(request).replace('ip:', ''),
     path: request.nextUrl.pathname,
     method: request.method
-  };
+  }
 
   // In production, send this to your logging service
-  console.warn('Rate limit violation:', logData);
+  console.warn('Rate limit violation:', logData)
 
   // You could also store persistent violations for abuse detection
   // Example: Track users who consistently hit rate limits
@@ -492,10 +493,10 @@ export function logRateLimitViolation(
 
 // Cleanup function for testing or shutdown
 export function destroyRateLimiter(): void {
-  rateLimiter.destroy();
+  rateLimiter.destroy()
 }
 
 // Export the rate limiter instance for advanced usage
-export { rateLimiter };
+export { rateLimiter }
 
-export default rateLimit;
+export default rateLimit
