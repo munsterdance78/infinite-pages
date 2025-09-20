@@ -272,7 +272,7 @@ async function processGenerationQueue(queueId: string) {
         .eq('id', queueId)
 
       // Call Stable Diffusion WebUI API
-      const styleConfig = COVER_STYLES[queueItem.cover_style] || COVER_STYLES.artistic
+      const styleConfig = COVER_STYLES[queueItem.cover_style as keyof typeof COVER_STYLES] || COVER_STYLES.artistic
 
       const response = await fetch(`${WEBUI_API_URL}/sdapi/v1/txt2img`, {
         method: 'POST',
