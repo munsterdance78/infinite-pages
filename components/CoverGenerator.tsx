@@ -175,7 +175,7 @@ export default function CoverGenerator({
                 <span className="capitalize">{item.status}</span>
               </div>
               <span className="text-gray-600">
-                {coverStyles[item.cover_style]?.name} style
+                {coverStyles[item.cover_style as keyof typeof coverStyles]?.name} style
               </span>
               {item.status === 'generating' && (
                 <span className="text-blue-600">Estimated: 30-120 seconds</span>

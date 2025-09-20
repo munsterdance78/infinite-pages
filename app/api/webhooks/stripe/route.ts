@@ -76,7 +76,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     // Get current user balance
-    const { data: profile } = await supabase
+    const { data: profile } = await (supabase as any)
       .from('profiles')
       .select('credits_balance, credits_earned_total')
       .eq('id', userId)
@@ -107,7 +107,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     // Create credit transaction record
-    const { error: transactionError } = await supabase
+    const { error: transactionError } = await (supabase as any)
       .from('credit_transactions')
       .insert({
         user_id: userId,
@@ -133,7 +133,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
 async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
   try {
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('payments')
       .update({
         status: 'failed',
