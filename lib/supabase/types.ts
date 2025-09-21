@@ -32,6 +32,10 @@ export interface Database {
           total_earnings_usd: number;
           pending_payout_usd: number;
           stripe_connect_account_id: string | null;
+          stripe_account_status: 'incomplete' | 'pending' | 'active' | null;
+          stripe_charges_enabled: boolean | null;
+          stripe_payouts_enabled: boolean | null;
+          display_name: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -63,6 +67,10 @@ export interface Database {
           total_earnings_usd?: number;
           pending_payout_usd?: number;
           stripe_connect_account_id?: string | null;
+          stripe_account_status?: 'incomplete' | 'pending' | 'active' | null;
+          stripe_charges_enabled?: boolean | null;
+          stripe_payouts_enabled?: boolean | null;
+          display_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -94,6 +102,10 @@ export interface Database {
           total_earnings_usd?: number;
           pending_payout_usd?: number;
           stripe_connect_account_id?: string | null;
+          stripe_account_status?: 'incomplete' | 'pending' | 'active' | null;
+          stripe_charges_enabled?: boolean | null;
+          stripe_payouts_enabled?: boolean | null;
+          display_name?: string | null;
           created_at?: string;
           updated_at?: string;
         };
