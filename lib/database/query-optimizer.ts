@@ -21,7 +21,7 @@ class QueryOptimizer {
   private metrics: QueryMetrics[] = []
 
   constructor() {
-    this.client = createClient() as TypedSupabaseClient
+    this.client = createClient() as unknown as TypedSupabaseClient
   }
 
   // Optimized story queries with proper JOINs
@@ -62,21 +62,21 @@ class QueryOptimizer {
 
     // Apply filters efficiently
     if (filters.genre) {
-      query = query.eq('genre', filters.genre)
+      query = (query as any).eq('genre', filters.genre)
     }
     if (filters.status) {
-      query = query.eq('status', filters.status)
+      query = (query as any).eq('status', filters.status)
     }
 
     // Use limit and offset for pagination
     if (filters.limit) {
-      query = query.limit(filters.limit)
+      query = (query as any).limit(filters.limit)
     }
     if (filters.offset) {
-      query = query.range(filters.offset, (filters.offset || 0) + (filters.limit || 50) - 1)
+      query = (query as any).range(filters.offset, (filters.offset || 0) + (filters.limit || 50) - 1)
     }
 
-    const { data, error } = await query
+    const { data, error } = await (query as any)
       .order('created_at', { ascending: false })
 
     const executionTime = performance.now() - startTime
@@ -97,7 +97,7 @@ class QueryOptimizer {
 
     const startTime = performance.now()
 
-    const { data, error } = await this.client
+    const { data, error } = await (this.client
       .from('stories')
       .select(`
         id,
@@ -108,7 +108,7 @@ class QueryOptimizer {
         updated_at,
         total_words,
         chapters!chapters_story_id_fkey (count)
-      `)
+      `) as any)
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
 
@@ -149,7 +149,7 @@ class QueryOptimizer {
     }
 
     // Use a single query with aggregations instead of multiple queries
-    const { data, error } = await this.client
+    const { data, error } = await (this.client
       .from('creator_earnings')
       .select(`
         id,
@@ -162,7 +162,7 @@ class QueryOptimizer {
           genre,
           views
         )
-      `)
+      `) as any)
       .eq('user_id', userId)
       .gte('created_at', startDate)
       .order('created_at', { ascending: false })
@@ -174,10 +174,10 @@ class QueryOptimizer {
 
     // Process aggregations in JavaScript (more efficient than multiple DB queries)
     const stats = {
-      totalEarnings: data.reduce((sum, earning) => sum + earning.amount_usd, 0),
+      totalEarnings: data.reduce((sum: number, earning: any) => sum + earning.amount_usd, 0),
       earningsCount: data.length,
-      uniqueStories: new Set(data.map(e => e.story_id)).size,
-      topStory: data.sort((a, b) => b.amount_usd - a.amount_usd)[0],
+      uniqueStories: new Set(data.map((e: any) => e.story_id)).size,
+      topStory: data.sort((a: any, b: any) => b.amount_usd - a.amount_usd)[0],
       earnings: data
     }
 
@@ -209,7 +209,7 @@ class QueryOptimizer {
         startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1).toISOString()
     }
 
-    const { data, error } = await this.client
+    const { data, error } = await (this.client
       .from('ai_usage_logs')
       .select(`
         operation_type,
@@ -218,7 +218,7 @@ class QueryOptimizer {
         actual_cost_usd,
         ai_model_used,
         created_at
-      `)
+      `) as any)
       .eq('user_id', userId)
       .gte('created_at', startDate)
       .order('created_at', { ascending: false })
@@ -230,8 +230,8 @@ class QueryOptimizer {
 
     // Process analytics in memory
     const analytics = {
-      totalTokens: data.reduce((sum, log) => sum + log.tokens_input + log.tokens_output, 0),
-      totalCost: data.reduce((sum, log) => sum + log.actual_cost_usd, 0),
+      totalTokens: data.reduce((sum: number, log: any) => sum + log.tokens_input + log.tokens_output, 0),
+      totalCost: data.reduce((sum: number, log: any) => sum + log.actual_cost_usd, 0),
       operationBreakdown: this.groupBy(data, 'operation_type'),
       modelBreakdown: this.groupBy(data, 'ai_model_used'),
       dailyUsage: this.groupByDay(data),
@@ -253,7 +253,7 @@ class QueryOptimizer {
 
     const startTime = performance.now()
 
-    const { data, error } = await this.client
+    const { data, error } = await (this.client
       .from('stories')
       .select(`
         id,
@@ -269,7 +269,7 @@ class QueryOptimizer {
           word_count,
           created_at
         )
-      `)
+      `) as any)
       .in('id', storyIds)
       .order('created_at', { ascending: false })
 

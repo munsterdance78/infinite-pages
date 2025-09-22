@@ -288,14 +288,16 @@ class InfinitePagesCache {
 
       if (exactMatch.length > 0) {
         const match = exactMatch[0]
-        await this.incrementHitCount(match.id)
-        console.log(`[InfinitePages Cache] EXACT foundation hit for ${genre}: ${premise.substring(0, 50)}...`)
+        if (match) {
+          await this.incrementHitCount(match.id)
+          console.log(`[InfinitePages Cache] EXACT foundation hit for ${genre}: ${premise.substring(0, 50)}...`)
 
-        return {
-          foundation: match.content,
-          fromCache: true,
-          cacheType: 'exact',
-          tokensSaved: this.config.tokenCosts.story_foundation
+          return {
+            foundation: match.content,
+            fromCache: true,
+            cacheType: 'exact',
+            tokensSaved: this.config.tokenCosts.story_foundation
+          }
         }
       }
 
@@ -757,14 +759,16 @@ class InfinitePagesCache {
 
       if (exactMatch.length > 0) {
         const match = exactMatch[0]
-        await this.incrementHitCount(match.id)
-        console.log(`[InfinitePages Cache] EXACT chapter cache hit for chapter ${chapterNumber}`)
+        if (match) {
+          await this.incrementHitCount(match.id)
+          console.log(`[InfinitePages Cache] EXACT chapter cache hit for chapter ${chapterNumber}`)
 
-        return {
-          chapter: match.content,
-          fromCache: true,
-          cacheType: 'exact',
-          tokensSaved: this.config.tokenCosts.chapter_content
+          return {
+            chapter: match.content,
+            fromCache: true,
+            cacheType: 'exact',
+            tokensSaved: this.config.tokenCosts.chapter_content
+          }
         }
       }
 
@@ -1112,7 +1116,7 @@ class InfinitePagesCache {
   isCacheHealthy(): {
     healthy: boolean;
     warnings: string[];
-    stats: ReturnType<typeof this.getCacheStats>;
+    stats: any;
   } {
     const stats = this.getCacheStats()
     const warnings: string[] = []

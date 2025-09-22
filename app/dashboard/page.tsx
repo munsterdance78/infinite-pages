@@ -10,6 +10,10 @@ import UnifiedAnalyticsDashboard from '@/components/UnifiedAnalyticsDashboard'
 import SubscriptionManager from '@/components/SubscriptionManager'
 import CreatorEarningsHub from '@/components/CreatorEarningsHub'
 
+// Glassmorphism wrappers
+import GlassStoryCreatorWrapper from '@/components/GlassStoryCreatorWrapper'
+import GlassCreatorEarningsWrapper from '@/components/GlassCreatorEarningsWrapper'
+
 // New dashboard components (modern, modular approach)
 import StoryLibrary from '@/components/dashboard/StoryLibrary'
 import CreatorHub from '@/components/dashboard/CreatorHub'
@@ -86,11 +90,11 @@ function DashboardOverview({ userProfile }: { userProfile: UnifiedUserProfile })
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg">
-        <h1 className="text-2xl font-bold mb-2">
+      <div className="glass-welcome-card p-6">
+        <h1 className="text-2xl font-bold mb-2 text-white glass-text-shadow">
           Welcome back{userProfile.full_name ? `, ${userProfile.full_name}` : ''}!
         </h1>
-        <p className="opacity-90">
+        <p className="text-white/90 glass-text-shadow-subtle">
           Ready to create amazing stories with AI assistance?
         </p>
       </div>
@@ -175,29 +179,29 @@ function DashboardOverview({ userProfile }: { userProfile: UnifiedUserProfile })
       </div>
 
       {/* Quick Actions */}
-      <Card>
+      <Card variant="elevated">
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button className="h-auto p-4 flex flex-col gap-2" variant="outline">
-            <Wand2 className="h-6 w-6" />
-            <span>Create New Story</span>
-            <span className="text-xs text-muted-foreground">
+          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+            <Wand2 className="h-6 w-6 glass-icon-glow" />
+            <span className="text-white glass-text-shadow">Create New Story</span>
+            <span className="text-xs text-white/70 glass-text-shadow-subtle">
               Start with AI assistance
             </span>
           </Button>
-          <Button className="h-auto p-4 flex flex-col gap-2" variant="outline">
-            <BookOpen className="h-6 w-6" />
-            <span>Browse Library</span>
-            <span className="text-xs text-muted-foreground">
+          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+            <BookOpen className="h-6 w-6 glass-icon-glow" />
+            <span className="text-white glass-text-shadow">Browse Library</span>
+            <span className="text-xs text-white/70 glass-text-shadow-subtle">
               View your stories
             </span>
           </Button>
-          <Button className="h-auto p-4 flex flex-col gap-2" variant="outline">
-            <BarChart className="h-6 w-6" />
-            <span>View Analytics</span>
-            <span className="text-xs text-muted-foreground">
+          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+            <BarChart className="h-6 w-6 glass-icon-glow" />
+            <span className="text-white glass-text-shadow">View Analytics</span>
+            <span className="text-xs text-white/70 glass-text-shadow-subtle">
               Track your progress
             </span>
           </Button>
@@ -363,19 +367,25 @@ export default function UnifiedDashboard() {
       case 'create':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user as any} defaultMode="story" />
+            <GlassStoryCreatorWrapper>
+              <UnifiedStoryCreator userProfile={user as any} defaultMode="story" />
+            </GlassStoryCreatorWrapper>
           </ErrorBoundary>
         )
       case 'ai-builder':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user as any} defaultMode="ai-builder" />
+            <GlassStoryCreatorWrapper>
+              <UnifiedStoryCreator userProfile={user as any} defaultMode="ai-builder" />
+            </GlassStoryCreatorWrapper>
           </ErrorBoundary>
         )
       case 'novel-creation':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user as any} defaultMode="novel" />
+            <GlassStoryCreatorWrapper>
+              <UnifiedStoryCreator userProfile={user as any} defaultMode="novel" />
+            </GlassStoryCreatorWrapper>
           </ErrorBoundary>
         )
       case 'analytics':
@@ -389,7 +399,9 @@ export default function UnifiedDashboard() {
         return (
           <CreatorEarningsErrorBoundary>
             {user.is_creator ? (
-              <CreatorEarningsHub />
+              <GlassCreatorEarningsWrapper>
+                <CreatorEarningsHub />
+              </GlassCreatorEarningsWrapper>
             ) : (
               <div className="space-y-6">
                 <CreatorHub userProfile={user as any} />
@@ -471,15 +483,16 @@ export default function UnifiedDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Mobile Header */}
-      <div className="lg:hidden bg-white border-b border-gray-200 p-4">
+      <div className="lg:hidden glass-header p-4 glass-slide-down">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Dashboard</h1>
+          <h1 className="text-xl font-semibold text-white glass-text-shadow">Dashboard</h1>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="glass-nav-link"
           >
             {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -489,16 +502,16 @@ export default function UnifiedDashboard() {
       <div className="flex">
         {/* Sidebar */}
         <div className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out
+          fixed inset-y-0 left-0 z-50 w-64 glass-sidebar transform transition-transform duration-200 ease-in-out glass-slide-right
           lg:translate-x-0 lg:static lg:inset-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
           <div className="p-6">
-            <h2 className="text-xl font-bold text-gray-900">Infinite Pages</h2>
+            <h2 className="text-xl font-bold text-white glass-text-shadow">Infinite Pages</h2>
             {user && (
-              <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm font-medium text-gray-900">{user.email}</p>
-                <Badge variant="outline" className="mt-1">
+              <div className="mt-4 glass-subtle p-3 rounded-lg">
+                <p className="text-sm font-medium text-white glass-text-shadow-subtle">{user.email}</p>
+                <Badge variant="outline" className="mt-1 glass-badge">
                   {user.subscription_tier}
                 </Badge>
               </div>
@@ -514,10 +527,10 @@ export default function UnifiedDashboard() {
                   setSidebarOpen(false)
                 }}
                 className={`
-                  w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors
+                  w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
                   ${activeTab === item.id
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'glass-nav-active text-white glass-text-shadow'
+                    : 'glass-nav-link hover:glass-hover'
                   }
                 `}
               >
@@ -525,7 +538,7 @@ export default function UnifiedDashboard() {
                   <item.icon className="h-5 w-5 mr-3" />
                   <div>
                     <div>{item.label}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">
+                    <div className="text-xs text-white/60 glass-text-shadow-subtle mt-0.5">
                       {item.description}
                     </div>
                   </div>
@@ -537,7 +550,7 @@ export default function UnifiedDashboard() {
 
         {/* Main Content */}
         <div className="flex-1 lg:ml-0">
-          <main className="p-6">
+          <main className="p-6 glass-main-content">
             {getActiveTabContent()}
           </main>
         </div>
@@ -546,7 +559,7 @@ export default function UnifiedDashboard() {
       {/* Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          className="fixed inset-0 z-40 glass-overlay lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

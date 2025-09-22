@@ -21,7 +21,7 @@ interface CompressedChapterSummary {
   consequences: string;      // What this enables/blocks
 }
 
-interface OptimizedContext {
+export interface OptimizedContext {
   // Core facts (always included - ~30 tokens)
   core_facts: {
     genre: string;

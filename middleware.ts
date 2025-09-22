@@ -316,7 +316,10 @@ export async function middleware(req: NextRequest) {
   const blockingThreats = threats.filter(t => t.shouldBlock)
   
   if (blockingThreats.length > 0) {
-    return createSecurityResponse(blockingThreats[0], req)
+    const firstThreat = blockingThreats[0]
+    if (firstThreat) {
+      return createSecurityResponse(firstThreat, req)
+    }
   }
 
   // Log non-blocking threats for monitoring

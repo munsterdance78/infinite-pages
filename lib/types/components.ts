@@ -3,8 +3,8 @@
  */
 
 import type { ReactNode } from 'react'
-// import type { ComponentProps, HTMLAttributes } from 'react'
-// import type { Profile, Story, Chapter, CreatorEarning } from './database'
+import type { ComponentProps, HTMLAttributes } from 'react'
+import type { Profile, Story, Chapter, CreatorEarning } from './database'
 import type { SubscriptionTier } from '@/lib/subscription-config'
 
 // Base component props

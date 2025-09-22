@@ -47,7 +47,7 @@ export function useStoriesWithAuthors(
     queryKey: QUERY_KEYS.storiesWithAuthors(filters),
     queryFn: () => queryOptimizer.getStoriesWithAuthors(filters),
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     ...options
   })
 }
@@ -60,7 +60,7 @@ export function useUserStoriesWithCounts(
     queryKey: QUERY_KEYS.userStoriesWithCounts(userId),
     queryFn: () => queryOptimizer.getUserStoriesWithCounts(userId),
     staleTime: 2 * 60 * 1000, // 2 minutes
-    cacheTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 5 * 60 * 1000, // 5 minutes
     enabled: !!userId,
     ...options
   })
@@ -74,7 +74,7 @@ export function useStoriesWithChaptersBatch(
     queryKey: ['stories', 'batch', 'chapters', storyIds.sort()],
     queryFn: () => queryOptimizer.getStoriesWithChaptersBatch(storyIds),
     staleTime: 3 * 60 * 1000, // 3 minutes
-    cacheTime: 6 * 60 * 1000, // 6 minutes
+    gcTime: 6 * 60 * 1000, // 6 minutes
     enabled: storyIds.length > 0,
     ...options
   })
@@ -90,7 +90,7 @@ export function useCreatorEarningsWithStats(
     queryKey: QUERY_KEYS.earningsStats(userId, period),
     queryFn: () => queryOptimizer.getCreatorEarningsWithStats(userId, period),
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     enabled: !!userId,
     ...options
   })
@@ -106,7 +106,7 @@ export function useAIUsageAnalytics(
     queryKey: QUERY_KEYS.aiAnalytics(userId, period),
     queryFn: () => queryOptimizer.getAIUsageAnalytics(userId, period),
     staleTime: 10 * 60 * 1000, // 10 minutes
-    cacheTime: 15 * 60 * 1000, // 15 minutes
+    gcTime: 15 * 60 * 1000, // 15 minutes
     enabled: !!userId,
     ...options
   })
@@ -134,7 +134,7 @@ export function useApiQuery<T>(
       return response.json()
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     retry: (failureCount, error: any) => {
       // Don't retry on 4xx errors
       if (error?.status >= 400 && error?.status < 500) {
@@ -253,7 +253,7 @@ export function useDeleteStoryMutation() {
 
       // Invalidate list queries
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.stories })
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.userStories })
+      queryClient.invalidateQueries({ queryKey: ['stories', 'user'] })
     }
   })
 }
@@ -317,7 +317,7 @@ export function useQueryPerformance() {
     queryKey: ['query-performance'],
     queryFn: () => queryOptimizer.getPerformanceMetrics(),
     staleTime: 30 * 1000, // 30 seconds
-    cacheTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
     refetchInterval: 30 * 1000 // Refresh every 30 seconds
   })
 }

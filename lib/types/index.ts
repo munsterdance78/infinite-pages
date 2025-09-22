@@ -38,16 +38,16 @@ export type {
   Chapter,
   CreatorEarning,
   AIUsageLog,
-  SubscriptionPlan,
-  ProfileInsert,
-  StoryInsert,
-  ChapterInsert,
-  CreatorEarningInsert,
-  AIUsageLogInsert,
-  ProfileUpdate,
-  StoryUpdate,
-  ChapterUpdate,
-  CreatorEarningUpdate,
+  // SubscriptionPlan, (commented out - not available)
+  // ProfileInsert,
+  // StoryInsert,
+  // ChapterInsert,
+  // CreatorEarningInsert,
+  // AIUsageLogInsert,
+  // ProfileUpdate,
+  // StoryUpdate,
+  // ChapterUpdate,
+  // CreatorEarningUpdate,
   StoryWithChapters,
   StoryWithEarnings,
   ProfileWithStats,
@@ -161,13 +161,13 @@ export {
   isApiResponse,
   isApiError,
   isValidationError,
-  isProfile,
-  isStory,
-  isChapter,
-  isCreatorEarning,
-  isStoryGenerationResponse,
-  isStreamingChunk,
-  isAIServiceError
+  // isProfile, (not implemented)
+  // isStory, (not implemented)
+  // isChapter, (not implemented)
+  // isCreatorEarning, (not implemented)
+  // isStoryGenerationResponse, (not implemented)
+  // isStreamingChunk, (not implemented)
+  // isAIServiceError (not implemented)
 } from './api'
 
 export {

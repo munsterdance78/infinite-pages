@@ -13,20 +13,20 @@ export type Story = Database['public']['Tables']['stories']['Row']
 export type Chapter = Database['public']['Tables']['chapters']['Row']
 export type CreatorEarning = Database['public']['Tables']['creator_earnings']['Row']
 export type AIUsageLog = Database['public']['Tables']['ai_usage_logs']['Row']
-export type SubscriptionPlan = Database['public']['Tables']['subscription_plans']['Row']
+// export type SubscriptionPlan = Database['public']['Tables']['subscription_plans']['Row']
 
-// Insert types for new records
-export type ProfileInsert = Database['public']['Tables']['profiles']['Insert']
-export type StoryInsert = Database['public']['Tables']['stories']['Insert']
-export type ChapterInsert = Database['public']['Tables']['chapters']['Insert']
-export type CreatorEarningInsert = Database['public']['Tables']['creator_earnings']['Insert']
-export type AIUsageLogInsert = Database['public']['Tables']['ai_usage_logs']['Insert']
+// Insert types for new records (commented out - not available in current schema)
+// export type ProfileInsert = Database['public']['Tables']['profiles']['Insert']
+// export type StoryInsert = Database['public']['Tables']['stories']['Insert']
+// export type ChapterInsert = Database['public']['Tables']['chapters']['Insert']
+// export type CreatorEarningInsert = Database['public']['Tables']['creator_earnings']['Insert']
+// export type AIUsageLogInsert = Database['public']['Tables']['ai_usage_logs']['Insert']
 
-// Update types for existing records
-export type ProfileUpdate = Database['public']['Tables']['profiles']['Update']
-export type StoryUpdate = Database['public']['Tables']['stories']['Update']
-export type ChapterUpdate = Database['public']['Tables']['chapters']['Update']
-export type CreatorEarningUpdate = Database['public']['Tables']['creator_earnings']['Update']
+// Update types for existing records (commented out - not available in current schema)
+// export type ProfileUpdate = Database['public']['Tables']['profiles']['Update']
+// export type StoryUpdate = Database['public']['Tables']['stories']['Update']
+// export type ChapterUpdate = Database['public']['Tables']['chapters']['Update']
+// export type CreatorEarningUpdate = Database['public']['Tables']['creator_earnings']['Update']
 
 // Enhanced types with relationships
 export interface StoryWithChapters extends Story {
@@ -261,12 +261,12 @@ export function isCreatorEarning(obj: unknown): obj is CreatorEarning {
          'id' in obj && 'user_id' in obj && 'amount_usd' in obj
 }
 
-// Utility types for database operations
-export type DatabaseInsert<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Insert']
+// Utility types for database operations (commented out - Insert/Update not available)
+// export type DatabaseInsert<T extends keyof Database['public']['Tables']> =
+//   Database['public']['Tables'][T]['Insert']
 
-export type DatabaseUpdate<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Update']
+// export type DatabaseUpdate<T extends keyof Database['public']['Tables']> =
+//   Database['public']['Tables'][T]['Update']
 
 export type DatabaseRow<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row']
@@ -277,10 +277,10 @@ export interface TypedSupabaseClient {
     table: T
   ): {
     select<K extends string = '*'>(columns?: K): QueryBuilder<DatabaseRow<T>>
-    insert(data: DatabaseInsert<T> | DatabaseInsert<T>[]): QueryBuilder<DatabaseRow<T>>
-    update(data: DatabaseUpdate<T>): QueryBuilder<DatabaseRow<T>>
+    insert(data: any | any[]): QueryBuilder<DatabaseRow<T>>
+    update(data: any): QueryBuilder<DatabaseRow<T>>
     delete(): QueryBuilder<DatabaseRow<T>>
-    upsert(data: DatabaseInsert<T> | DatabaseInsert<T>[]): QueryBuilder<DatabaseRow<T>>
+    upsert(data: any | any[]): QueryBuilder<DatabaseRow<T>>
   }
 }
 

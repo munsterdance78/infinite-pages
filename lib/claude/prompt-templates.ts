@@ -47,7 +47,7 @@ TARGET STRUCTURE:
 
 Return structured JSON:
 {
-  "title": "${'{title}' || 'Untitled Story'}",
+  "title": "\${title || 'Untitled Story'}",
   "genre": "${'{genre}'}",
   "premise": "${'{premise}'}",
   "mainCharacters": [

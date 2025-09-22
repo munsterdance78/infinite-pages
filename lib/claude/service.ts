@@ -347,7 +347,7 @@ Make this chapter compelling, well-written, and integral to the overall story.`
 
     // Add token optimization analytics
     if (tokenAnalysis) {
-      result.optimization = {
+      (result as any).optimization = {
         tokensSaved: tokenAnalysis.before_optimization - tokenAnalysis.after_optimization,
         compressionRatio: tokenAnalysis.compression_ratio,
         costSavings: tokenAnalysis.cost_savings_usd,

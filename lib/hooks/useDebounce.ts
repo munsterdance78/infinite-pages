@@ -74,7 +74,9 @@ export function useIntersectionObserver(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting)
+        if (entry) {
+          setIsIntersecting(entry.isIntersecting)
+        }
       },
       {
         threshold: 0.1,
@@ -157,7 +159,7 @@ export function usePerformanceMonitor(componentName: string) {
 
 // Memory usage monitoring hook
 export function useMemoryMonitor() {
-  const [memoryInfo, setMemoryInfo] = useState<MemoryInfo | null>(null)
+  const [memoryInfo, setMemoryInfo] = useState<any | null>(null)
 
   useEffect(() => {
     const updateMemoryInfo = () => {
@@ -200,9 +202,11 @@ export function useComponentVisibility() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting)
-        if (entry.isIntersecting) {
-          setWasVisible(true)
+        if (entry) {
+          setIsVisible(entry.isIntersecting)
+          if (entry.isIntersecting) {
+            setWasVisible(true)
+          }
         }
       },
       { threshold: 0.1 }
@@ -261,12 +265,12 @@ export function useIdleCallback(
   dependencies: React.DependencyList
 ) {
   useEffect(() => {
-    const handle = requestIdleCallback ?
+    const handle = typeof requestIdleCallback !== 'undefined' ?
       requestIdleCallback(callback) :
       setTimeout(callback, 0)
 
     return () => {
-      if (requestIdleCallback) {
+      if (typeof requestIdleCallback !== 'undefined') {
         cancelIdleCallback(handle as number)
       } else {
         clearTimeout(handle as number)

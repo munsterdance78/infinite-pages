@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import '../styles/glassmorphism.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import ErrorFallback from '@/components/ErrorFallback'
 
@@ -12,21 +13,21 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Infinite-Pages - AI Story Generation Platform',
-  description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.',
+  title: 'Infinite Pages - Where Every Story Becomes Infinite',
+  description: 'Transform any idea into boundless story universes that grow endlessly. Your AI creative partner awaits - explore limitless possibilities together.',
   keywords: ['AI', 'story generation', 'writing', 'creative writing', 'artificial intelligence'],
   authors: [{ name: 'Infinite-Pages Team' }],
   robots: 'index, follow',
   openGraph: {
-    title: 'Infinite-Pages - AI Story Generation Platform',
-    description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.',
+    title: 'Infinite Pages - Where Every Story Becomes Infinite',
+    description: 'Transform any idea into boundless story universes that grow endlessly. Your AI creative partner awaits - explore limitless possibilities together.',
     type: 'website',
     locale: 'en_US'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Infinite-Pages - AI Story Generation Platform',
-    description: 'Create unlimited stories with AI assistance. Generate foundations, write chapters, and bring your imagination to life.'
+    title: 'Infinite Pages - Where Every Story Becomes Infinite',
+    description: 'Transform any idea into boundless story universes that grow endlessly. Your AI creative partner awaits - explore limitless possibilities together.'
   }
 }
 
@@ -54,7 +55,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased glass-body`}>
+        {/* Victorian street background for all pages */}
+        <div className="fixed inset-0 glass-page-background"
+             style={{
+               backgroundImage: 'url(/victorian-street.jpg)',
+               backgroundSize: 'cover',
+               backgroundPosition: 'center',
+               backgroundAttachment: 'fixed',
+               zIndex: -1
+             }}
+        />
+
         {/* Root-level error boundary catches any errors in the entire app */}
         <ErrorBoundary
           level="page"
@@ -62,10 +74,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fallback={<ErrorFallback />}
         >
           {/* Main application content */}
-          <main className="min-h-screen">
+          <main className="min-h-screen relative">
             {children}
           </main>
-          
+
         </ErrorBoundary>
       </body>
     </html>

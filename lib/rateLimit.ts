@@ -38,7 +38,8 @@ class RateLimiter {
   private cleanup() {
     const now = Date.now()
     for (const key in this.store) {
-      if (this.store[key].resetTime < now) {
+      const entry = this.store[key]
+      if (entry && entry.resetTime < now) {
         delete this.store[key]
       }
     }

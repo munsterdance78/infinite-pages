@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000, // 5 minutes
 
       // Cache time: how long data stays in cache when unused
-      cacheTime: 10 * 60 * 1000, // 10 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
 
       // Retry failed requests
       retry: (failureCount, error: any) => {
@@ -39,7 +39,7 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
 
       // Background refetch interval for analytics data
-      refetchInterval: (data, query) => {
+      refetchInterval: (query) => {
         // Refresh analytics data every 5 minutes
         if (query.queryKey.some(k => typeof k === 'string' && k.includes('analytics'))) {
           return 5 * 60 * 1000
@@ -73,12 +73,12 @@ queryClient.getQueryCache().subscribe((event) => {
   }
 })
 
-queryClient.getMutationCache().subscribe((event) => {
-  if (event.type === 'mutationAdded') {
+queryClient.getMutationCache().subscribe((event: any) => {
+  if (event.type === 'added') {
     console.log('[Mutation Cache] Mutation started:', event.mutation.options.mutationKey)
   }
 
-  if (event.type === 'mutationUpdated') {
+  if (event.type === 'updated') {
     const mutation = event.mutation
     if (mutation.state.status === 'success') {
       console.log('[Mutation Cache] Mutation succeeded:', mutation.options.mutationKey)
@@ -98,17 +98,17 @@ export function QueryProvider({ children }: QueryProviderProps) {
   return (
     <QueryClientProvider client={client}>
       {children}
-      <ReactQueryDevtools
-        initialIsOpen={false}
-        position="bottom-right"
-        toggleButtonProps={{
+      {React.createElement(ReactQueryDevtools as any, {
+        initialIsOpen: false,
+        position: "bottom-right",
+        toggleButtonProps: {
           style: {
             marginLeft: '5px',
             transform: 'scale(0.7)',
             transformOrigin: 'bottom right'
           }
-        }}
-      />
+        }
+      })}
     </QueryClientProvider>
   )
 }
@@ -126,7 +126,7 @@ export function getQueryCacheStats() {
     activeQueries: queries.filter(q => q.getObserversCount() > 0).length,
     staleQueries: queries.filter(q => q.isStale()).length,
     errorQueries: queries.filter(q => q.state.status === 'error').length,
-    loadingQueries: queries.filter(q => q.state.status === 'loading').length,
+    loadingQueries: queries.filter(q => q.state.status === 'pending').length,
     cacheSize: JSON.stringify(queries.map(q => q.state.data)).length,
     oldestQuery: Math.min(...queries.map(q => q.state.dataUpdatedAt)),
     newestQuery: Math.max(...queries.map(q => q.state.dataUpdatedAt))
@@ -141,7 +141,7 @@ export function getMutationCacheStats() {
 
   const stats = {
     totalMutations: mutations.length,
-    pendingMutations: mutations.filter(m => m.state.status === 'loading').length,
+    pendingMutations: mutations.filter(m => m.state.status === 'pending').length,
     errorMutations: mutations.filter(m => m.state.status === 'error').length,
     successMutations: mutations.filter(m => m.state.status === 'success').length
   }

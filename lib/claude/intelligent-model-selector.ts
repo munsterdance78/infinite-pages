@@ -153,21 +153,38 @@ export class IntelligentModelSelector {
     // Sort by score (highest first)
     const sortedCandidates = candidates
       .map((model, index) => ({ model, score: scores[index] }))
-      .sort((a, b) => b.score - a.score)
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
 
     const bestCandidate = sortedCandidates[0]
+    if (!bestCandidate) {
+      // Fallback to first available model if no candidates
+      const fallbackModel = candidates[0]
+      if (!fallbackModel) {
+        throw new Error('No models available for selection')
+      }
+      return {
+        selectedModel: fallbackModel.apiName,
+        confidence: 0.1,
+        expectedCost: this.calculateExpectedCost(fallbackModel, task.estimatedTokens),
+        expectedQuality: this.estimateQuality(fallbackModel, task),
+        reasoning: ['No suitable models found, using fallback'],
+        alternatives: [],
+        optimizations: []
+      }
+    }
+
     const selectedModel = bestCandidate.model
 
     const expectedCost = this.calculateExpectedCost(selectedModel, task.estimatedTokens)
     const expectedQuality = this.estimateQuality(selectedModel, task)
 
     // Generate reasoning for selection
-    const reasoning = this.generateSelectionReasoning(selectedModel, task, bestCandidate.score)
+    const reasoning = this.generateSelectionReasoning(selectedModel, task, bestCandidate.score || 0)
 
     // Get alternatives
     const alternatives = sortedCandidates.slice(1, 3).map(candidate => ({
       model: candidate.model.name,
-      score: candidate.score,
+      score: candidate.score || 0,
       cost: this.calculateExpectedCost(candidate.model, task.estimatedTokens),
       tradeoffs: this.generateTradeoffs(candidate.model, selectedModel, task)
     }))
@@ -177,7 +194,7 @@ export class IntelligentModelSelector {
 
     return {
       selectedModel: selectedModel.apiName,
-      confidence: this.calculateConfidence(bestCandidate.score, scores),
+      confidence: this.calculateConfidence(bestCandidate.score || 0, scores),
       expectedCost,
       expectedQuality,
       reasoning,
@@ -383,6 +400,8 @@ export class IntelligentModelSelector {
     if (allScores.length < 2) return 1.0
 
     const secondBestScore = allScores.sort((a, b) => b - a)[1]
+    if (secondBestScore === undefined) return 1.0
+
     const margin = bestScore - secondBestScore
 
     // Higher margin = higher confidence
@@ -470,6 +489,14 @@ export class IntelligentModelSelector {
     }
 
     const bestOption = batchOptions[0]
+    if (!bestOption) {
+      return {
+        model: 'claude-3-haiku-20240307',
+        estimatedCost: 0,
+        feasible: false,
+        recommendations: ['No feasible options found']
+      }
+    }
 
     if (bestOption.estimatedCost > totalBudget * 0.9) {
       recommendations.push('⚠️ Near budget limit - monitor spending closely')
@@ -477,8 +504,10 @@ export class IntelligentModelSelector {
 
     if (batchOptions.length > 1) {
       const alternative = batchOptions[1]
-      const savings = bestOption.estimatedCost - alternative.estimatedCost
-      recommendations.push(`Alternative: Save $${savings.toFixed(4)} with slight quality trade-off`)
+      if (alternative) {
+        const savings = bestOption.estimatedCost - alternative.estimatedCost
+        recommendations.push(`Alternative: Save $${savings.toFixed(4)} with slight quality trade-off`)
+      }
     }
 
     return {
@@ -512,7 +541,10 @@ export class IntelligentModelSelector {
 
       if (filteredHistory.length === 0) return
 
-      const model = filteredHistory[0].model
+      const firstRecord = filteredHistory[0]
+      if (!firstRecord) return
+
+      const model = firstRecord.model
       analytics.modelUsage[model] = (analytics.modelUsage[model] || 0) + filteredHistory.length
 
       const avgCost = filteredHistory.reduce((sum, r) => sum + r.actualCost, 0) / filteredHistory.length

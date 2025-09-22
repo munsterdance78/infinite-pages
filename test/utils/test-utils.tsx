@@ -33,7 +33,7 @@ export const createMockEarningsData = (overrides = {}) => ({
     averageEarningsPerStory: 156.34,
     lifetimeEarnings: 5000.00,
     creatorSharePercentage: 70,
-    ...overrides.summary
+    ...((overrides as any).summary || {})
   },
   storyPerformance: [
     {
@@ -54,7 +54,7 @@ export const createMockEarningsData = (overrides = {}) => ({
       purchase_count: 12,
       latest_purchase: '2024-01-14T15:30:00Z'
     },
-    ...(overrides.storyPerformance || [])
+    ...((overrides as any).storyPerformance || [])
   ],
   recentTransactions: [
     {
@@ -75,18 +75,18 @@ export const createMockEarningsData = (overrides = {}) => ({
       purchaseType: 'story_access',
       createdAt: '2024-01-14T15:30:00Z'
     },
-    ...(overrides.recentTransactions || [])
+    ...((overrides as any).recentTransactions || [])
   ],
   monthlyTrend: [
     { month: 'Dec 2023', credits_earned: 800, usd_earned: 28.00, stories_sold: 15 },
     { month: 'Jan 2024', credits_earned: 1200, usd_earned: 42.00, stories_sold: 22 },
-    ...(overrides.monthlyTrend || [])
+    ...((overrides as any).monthlyTrend || [])
   ],
   profile: {
     creatorTier: 'gold',
     subscriptionTier: 'premium',
     isCreator: true,
-    ...overrides.profile
+    ...((overrides as any).profile || {})
   },
   meta: {
     view: 'enhanced',
@@ -94,7 +94,7 @@ export const createMockEarningsData = (overrides = {}) => ({
     responseTime: 45,
     cached: false,
     cacheAge: 0,
-    ...overrides.meta
+    ...((overrides as any).meta || {})
   }
 })
 
@@ -136,14 +136,14 @@ export const waitForLoadingToFinish = () =>
 
 export const mockFetch = (response: any, status = 200) => {
   const mockResponse = createMockApiResponse(response, status)
-  global.fetch = jest.fn().mockResolvedValue(mockResponse)
+  global.fetch = (jest.fn() as any).mockResolvedValue(mockResponse)
   return fetch as jest.MockedFunction<typeof fetch>
 }
 
 export const expectElementToBeInDocument = (element: HTMLElement | null) => {
-  expect(element).toBeInTheDocument()
+  (expect(element) as any).toBeInTheDocument()
 }
 
 export const expectElementNotToBeInDocument = (element: HTMLElement | null) => {
-  expect(element).not.toBeInTheDocument()
+  (expect(element) as any).not.toBeInTheDocument()
 }

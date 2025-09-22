@@ -636,11 +636,11 @@ export function trackAIOperation(
     totalTokens: inputTokens + outputTokens,
     actualCost,
     estimatedCost: actualCost, // Could be different if using predictions
-    qualityScore: options.qualityScore,
     responseTime: options.responseTime || 0,
     cacheHit: options.cacheHit || false,
-    batchId: options.batchId,
-    promptTemplate: options.promptTemplate
+    ...(options.qualityScore !== undefined && { qualityScore: options.qualityScore }),
+    ...(options.batchId && { batchId: options.batchId }),
+    ...(options.promptTemplate && { promptTemplate: options.promptTemplate })
   })
 }
 
