@@ -56,16 +56,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${inter.className} antialiased glass-body`}>
-        {/* Victorian street background for all pages */}
-        <div className="fixed inset-0 glass-page-background"
-             style={{
-               backgroundImage: 'url(/victorian-street.jpg)',
-               backgroundSize: 'cover',
-               backgroundPosition: 'center',
-               backgroundAttachment: 'fixed',
-               zIndex: -1
-             }}
-        />
 
         {/* Root-level error boundary catches any errors in the entire app */}
         <ErrorBoundary

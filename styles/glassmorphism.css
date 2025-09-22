@@ -42,15 +42,7 @@
   --elevated-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
 }
 
-/* Victorian background with atmospheric depth */
-body {
-  background:
-    var(--atmospheric-overlay),
-    url('/public/victorian-street.jpg') center/cover no-repeat fixed;
-  background-attachment: fixed;
-  color: white;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
+/* Victorian background with atmospheric depth will be applied via .glass-body class */
 
 /* Ensure all text has proper contrast on Victorian background */
 body,
@@ -666,7 +658,11 @@ body * {
 
 /* Body and Page Background */
 .glass-body {
-  background: transparent;
+  background:
+    var(--atmospheric-overlay),
+    url('/victorian-street.jpg') center/cover no-repeat fixed;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 .glass-page-background {
