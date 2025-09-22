@@ -34,7 +34,7 @@ interface CreditPurchaseProps {
 export default function CreditPurchase({ onSuccess, onClose }: CreditPurchaseProps) {
   return (
     <Elements stripe={stripePromise}>
-      <CreditPurchaseForm onSuccess={onSuccess} onClose={onClose} />
+      <CreditPurchaseForm onSuccess={onSuccess || (() => {})} onClose={onClose || (() => {})} />
     </Elements>
   )
 }

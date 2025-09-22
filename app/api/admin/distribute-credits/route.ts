@@ -208,14 +208,17 @@ export async function GET(request: NextRequest) {
       .limit(1000)
 
     // Group by distribution month
-    const distributionHistory = distributions?.reduce((acc, transaction) => {
+    const distributionHistory = distributions?.reduce((acc: Record<string, {
+      totalCredits: number;
+      totalUsers: number;
+      byTier: Record<string, { users: number; credits: number }>;
+    }>, transaction) => {
       const month = transaction.metadata?.distribution_month || 'unknown'
       if (!acc[month]) {
         acc[month] = {
-          month,
           totalCredits: 0,
           totalUsers: 0,
-          byTier: {}
+          byTier: {} as Record<string, { users: number; credits: number }>
         }
       }
 
@@ -230,7 +233,7 @@ export async function GET(request: NextRequest) {
       acc[month].byTier[tier].credits += transaction.amount
 
       return acc
-    }, {} as Record<string, { users: number; credits: number; bonusCredits: number }>) || {}
+    }, {}) || {}
 
     return NextResponse.json({
       distributionHistory: Object.values(distributionHistory)

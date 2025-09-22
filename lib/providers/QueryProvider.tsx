@@ -105,7 +105,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
           style: {
             marginLeft: '5px',
             transform: 'scale(0.7)',
-            transformOrigin: 'bottom right',
+            transformOrigin: 'bottom right'
           }
         }}
       />
@@ -178,7 +178,7 @@ export function prefetchCriticalData(userId: string) {
   queryClient.prefetchQuery({
     queryKey: ['creator-earnings', userId, 'current_month', 'stats'],
     queryFn: async () => {
-      const response = await fetch(`/api/creator/earnings?period=current_month`)
+      const response = await fetch('/api/creator/earnings?period=current_month')
       return response.json()
     },
     staleTime: 5 * 60 * 1000
@@ -188,7 +188,7 @@ export function prefetchCriticalData(userId: string) {
   queryClient.prefetchQuery({
     queryKey: ['ai-usage', userId, 'current_month', 'analytics'],
     queryFn: async () => {
-      const response = await fetch(`/api/ai-usage/track?period=current_month`)
+      const response = await fetch('/api/ai-usage/track?period=current_month')
       return response.json()
     },
     staleTime: 10 * 60 * 1000

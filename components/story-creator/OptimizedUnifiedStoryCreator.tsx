@@ -269,11 +269,11 @@ const OptimizedUnifiedStoryCreator = React.memo(function OptimizedUnifiedStoryCr
 
   const getRequiredTokens = useCallback((mode: CreationMode): number => {
     switch (mode) {
-      case 'story': return TOKEN_COSTS.FOUNDATION + TOKEN_COSTS.CHAPTER
-      case 'novel': return TOKEN_COSTS.FOUNDATION + (TOKEN_COSTS.CHAPTER * 3)
-      case 'choice-book': return TOKEN_COSTS.FOUNDATION + (TOKEN_COSTS.CHAPTER * 2)
-      case 'ai-builder': return TOKEN_COSTS.CHAPTER
-      default: return TOKEN_COSTS.FOUNDATION + TOKEN_COSTS.CHAPTER
+      case 'story': return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
+      case 'novel': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 3)
+      case 'choice-book': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 2)
+      case 'ai-builder': return TOKEN_COSTS.CHAPTER_GENERATION
+      default: return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
     }
   }, [])
 
@@ -370,7 +370,7 @@ const OptimizedUnifiedStoryCreator = React.memo(function OptimizedUnifiedStoryCr
   if (showUpgradePrompt) {
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <PremiumUpgradePrompt userProfile={userProfile} onClose={() => setShowUpgradePrompt(false)} />
+        <PremiumUpgradePrompt feature="story_creation" currentTier={userProfile.subscription_tier} />
       </Suspense>
     )
   }

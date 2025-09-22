@@ -2,7 +2,8 @@
  * React Query hooks for optimized data fetching
  */
 
-import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryOptimizer } from '@/lib/database/query-optimizer'
 import type { Story, Profile, CreatorEarning, AIUsageLog } from '@/lib/types/database'
 
@@ -34,7 +35,7 @@ export const QUERY_KEYS = {
   // Analytics queries
   analytics: ['analytics'] as const,
   userAnalytics: (userId: string, period: string) => ['analytics', userId, period] as const,
-  cacheAnalytics: (period: string) => ['analytics', 'cache', period] as const,
+  cacheAnalytics: (period: string) => ['analytics', 'cache', period] as const
 } as const
 
 // Stories hooks
@@ -122,7 +123,7 @@ export function useApiQuery<T>(
     queryFn: async (): Promise<T> => {
       const response = await fetch(endpoint, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         }
       })
 
@@ -178,7 +179,7 @@ export function useCreateStoryMutation() {
       const response = await fetch('/api/stories', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(storyData)
       })
@@ -209,7 +210,7 @@ export function useUpdateStoryMutation() {
       const response = await fetch(`/api/stories/${storyId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(updates)
       })

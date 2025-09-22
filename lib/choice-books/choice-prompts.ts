@@ -117,12 +117,12 @@ Focus on meaningful choices that affect character development, plot progression,
     return `Generate Chapter ${chapterNumber} with choices for an interactive story.
 
 STORY CONTEXT:
-Title: ${context.story?.title}
-Genre: ${context.story?.genre}
-Current situation: ${context.optimized_summary}
+Title: ${(context as any).story?.title}
+Genre: ${(context as any).story?.genre}
+Current situation: ${(context as any).optimized_summary}
 
 CHARACTER STATUS:
-${context.key_characters?.map(char => `${char.name}: ${char.current_state || 'Active in story'}`).join('\n') || 'No specific character states tracked.'}
+${(context as any).key_characters?.map((char: any) => `${char.name}: ${char.current_state || 'Active in story'}`).join('\n') || 'No specific character states tracked.'}
 
 CHOICE HISTORY:
 ${choiceHistorySummary}
@@ -372,7 +372,7 @@ export class ChoiceContextEnhancer {
 
   private static calculateEndingProximity(choices: ChoiceMade[], complexity: ChoiceComplexity): number {
     // Calculate how close we are to an ending (0-1 scale)
-    const expectedLength = complexity.estimatedChapterCount || 10
+    const expectedLength = (complexity as any).estimatedChapterCount || 10
     const currentProgress = choices.length
     return Math.min(currentProgress / expectedLength, 1)
   }

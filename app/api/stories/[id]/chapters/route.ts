@@ -140,9 +140,9 @@ Make this chapter compelling and well-written.`
             messages: [{ role: 'user', content: prompt }]
           })
 
-          const content = message.content[0].type === 'text' ? message.content[0].text : ''
-          const inputTokens = message.usage.input_tokens
-          const outputTokens = message.usage.output_tokens
+          const content = message.content?.[0]?.type === 'text' ? message.content[0].text : ''
+          const inputTokens = message.usage?.input_tokens || 0
+          const outputTokens = message.usage?.output_tokens || 0
 
           // Parse AI response
           let chapterData

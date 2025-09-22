@@ -263,9 +263,9 @@ export class ChoiceBookAnalytics {
       overview: {
         totalReaders: readerPaths?.length || 0,
         totalChoicesMade: readerPaths?.reduce((sum, path) => sum + (path.choices_made?.length || 0), 0) || 0,
-        averagePathLength: pathAnalysis.averagePathLength,
-        completionRate: pathAnalysis.completionRate,
-        averagePlaytime: pathAnalysis.averagePlaytime,
+        averagePathLength: (pathAnalysis as any).averagePathLength,
+        completionRate: (pathAnalysis as any).completionRate,
+        averagePlaytime: (pathAnalysis as any).averagePlaytime,
         replayRate: behaviorAnalysis.replayRate
       },
       choiceAnalytics: choiceAnalytics || [],
@@ -472,10 +472,10 @@ export class ChoiceBookAnalytics {
   }
 
   private analyzeEndingDistribution(paths: any[]) {
-    const endingCounts = {}
+    const endingCounts: any = {}
     paths.forEach(path => {
       if (path.discovered_endings?.length > 0) {
-        path.discovered_endings.forEach(ending => {
+        path.discovered_endings.forEach((ending: any) => {
           endingCounts[ending] = (endingCounts[ending] || 0) + 1
         })
       }
@@ -522,7 +522,7 @@ export class ChoiceBookAnalytics {
 
     return Array.from(groups.values()).map(group => ({
       ...group,
-      averageCompletion: group.completions.reduce((sum, c) => sum + c, 0) / group.completions.length
+      averageCompletion: group.completions.reduce((sum: number, c: number) => sum + c, 0) / group.completions.length
     }))
   }
 
@@ -536,10 +536,10 @@ export class ChoiceBookAnalytics {
   }
 
   private calculateEndingDistribution(paths: any[]) {
-    const distribution = {}
+    const distribution: any = {}
     paths.forEach(path => {
       if (path.discovered_endings) {
-        path.discovered_endings.forEach(ending => {
+        path.discovered_endings.forEach((ending: any) => {
           distribution[ending] = (distribution[ending] || 0) + 1
         })
       }

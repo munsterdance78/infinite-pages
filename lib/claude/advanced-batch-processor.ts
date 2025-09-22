@@ -222,6 +222,7 @@ export class AdvancedBatchProcessor {
     for (const queue of allQueues) {
       for (let i = queue.length - 1; i >= 0 && ready.length < maxCount; i--) {
         const operation = queue[i]
+        if (!operation) continue
 
         // Check dependencies
         if (this.areDependenciesMet(operation)) {
@@ -249,7 +250,7 @@ export class AdvancedBatchProcessor {
     const deps = this.dependencies.get(operation.id)
     if (!deps) return true
 
-    for (const depId of deps) {
+    for (const depId of Array.from(deps)) {
       const result = this.results.get(depId)
       if (!result || !result.success) {
         return false
@@ -328,14 +329,18 @@ export class AdvancedBatchProcessor {
     const variables = operation.params.variables || []
     const prompt = optimizedPromptTemplateManager.renderTemplate(operation.templateId!, variables)
 
-    return await claudeService.generateContent({
+    const requestParams: any = {
       prompt,
       model: this.getModelName(operation.model || 'sonnet'),
       maxTokens: operation.params.maxTokens || 4000,
       temperature: operation.params.temperature || 0.7,
-      userId: operation.userId,
       operation: operation.type
-    })
+    }
+    if (operation.userId) {
+      requestParams.userId = operation.userId
+    }
+
+    return await claudeService.generateContent(requestParams)
   }
 
   /**
@@ -364,9 +369,7 @@ export class AdvancedBatchProcessor {
         })
 
       case 'analysis':
-        return await claudeService.analyzeContent(operation.params.content, {
-          model: modelName
-        })
+        return await claudeService.analyzeContent(operation.params.content)
 
       default:
         return await claudeService.generateContent({

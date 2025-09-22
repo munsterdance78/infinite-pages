@@ -134,7 +134,7 @@ export function useCreatorEarnings(options: UseCreatorEarningsOptions = {}) {
     })
 
     const response = await fetch(`/api/creators/earnings?${viewSearchParams}`, {
-      signal,
+      signal: signal || null,
       headers: { 'Cache-Control': 'no-cache' }
     })
 
@@ -267,7 +267,7 @@ export function useCreatorEarnings(options: UseCreatorEarningsOptions = {}) {
     if (!state.data?.profile.isCreator) return
 
     updateLoading({ payoutHistory: true })
-    updateError({ payoutHistory: undefined })
+    updateError({ payoutHistory: null as any })
 
     try {
       const response = await fetch('/api/creators/payout-history')
@@ -294,7 +294,7 @@ export function useCreatorEarnings(options: UseCreatorEarningsOptions = {}) {
     if (!state.data?.payoutInfo.canRequestPayout) return
 
     updateLoading({ requestingPayout: true })
-    updateError({ payout: undefined })
+    updateError({ payout: null as any })
 
     try {
       const response = await fetch('/api/creators/payout', {

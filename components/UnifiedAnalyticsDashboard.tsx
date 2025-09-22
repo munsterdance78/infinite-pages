@@ -143,12 +143,12 @@ export default function UnifiedAnalyticsDashboard({
         aiUsage: {
           totalTokensUsed: userProfile.tokens_used_total || 0,
           totalCostUSD: 0,
-          operationBreakdown: [],
-          modelBreakdown: [],
+          operationBreakdown: {},
+          modelBreakdown: {},
           dailyUsage: [],
           monthlySavings: 0,
           efficiency: 0
-        },
+        } as any,
         performance: {
           weeklyGrowth: 0,
           monthlyGrowth: 0,
@@ -205,7 +205,7 @@ export default function UnifiedAnalyticsDashboard({
   }
 
   const calculateCostEfficiency = (data: UnifiedAnalyticsData): number => {
-    const totalCost = data.userStats.totalCostUSD + data.aiUsage.totalCostUSD
+    const totalCost = (data.userStats as any).totalCostUSD + (data.aiUsage as any).totalCostUSD
     const savings = data.cacheMetrics.totalCostSavings
     return totalCost > 0 ? Math.round((savings / totalCost) * 100) : 0
   }
@@ -217,7 +217,7 @@ export default function UnifiedAnalyticsDashboard({
   }
 
   if (loading) {
-    return <LoadingFallback message="Loading unified analytics..." />
+    return <LoadingFallback />
   }
 
   if (!analyticsData) {
@@ -486,9 +486,9 @@ export default function UnifiedAnalyticsDashboard({
                 <CardTitle className="text-sm font-medium">Total Usage</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatTokens(analyticsData.aiUsage.totalTokensUsed)}</div>
+                <div className="text-2xl font-bold">{formatTokens((analyticsData.aiUsage as any).totalTokensUsed)}</div>
                 <p className="text-xs text-muted-foreground">
-                  {formatCost(analyticsData.aiUsage.totalCostUSD)} cost
+                  {formatCost((analyticsData.aiUsage as any).totalCostUSD)} cost
                 </p>
               </CardContent>
             </Card>
@@ -498,8 +498,8 @@ export default function UnifiedAnalyticsDashboard({
                 <CardTitle className="text-sm font-medium">Efficiency</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{analyticsData.aiUsage.efficiency}%</div>
-                <Progress value={analyticsData.aiUsage.efficiency} className="mt-2" />
+                <div className="text-2xl font-bold">{(analyticsData.aiUsage as any).efficiency}%</div>
+                <Progress value={(analyticsData.aiUsage as any).efficiency} className="mt-2" />
               </CardContent>
             </Card>
 
@@ -508,7 +508,7 @@ export default function UnifiedAnalyticsDashboard({
                 <CardTitle className="text-sm font-medium">Monthly Savings</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCost(analyticsData.aiUsage.monthlySavings)}</div>
+                <div className="text-2xl font-bold">{formatCost((analyticsData.aiUsage as any).monthlySavings)}</div>
                 <p className="text-xs text-muted-foreground">vs standard pricing</p>
               </CardContent>
             </Card>
@@ -520,7 +520,7 @@ export default function UnifiedAnalyticsDashboard({
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {analyticsData.aiUsage.operationBreakdown?.map((op, index) => (
+                {(analyticsData.aiUsage as any).operationBreakdown?.map((op: any, index: number) => (
                   <div key={index} className="flex justify-between items-center">
                     <span className="text-sm">{op.operation_type}</span>
                     <div className="flex items-center gap-2">

@@ -34,7 +34,7 @@ function cleanupCache() {
   const now = Date.now()
   if (now - lastCacheCleanup < CACHE_CLEANUP_INTERVAL) return
 
-  for (const [key, entry] of earningsCache.entries()) {
+  for (const [key, entry] of Array.from(earningsCache.entries())) {
     if (now > entry.expiry) {
       earningsCache.delete(key)
     }
@@ -84,7 +84,7 @@ function getRelationData(relation: Database['public']['Tables']['creator_earning
 }
 
 // Validate and parse query parameters
-function parseQueryParams(searchParams: URLSearchParams) {
+function parseQueryParams(searchParams: URLSearchParams): Record<string, any> {
   const view = searchParams.get('view') || 'enhanced' // basic, enhanced, dashboard
   const period = searchParams.get('period') || 'current_month'
   const includeHistory = searchParams.get('include_history') === 'true'
@@ -183,11 +183,11 @@ function calculateDateRange(period: string) {
 
 // Generate cache key
 // Enhanced cache key generation with compression for large parameter sets
-function generateCacheKey(userId: string, params: Record<string, string>): string {
+function generateCacheKey(userId: string | undefined, params: Record<string, string>): string {
   const paramString = JSON.stringify(params, Object.keys(params).sort())
   const hash = paramString.length > 100 ?
     paramString.slice(0, 50) + '_' + paramString.length : paramString
-  return getCacheKey(userId, params.view, params.period, hash)
+  return getCacheKey(userId || 'anonymous', params.view || 'enhanced', params.period || 'current_month', hash)
 }
 
 // Enhanced cached data retrieval with metadata
@@ -198,7 +198,7 @@ function getCachedData(cacheKey: string): CreatorEarningsResponse | null {
       ...data,
       _cached: true,
       _cacheAge: Date.now() - earningsCache.get(cacheKey)?.timestamp!
-    }
+    } as CreatorEarningsResponse
   }
   return null
 }
@@ -216,11 +216,11 @@ function getCacheStats() {
     totalEntries: earningsCache.size,
     hitRate: 0,
     avgAccessCount: 0,
-    memoryUsage: JSON.stringify([...earningsCache.values()]).length
+    memoryUsage: JSON.stringify(Array.from(earningsCache.values())).length
   }
 
   if (earningsCache.size > 0) {
-    const entries = [...earningsCache.values()]
+    const entries = Array.from(earningsCache.values())
     stats.avgAccessCount = entries.reduce((sum, entry) => sum + entry.accessCount, 0) / entries.length
     stats.hitRate = entries.filter(entry => entry.accessCount > 1).length / entries.length
   }
@@ -250,7 +250,7 @@ export async function GET(request: NextRequest) {
   try {
     // Clean expired cache entries periodically
     if (Math.random() < 0.1) {
-      cleanCache()
+      cleanupCache()
     }
 
     const authResult = await requireCreatorAuth(request)
@@ -268,9 +268,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         ...cachedData,
         meta: {
-          ...cachedData.meta,
           cached: true,
-          cacheAge: cachedData._cacheAge,
+          cacheAge: Date.now() - (earningsCache.get(cacheKey)?.timestamp || Date.now()),
           responseTime: Date.now() - startTime
         }
       })
@@ -918,7 +917,7 @@ function handleExportFormat(data: any, format: string, userEmail: string): NextR
     })
   } else if (format === 'xlsx') {
     const xlsx = generateXLSX(data, userEmail)
-    return new NextResponse(xlsx, {
+    return new NextResponse(xlsx as BodyInit, {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'Content-Disposition': `attachment; filename="creator-earnings-${new Date().toISOString().split('T')[0]}.xlsx"`
@@ -948,7 +947,7 @@ function generateCSV(data: any): string {
     transaction.purchaseType || 'story_access'
   ]) || []
 
-  return [headers.join(','), ...rows.map(row => row.join(','))].join('\n')
+  return [headers.join(','), ...rows.map((row: any) => row.join(','))].join('\n')
 }
 
 // Enhanced XLSX generation with multiple sheets
@@ -1017,7 +1016,7 @@ function createXLSXBuffer(sheets: Array<{ name: string; data: any[][] }>): Buffe
     const range = { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } }
 
     for (let R = 0; R < sheet.data.length; R++) {
-      for (let C = 0; C < sheet.data[R].length; C++) {
+      for (let C = 0; C < (sheet.data[R]?.length || 0); C++) {
         if (range.s.r > R) range.s.r = R
         if (range.s.c > C) range.s.c = C
         if (range.e.r < R) range.e.r = R
@@ -1025,7 +1024,8 @@ function createXLSXBuffer(sheets: Array<{ name: string; data: any[][] }>): Buffe
 
         const cell_address = { c: C, r: R }
         const cell_ref = encodeCell(cell_address)
-        ws[cell_ref] = { v: sheet.data[R][C], t: typeof sheet.data[R][C] === 'number' ? 'n' : 's' }
+        const cellValue = sheet.data[R]?.[C]
+        ws[cell_ref] = { v: cellValue, t: typeof cellValue === 'number' ? 'n' : 's' }
       }
     }
 
@@ -1102,7 +1102,7 @@ async function checkForUpdates(userId: string, supabase: any): Promise<any | nul
 // Clean up old subscriptions
 function cleanupRealtimeSubscriptions() {
   const now = Date.now()
-  for (const [id, sub] of realtimeSubscriptions.entries()) {
+  for (const [id, sub] of Array.from(realtimeSubscriptions.entries())) {
     if (now - sub.lastUpdate > 3600000) { // 1 hour
       realtimeSubscriptions.delete(id)
     }

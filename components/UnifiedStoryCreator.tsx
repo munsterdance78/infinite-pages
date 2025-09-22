@@ -327,7 +327,7 @@ export default function UnifiedStoryCreator({
         genre: formData.genre,
         premise: formData.premise,
         type: mode,
-        status: 'creating',
+        status: 'creating' as any,
         ...getModeSpecificData()
       }
 
@@ -363,11 +363,11 @@ export default function UnifiedStoryCreator({
 
   const getRequiredTokens = (mode: CreationMode): number => {
     switch (mode) {
-      case 'story': return TOKEN_COSTS.FOUNDATION + TOKEN_COSTS.CHAPTER
-      case 'novel': return TOKEN_COSTS.FOUNDATION + (TOKEN_COSTS.CHAPTER * 3)
-      case 'choice-book': return TOKEN_COSTS.FOUNDATION + (TOKEN_COSTS.CHAPTER * 2)
-      case 'ai-builder': return TOKEN_COSTS.CHAPTER
-      default: return TOKEN_COSTS.FOUNDATION + TOKEN_COSTS.CHAPTER
+      case 'story': return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
+      case 'novel': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 3)
+      case 'choice-book': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 2)
+      case 'ai-builder': return TOKEN_COSTS.CHAPTER_GENERATION
+      default: return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
     }
   }
 
@@ -507,7 +507,7 @@ export default function UnifiedStoryCreator({
             <div>
               <label htmlFor="choice_complexity" className="text-sm font-medium">Choice Complexity</label>
               <Select value={formData.choice_complexity} onValueChange={(value: 'simple' | 'moderate' | 'complex') =>
-                setFormData(prev => ({ ...prev, choice_complexity: value }))
+                setFormData(prev => ({ ...prev, choice_complexity: value as any }))
               }>
                 <SelectTrigger>
                   <SelectValue />
@@ -634,7 +634,7 @@ export default function UnifiedStoryCreator({
   }
 
   if (showUpgradePrompt) {
-    return <PremiumUpgradePrompt userProfile={userProfile} onClose={() => setShowUpgradePrompt(false)} />
+    return <PremiumUpgradePrompt {...{userProfile, onClose: () => setShowUpgradePrompt(false)} as any} />
   }
 
   return (
@@ -841,7 +841,7 @@ export default function UnifiedStoryCreator({
             {filteredStories.map(story => (
               <ErrorBoundary key={story.id}>
                 <StoryCard
-                  story={story}
+                  story={story as any}
                   onEdit={() => loadStoryForEditing(story.id)}
                   onDelete={() => loadStories()}
                 />

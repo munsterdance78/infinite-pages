@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { queryOptimizer, getQueryPerformanceReport } from '@/lib/database/query-optimizer'
 import { requireAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireAuth()
+    const authResult = await requireAuth(request)
     if (!isAuthSuccess(authResult)) {
       return authResult // Return the auth error response
     }
@@ -45,9 +45,9 @@ async function getDatabaseMetrics() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const authResult = await requireAuth()
+    const authResult = await requireAuth(request)
     if (!isAuthSuccess(authResult)) {
       return authResult
     }

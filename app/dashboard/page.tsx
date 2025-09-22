@@ -75,7 +75,7 @@ interface UnifiedUserProfile {
 interface SidebarItem {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: any;
   description: string;
   showForCreators?: boolean;
   requiresPremium?: boolean;
@@ -353,36 +353,36 @@ export default function UnifiedDashboard() {
 
     switch (activeTab) {
       case 'home':
-        return <DashboardOverview userProfile={user} />
+        return <DashboardOverview userProfile={user as any} />
       case 'library':
         return (
           <ErrorBoundary>
-            <StoryLibrary userProfile={user} />
+            <StoryLibrary userProfile={user as any} />
           </ErrorBoundary>
         )
       case 'create':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user} defaultMode="story" />
+            <UnifiedStoryCreator userProfile={user as any} defaultMode="story" />
           </ErrorBoundary>
         )
       case 'ai-builder':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user} defaultMode="ai-builder" />
+            <UnifiedStoryCreator userProfile={user as any} defaultMode="ai-builder" />
           </ErrorBoundary>
         )
       case 'novel-creation':
         return (
           <ErrorBoundary>
-            <UnifiedStoryCreator userProfile={user} defaultMode="novel" />
+            <UnifiedStoryCreator userProfile={user as any} defaultMode="novel" />
           </ErrorBoundary>
         )
       case 'analytics':
       case 'cache-analytics':
         return (
           <ErrorBoundary>
-            <UnifiedAnalyticsDashboard userProfile={user} />
+            <UnifiedAnalyticsDashboard userProfile={user as any} />
           </ErrorBoundary>
         )
       case 'creator-hub':
@@ -392,7 +392,7 @@ export default function UnifiedDashboard() {
               <CreatorEarningsHub />
             ) : (
               <div className="space-y-6">
-                <CreatorHub userProfile={user} />
+                <CreatorHub userProfile={user as any} />
                 <StripeConnectOnboarding />
               </div>
             )}
@@ -401,7 +401,7 @@ export default function UnifiedDashboard() {
       case 'subscription':
         return (
           <ErrorBoundary>
-            <SubscriptionManager />
+            <SubscriptionManager user={user as any} onSubscriptionChange={() => {}} />
           </ErrorBoundary>
         )
       case 'settings':
@@ -416,7 +416,7 @@ export default function UnifiedDashboard() {
           </Card>
         )
       default:
-        return <DashboardOverview userProfile={user} />
+        return <DashboardOverview userProfile={user as any} />
     }
   }
 

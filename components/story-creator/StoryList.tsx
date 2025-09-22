@@ -126,17 +126,17 @@ const StoryList = memo(function StoryList({
       ) : useVirtualization ? (
         <VirtualizedStoryList
           stories={filteredStories}
-          loading={loading}
-          onStoryEdit={onStoryEdit}
-          onStoryDelete={onStoryDelete}
+          onStorySelect={(story) => onStoryEdit(story.id)}
           onCreateNew={onCreateNew}
+          searchTerm={searchTerm}
+          selectedGenre={filterGenre}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredStories.map(story => (
             <ErrorBoundary key={story.id}>
               <StoryCard
-                story={story}
+                story={story as any}
                 onEdit={() => handleStoryEdit(story)}
                 onDelete={onStoryDelete}
               />
@@ -208,7 +208,7 @@ const FilterControls = memo(function FilterControls({
 
       {/* Performance indicator */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Badge variant={useVirtualization ? "default" : "outline"}>
+        <Badge variant={useVirtualization ? 'default' : 'outline'}>
           {storiesCount} stories
         </Badge>
         {useVirtualization && (

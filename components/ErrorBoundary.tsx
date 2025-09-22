@@ -34,7 +34,7 @@ interface State {
 class ErrorBoundary extends Component<Props, State> {
   private retryTimeoutId: NodeJS.Timeout | null = null
 
-  public state: State = {
+  public override state: State = {
     hasError: false,
     error: null,
     errorInfo: null,
@@ -51,7 +51,7 @@ class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error Boundary caught an error:', error, errorInfo)
     
     this.setState({
@@ -363,7 +363,7 @@ User Agent: ${typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR'
     )
   }
 
-  public render() {
+  public override render() {
     if (this.state.hasError) {
       // If a custom fallback is provided, use it
       if (this.props.fallback) {

@@ -1,6 +1,5 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { rateLimit, getClientIdentifier, logRateLimitViolation } from '@/lib/rateLimit'
 import { ERROR_MESSAGES } from '@/lib/constants'
 

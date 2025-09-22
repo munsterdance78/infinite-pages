@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 const WEBUI_API_URL = process.env.STABLE_DIFFUSION_WEBUI_URL || 'http://localhost:7860'
 

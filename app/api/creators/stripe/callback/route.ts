@@ -1,8 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import Stripe from 'stripe'
 import { requireCreatorAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
+import { ERROR_MESSAGES } from '@/lib/constants'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16'

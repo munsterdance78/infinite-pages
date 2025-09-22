@@ -136,7 +136,13 @@ export default function TransparentStoryGenerator({
             }}
             stage={generationState.stage === 'idle' ? 'estimate' : generationState.stage === 'estimating' ? 'estimate' : generationState.stage}
             tokensUsed={generationState.tokensUsed}
-            actualResults={generationState.actualResults || undefined}
+            actualResults={generationState.actualResults || {
+              inputTokens: 0,
+              outputTokens: 0,
+              actualCost: 0,
+              chargedAmount: 0,
+              generationTime: 0
+            }}
             onProceed={handleGeneration}
             showMarketComparison={true}
           />

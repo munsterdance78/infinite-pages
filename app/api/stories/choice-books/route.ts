@@ -3,6 +3,9 @@ import { requireAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import { choiceBookGenerator } from '@/lib/choice-books/choice-generator'
 import type { Database } from '@/lib/supabase/types'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { ERROR_MESSAGES } from '@/lib/constants'
 
 /**
  * POST /api/stories/choice-books
@@ -42,11 +45,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Choice book foundation costs more due to complexity
-    const foundationCost = {
+    const foundationCostMap: Record<string, number> = {
       'simple': 15,
       'moderate': 25,
       'complex': 40
-    }[choiceComplexity] || 25
+    }
+    const foundationCost = foundationCostMap[choiceComplexity] || 25
 
     if (profile.credits_balance < foundationCost) {
       return NextResponse.json({
@@ -231,7 +235,7 @@ Focus on meaningful choices that affect character development, plot progression,
       inputTokens: foundationResult.usage.inputTokens,
       outputTokens: foundationResult.usage.outputTokens,
       cost: foundationResult.cost,
-      responseTime: foundationResult.responseTime || 0,
+      responseTime: (foundationResult as any).responseTime || 0,
       success: true,
       cached: false,
       metadata: {

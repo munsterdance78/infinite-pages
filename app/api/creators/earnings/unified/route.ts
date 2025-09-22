@@ -48,11 +48,11 @@ export async function GET(request: NextRequest) {
       .single()
 
     // Premium validation if requested
-    if (premiumValidation && profile.subscription_tier !== 'premium') {
+    if (premiumValidation && profile?.subscription_tier !== 'premium') {
       return NextResponse.json({
         error: 'Premium subscription required for creator features',
         upgrade_required: true,
-        current_tier: profile.subscription_tier
+        current_tier: profile?.subscription_tier
       }, { status: 403 })
     }
 
@@ -205,7 +205,7 @@ export async function GET(request: NextRequest) {
     const averageEarningsPerStory = storiesWithEarnings > 0 ? totalUsdEarnings / storiesWithEarnings : 0
 
     // Payout information
-    const pendingPayout = profile.pending_payout_usd || 0
+    const pendingPayout = profile?.pending_payout_usd || 0
     const canRequestPayout = pendingPayout >= 25
     const minimumPayout = 25
     const nextPayoutDate = new Date()
@@ -228,13 +228,13 @@ export async function GET(request: NextRequest) {
     // Build comprehensive response
     const response = {
       profile: {
-        id: profile.id,
-        isCreator: profile.is_creator,
-        creatorTier: includeTier ? profile.creator_tier : null,
-        subscriptionTier: profile.subscription_tier,
-        totalEarningsAllTime: profile.total_earnings_usd || 0,
+        id: profile?.id,
+        isCreator: profile?.is_creator,
+        creatorTier: includeTier ? profile?.creator_tier : null,
+        subscriptionTier: profile?.subscription_tier,
+        totalEarningsAllTime: profile?.total_earnings_usd || 0,
         pendingPayoutUsd: pendingPayout,
-        joinedDate: profile.created_at
+        joinedDate: profile?.created_at
       },
       summary: {
         totalCreditsEarned,
@@ -243,7 +243,7 @@ export async function GET(request: NextRequest) {
         storiesWithEarnings,
         averageEarningsPerStory,
         pendingPayout,
-        lifetimeEarnings: profile.total_earnings_usd || 0,
+        lifetimeEarnings: profile?.total_earnings_usd || 0,
         creatorSharePercentage: CREATOR_REVENUE_SHARE * 100,
         periodDescription
       },
@@ -284,8 +284,8 @@ export async function GET(request: NextRequest) {
           .limit(50)
 
         if (payoutHistoryData?.length) {
-          const payoutHistory = {
-            items: payoutHistoryData.map(payout => ({
+          (response as any).payoutHistory = {
+            items: payoutHistoryData.map((payout: any) => ({
               id: payout.id,
               amountUsd: payout.amount_usd,
               status: payout.status,
@@ -296,16 +296,15 @@ export async function GET(request: NextRequest) {
             })),
             summary: {
               totalPayouts: payoutHistoryData.length,
-              totalAmountPaidUsd: payoutHistoryData.reduce((sum, p) => sum + p.amount_usd, 0),
-              totalFeesPaid: payoutHistoryData.reduce((sum, p) => sum + (p.processing_fee || 2.5), 0),
-              netAmountReceived: payoutHistoryData.reduce((sum, p) => sum + p.amount_usd - (p.processing_fee || 2.5), 0),
-              lastSuccessfulPayout: payoutHistoryData.find(p => p.status === 'completed') ? {
-                amount: payoutHistoryData.find(p => p.status === 'completed')?.amount_usd || 0,
-                date: payoutHistoryData.find(p => p.status === 'completed')?.created_at || ''
+              totalAmountPaidUsd: payoutHistoryData.reduce((sum: number, p: any) => sum + p.amount_usd, 0),
+              totalFeesPaid: payoutHistoryData.reduce((sum: number, p: any) => sum + (p.processing_fee || 2.5), 0),
+              netAmountReceived: payoutHistoryData.reduce((sum: number, p: any) => sum + p.amount_usd - (p.processing_fee || 2.5), 0),
+              lastSuccessfulPayout: payoutHistoryData.find((p: any) => p.status === 'completed') ? {
+                amount: payoutHistoryData.find((p: any) => p.status === 'completed')?.amount_usd || 0,
+                date: payoutHistoryData.find((p: any) => p.status === 'completed')?.created_at || ''
               } : null
             }
           }
-          response.payoutHistory = payoutHistory
         }
       } catch (error) {
         console.error('Failed to fetch payout history:', error)

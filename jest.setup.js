@@ -18,11 +18,11 @@ jest.mock('next/router', () => ({
       events: {
         on: jest.fn(),
         off: jest.fn(),
-        emit: jest.fn(),
+        emit: jest.fn()
       },
-      isFallback: false,
+      isFallback: false
     }
-  },
+  }
 }))
 
 // Mock Next.js navigation
@@ -34,7 +34,7 @@ jest.mock('next/navigation', () => ({
       prefetch: jest.fn(),
       back: jest.fn(),
       forward: jest.fn(),
-      refresh: jest.fn(),
+      refresh: jest.fn()
     }
   },
   useSearchParams() {
@@ -42,7 +42,7 @@ jest.mock('next/navigation', () => ({
   },
   usePathname() {
     return '/'
-  },
+  }
 }))
 
 // Mock Supabase client
@@ -51,7 +51,7 @@ jest.mock('@/lib/supabase/client', () => ({
     auth: {
       getUser: jest.fn(),
       getSession: jest.fn(),
-      signOut: jest.fn(),
+      signOut: jest.fn()
     },
     from: jest.fn(() => ({
       select: jest.fn().mockReturnThis(),
@@ -63,10 +63,10 @@ jest.mock('@/lib/supabase/client', () => ({
       single: jest.fn(),
       insert: jest.fn().mockReturnThis(),
       update: jest.fn().mockReturnThis(),
-      delete: jest.fn().mockReturnThis(),
+      delete: jest.fn().mockReturnThis()
     })),
-    rpc: jest.fn(),
-  })),
+    rpc: jest.fn()
+  }))
 }))
 
 // Mock environment variables

@@ -235,8 +235,8 @@ async function fallbackToOriginalEnhancedLogic(request: NextRequest) {
       uniqueReaders,
       storiesWithEarnings,
       averageEarningsPerStory,
-      pendingPayout: profile.pending_payout_usd || 0,
-      lifetimeEarnings: profile.total_earnings_usd || 0,
+      pendingPayout: profile?.pending_payout_usd || 0,
+      lifetimeEarnings: profile?.total_earnings_usd || 0,
       creatorSharePercentage: CREATOR_REVENUE_SHARE * 100 // 70%
     },
     earningsByStory,

@@ -1,6 +1,6 @@
 // Choice book types - extends existing system without breaking changes
 import type { Database } from '@/lib/supabase/types'
-import type { OptimizedContext } from '@/lib/claude/context-optimizer'
+// import type { OptimizedContext } from '@/lib/claude/context-optimizer' // Not exported
 import type { ChapterComplexity, ContextLevel } from '@/lib/claude/adaptive-context'
 
 // Extends existing story types
@@ -131,7 +131,7 @@ export interface ChoiceAnalytics {
 }
 
 // Choice generation context (extends existing optimization)
-export interface ChoiceOptimizedContext extends OptimizedContext {
+export interface ChoiceOptimizedContext {
   choice_context: {
     previous_choices: ChoiceMade[]
     available_paths: string[]

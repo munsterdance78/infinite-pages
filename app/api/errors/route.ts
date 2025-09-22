@@ -4,6 +4,7 @@ import { requireAuth, requireAdminAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { ERROR_MESSAGES } from '@/lib/constants'
 
 // Error severity levels
 type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -191,7 +192,7 @@ function validateErrorReport(data: any): { isValid: boolean; errors: string[]; s
   }
   
   // Sanitize and structure the error report
-  const sanitized: ErrorReport = {
+  const errorReport: any = {
     message: sanitizeString(data.message),
     stack: data.stack ? sanitizeString(data.stack) : undefined,
     category: data.category,
@@ -213,7 +214,7 @@ function validateErrorReport(data: any): { isValid: boolean; errors: string[]; s
       browser: data.deviceInfo.browser ? sanitizeString(data.deviceInfo.browser) : undefined,
       version: data.deviceInfo.version ? sanitizeString(data.deviceInfo.version) : undefined,
       mobile: typeof data.deviceInfo.mobile === 'boolean' ? data.deviceInfo.mobile : undefined
-    } : undefined,
+    } as { platform?: string; browser?: string; version?: string; mobile?: boolean; } : undefined,
     tags: Array.isArray(data.tags) ? data.tags.map((tag: string) => sanitizeString(tag)).slice(0, 10) : undefined,
     customData: data.customData && typeof data.customData === 'object' ? 
       Object.fromEntries(
@@ -226,9 +227,9 @@ function validateErrorReport(data: any): { isValid: boolean; errors: string[]; s
   }
   
   // Generate fingerprint for deduplication
-  sanitized.fingerprint = generateErrorFingerprint(sanitized)
-  
-  return { isValid: true, errors: [], sanitized }
+  errorReport.fingerprint = generateErrorFingerprint(errorReport)
+
+  return { isValid: true, errors: [], sanitized: errorReport }
 }
 
 function isValidCategory(category: string): category is ErrorCategory {
@@ -399,8 +400,8 @@ export async function POST(request: NextRequest) {
     const errorReport = validation.sanitized!
     
     // Add request context
-    errorReport.userAgent = request.headers.get('user-agent') || undefined
-    errorReport.requestId = request.headers.get('x-request-id') || undefined
+    errorReport.userAgent = request.headers.get('user-agent') || ''
+    errorReport.requestId = request.headers.get('x-request-id') || ''
     
     // Get user context if available
     if (request.headers.get('authorization')) {

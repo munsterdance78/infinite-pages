@@ -61,7 +61,7 @@ export default function StreamingStoryCreator({
     setGeneratedStory(null)
     
     await streamStoryFoundation({
-      title: title.trim() || undefined,
+      title: title.trim() || '',
       genre: genre.trim(),
       premise: premise.trim()
     })

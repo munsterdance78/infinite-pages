@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Sparkles, AlertCircle } from 'lucide-react'
+import { Sparkles, AlertCircle, FileText, BookOpen, TreePine, Wand2 } from 'lucide-react'
 import { ALLOWED_GENRES } from '@/lib/constants'
 import type { CreationMode } from './types'
 
@@ -113,13 +113,13 @@ const CommonFormFields = memo(function CommonFormFields({
           id="title"
           placeholder="Enter your story title..."
           value={formData.title}
-          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, title: e.target.value }))}
         />
       </div>
       <div>
         <label htmlFor="genre" className="text-sm font-medium">Genre</label>
         <Select value={formData.genre} onValueChange={(value) =>
-          setFormData(prev => ({ ...prev, genre: value }))
+          setFormData((prev: any) => ({ ...prev, genre: value }))
         }>
           <SelectTrigger>
             <SelectValue placeholder="Select a genre" />
@@ -137,7 +137,7 @@ const CommonFormFields = memo(function CommonFormFields({
           id="premise"
           placeholder="Describe your story premise..."
           value={formData.premise}
-          onChange={(e) => setFormData(prev => ({ ...prev, premise: e.target.value }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, premise: e.target.value }))}
           rows={3}
         />
       </div>
@@ -161,14 +161,14 @@ const NovelFields = memo(function NovelFields({
           id="description"
           placeholder="Provide a detailed description of your novel..."
           value={formData.description}
-          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, description: e.target.value }))}
           rows={4}
         />
       </div>
       <div>
         <label htmlFor="target_length" className="text-sm font-medium">Target Word Count</label>
         <Select value={formData.target_length.toString()} onValueChange={(value) =>
-          setFormData(prev => ({ ...prev, target_length: parseInt(value) }))
+          setFormData((prev: any) => ({ ...prev, target_length: parseInt(value) }))
         }>
           <SelectTrigger>
             <SelectValue />
@@ -198,7 +198,7 @@ const ChoiceBookFields = memo(function ChoiceBookFields({
       <div>
         <label htmlFor="choice_complexity" className="text-sm font-medium">Choice Complexity</label>
         <Select value={formData.choice_complexity} onValueChange={(value: 'simple' | 'moderate' | 'complex') =>
-          setFormData(prev => ({ ...prev, choice_complexity: value }))
+          setFormData((prev: any) => ({ ...prev, choice_complexity: value }))
         }>
           <SelectTrigger>
             <SelectValue />
@@ -218,13 +218,13 @@ const ChoiceBookFields = memo(function ChoiceBookFields({
           min="2"
           max="20"
           value={formData.target_ending_count}
-          onChange={(e) => setFormData(prev => ({ ...prev, target_ending_count: parseInt(e.target.value) || 5 }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, target_ending_count: parseInt(e.target.value) || 5 }))}
         />
       </div>
       <div>
         <label htmlFor="target_audience" className="text-sm font-medium">Target Audience</label>
         <Select value={formData.target_audience} onValueChange={(value) =>
-          setFormData(prev => ({ ...prev, target_audience: value }))
+          setFormData((prev: any) => ({ ...prev, target_audience: value }))
         }>
           <SelectTrigger>
             <SelectValue />
@@ -254,7 +254,7 @@ const AIBuilderFields = memo(function AIBuilderFields({
       <div>
         <label htmlFor="tone" className="text-sm font-medium">Story Tone</label>
         <Select value={formData.tone} onValueChange={(value) =>
-          setFormData(prev => ({ ...prev, tone: value }))
+          setFormData((prev: any) => ({ ...prev, tone: value }))
         }>
           <SelectTrigger>
             <SelectValue />
@@ -275,7 +275,7 @@ const AIBuilderFields = memo(function AIBuilderFields({
           id="characters"
           placeholder="Describe your main characters..."
           value={formData.characters}
-          onChange={(e) => setFormData(prev => ({ ...prev, characters: e.target.value }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, characters: e.target.value }))}
           rows={3}
         />
       </div>
@@ -285,14 +285,14 @@ const AIBuilderFields = memo(function AIBuilderFields({
           id="setting"
           placeholder="Describe the setting and world..."
           value={formData.setting}
-          onChange={(e) => setFormData(prev => ({ ...prev, setting: e.target.value }))}
+          onChange={(e) => setFormData((prev: any) => ({ ...prev, setting: e.target.value }))}
           rows={3}
         />
       </div>
       <div>
         <label htmlFor="length" className="text-sm font-medium">Story Length</label>
         <Select value={formData.length} onValueChange={(value) =>
-          setFormData(prev => ({ ...prev, length: value }))
+          setFormData((prev: any) => ({ ...prev, length: value }))
         }>
           <SelectTrigger>
             <SelectValue />

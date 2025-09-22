@@ -1,6 +1,8 @@
 import { ClaudeService } from './service'
-import { advancedBatchProcessor, EnhancedBatchOperation } from './advanced-batch-processor'
-import { intelligentModelSelector, TaskProfile } from './intelligent-model-selector'
+import type { EnhancedBatchOperation } from './advanced-batch-processor'
+import { advancedBatchProcessor } from './advanced-batch-processor'
+import type { TaskProfile } from './intelligent-model-selector'
+import { intelligentModelSelector } from './intelligent-model-selector'
 import { enhancedCostAnalytics, trackAIOperation } from './enhanced-cost-analytics'
 import { optimizedPromptTemplateManager } from './prompt-templates'
 
@@ -117,8 +119,8 @@ export class AICostOptimizationHub {
           qualityScore: performance.qualityScore,
           responseTime: performance.responseTime,
           cacheHit: result.cached || false,
-          batchId: optimizedRequest.batchId,
-          promptTemplate: optimizationStrategy.templateUsed
+          ...((optimizedRequest as any).batchId && { batchId: (optimizedRequest as any).batchId }),
+          ...(optimizationStrategy.templateUsed && { promptTemplate: optimizationStrategy.templateUsed })
         }
       )
 
@@ -131,11 +133,11 @@ export class AICostOptimizationHub {
         cost: result.cost,
         optimizations: {
           modelSelected: optimizationStrategy.selectedModel,
-          templateUsed: optimizationStrategy.templateUsed,
           tokensSaved: optimizationStrategy.tokensSaved,
           costSaved: optimizationStrategy.costSaved,
           cacheHit: result.cached || false,
-          batchProcessed: !!optimizedRequest.batchId
+          batchProcessed: !!(optimizedRequest as any).batchId,
+          ...(optimizationStrategy.templateUsed && { templateUsed: optimizationStrategy.templateUsed })
         },
         performance,
         recommendations: this.generateRecommendations(request, optimizationStrategy, result)
@@ -188,9 +190,9 @@ export class AICostOptimizationHub {
       creativityRequired: this.determineCreativityRequirement(request),
       reasoningRequired: this.determineReasoningRequirement(request),
       speedRequired: request.options?.urgency === 'immediate' ? 9 : 5,
-      maxBudget: request.options?.maxBudget,
       qualityThreshold: request.options?.qualityThreshold || 7,
-      estimatedTokens: this.estimateTokens(request)
+      estimatedTokens: this.estimateTokens(request),
+      ...(request.options?.maxBudget && { maxBudget: request.options.maxBudget })
     }
 
     // Get model recommendation
@@ -217,11 +219,11 @@ export class AICostOptimizationHub {
 
     return {
       selectedModel: modelRecommendation.selectedModel,
-      templateUsed,
       tokensSaved,
       costSaved,
       confidence: modelRecommendation.confidence,
-      reasoning: modelRecommendation.reasoning
+      reasoning: modelRecommendation.reasoning,
+      ...(templateUsed && { templateUsed })
     }
   }
 
@@ -364,21 +366,21 @@ export class AICostOptimizationHub {
     }
 
     if (strategy.templateUsed) {
-      recommendations.push(`📝 Used optimized template to reduce token usage`)
+      recommendations.push('📝 Used optimized template to reduce token usage')
     }
 
     // Future optimization suggestions
     if (!request.options?.useOptimizedPrompts) {
-      recommendations.push(`🚀 Enable optimized prompts to save ~20-30% on costs`)
+      recommendations.push('🚀 Enable optimized prompts to save ~20-30% on costs')
     }
 
     if (request.options?.urgency === 'immediate' && request.options?.priority < 8) {
-      recommendations.push(`⚡ Consider batch processing for non-urgent requests to save costs`)
+      recommendations.push('⚡ Consider batch processing for non-urgent requests to save costs')
     }
 
     // Quality suggestions
     if (strategy.confidence < 0.7) {
-      recommendations.push(`🎯 Consider providing more specific requirements for better results`)
+      recommendations.push('🎯 Consider providing more specific requirements for better results')
     }
 
     return recommendations

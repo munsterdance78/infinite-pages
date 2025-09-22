@@ -84,8 +84,8 @@ export class ChoiceBookGenerator {
       },
       choices: choicesResult.choices,
       optimization_metrics: {
-        tokens_saved: optimizedContext.tokens_saved || 0,
-        context_compression: optimizedContext.compression_ratio || 1,
+        tokens_saved: (optimizedContext as any).tokens_saved || 0,
+        context_compression: (optimizedContext as any).compression_ratio || 1,
         generation_time: Date.now() - startTime
       }
     }
@@ -161,9 +161,9 @@ export class ChoiceBookGenerator {
       ...baseContext,
       choice_context: choiceContext,
       branching_complexity: branchingComplexity,
-      tokens_saved: baseContext.tokens_saved || 0,
-      compression_ratio: baseContext.compression_ratio || 1
-    }
+      tokens_saved: (baseContext as any).tokens_saved || 0,
+      compression_ratio: (baseContext as any).compression_ratio || 1
+    } as any
   }
 
   /**
@@ -240,7 +240,7 @@ export class ChoiceBookGenerator {
    * Build optimized choice chapter prompt
    */
   private buildChoiceChapterPrompt(context: ChoiceOptimizedContext, chapterNumber: number): string {
-    const { core_facts, active_characters, recent_events, choice_context, branching_complexity } = context
+    const { core_facts, active_characters, recent_events, choice_context, branching_complexity } = context as any
 
     return `CHOICE CHAPTER GENERATION - OPTIMIZED CONTEXT:
 
@@ -251,12 +251,12 @@ Protagonist: ${core_facts.protagonist} | Conflict: ${core_facts.central_conflict
 CHAPTER ${chapterNumber} - BRANCHING NARRATIVE:
 
 ACTIVE CHARACTERS:
-${active_characters.map(c => `${c.name}: wants ${c.current_goal}, ${c.key_trait}, feeling ${c.current_emotion}`).join('\n')}
+${active_characters.map((c: any) => `${c.name}: wants ${c.current_goal}, ${c.key_trait}, feeling ${c.current_emotion}`).join('\n')}
 
 CHOICE CONTEXT:
-Previous Choices: ${choice_context.previous_choices.map(c => `"${c.choice_text}"`).join(' → ')}
+Previous Choices: ${choice_context.previous_choices.map((c: any) => `"${c.choice_text}"`).join(' → ')}
 Character Relationships: ${Object.entries(choice_context.character_relationships).map(([char, level]) => `${char}: ${level}`).join(', ')}
-Pending Consequences: ${choice_context.consequences_pending.map(c => c.description).join('; ')}
+Pending Consequences: ${choice_context.consequences_pending.map((c: any) => c.description).join('; ')}
 
 BRANCHING STRATEGY:
 Choice Count: ${branching_complexity.choice_count}
@@ -423,7 +423,7 @@ Return as JSON:
 
       const choicePoint = {
         id: `cp_${Date.now()}`,
-        chapter_id: context.core_facts.current_chapter_id || 'current',
+        chapter_id: (context as any).core_facts.current_chapter_id || 'current',
         position_in_chapter: 'end',
         choices: validatedChoices,
         choice_type: this.determineChoiceType(validatedChoices),

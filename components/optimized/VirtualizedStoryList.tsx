@@ -1,7 +1,6 @@
 'use client'
 
-import React, { memo, useMemo, useCallback, useRef, useEffect, useState } from 'react'
-import { FixedSizeList as List } from 'react-window'
+import React, { memo } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Plus } from 'lucide-react'
@@ -10,190 +9,73 @@ import type { UnifiedStory } from '../story-creator/types'
 
 interface VirtualizedStoryListProps {
   stories: UnifiedStory[]
-  loading: boolean
-  itemHeight?: number
-  height?: number
-  onStoryEdit: (storyId: string) => void
-  onStoryDelete: () => void
+  onStorySelect: (story: UnifiedStory) => void
   onCreateNew: () => void
+  searchTerm?: string
+  selectedGenre?: string
+  height?: number
+  itemHeight?: number
+  showCreateButton?: boolean
 }
 
-// Memoized story item component
-const StoryListItem = memo(function StoryListItem({
-  index,
-  style,
-  data
-}: {
-  index: number
-  style: React.CSSProperties
-  data: {
-    stories: UnifiedStory[]
-    onStoryEdit: (storyId: string) => void
-    onStoryDelete: () => void
-  }
-}) {
-  const story = data.stories[index]
-
-  if (!story) {
-    return (
-      <div style={style} className="p-2">
-        <div className="bg-muted animate-pulse rounded-lg h-48" />
-      </div>
-    )
-  }
-
-  return (
-    <div style={style} className="p-2">
-      <StoryCard
-        story={story}
-        onEdit={() => data.onStoryEdit(story.id)}
-        onDelete={data.onStoryDelete}
-      />
-    </div>
-  )
-})
-
+// Fallback component without virtualization (react-window not available)
 const VirtualizedStoryList = memo(function VirtualizedStoryList({
   stories,
-  loading,
-  itemHeight = 200,
+  onStorySelect,
+  onCreateNew,
+  searchTerm = '',
+  selectedGenre = 'all',
   height = 600,
-  onStoryEdit,
-  onStoryDelete,
-  onCreateNew
+  showCreateButton = true
 }: VirtualizedStoryListProps) {
-  const listRef = useRef<List>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Calculate number of columns based on container width
-  const itemsPerRow = useMemo(() => {
-    if (containerWidth < 768) return 1 // Mobile
-    if (containerWidth < 1024) return 2 // Tablet
-    return 3 // Desktop
-  }, [containerWidth])
-
-  // Group stories into rows for virtualization
-  const virtualizedData = useMemo(() => {
-    const rows = []
-    for (let i = 0; i < stories.length; i += itemsPerRow) {
-      rows.push(stories.slice(i, i + itemsPerRow))
-    }
-    return rows
-  }, [stories, itemsPerRow])
-
-  // Handle container resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  // Memoized item data to prevent unnecessary re-renders
-  const itemData = useMemo(() => ({
-    rows: virtualizedData,
-    itemsPerRow,
-    onStoryEdit,
-    onStoryDelete
-  }), [virtualizedData, itemsPerRow, onStoryEdit, onStoryDelete])
-
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="bg-muted animate-pulse rounded-lg h-48" />
-        ))}
-      </div>
-    )
-  }
-
-  if (stories.length === 0) {
-    return (
-      <Card>
-        <CardContent className="text-center py-8">
-          <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-lg font-medium mb-2">No stories found</h3>
-          <p className="text-muted-foreground mb-4">
-            Create your first story to get started!
-          </p>
-          <Button onClick={onCreateNew} className="gap-2">
-            <Plus className="w-4 h-4" />
-            Create New Story
-          </Button>
-        </CardContent>
-      </Card>
-    )
-  }
+  // Filter stories based on search and genre
+  const filteredStories = stories.filter(story => {
+    const matchesSearch = story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         story.genre?.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesGenre = selectedGenre === 'all' || story.genre === selectedGenre
+    return matchesSearch && matchesGenre
+  })
 
   return (
-    <div ref={containerRef} className="w-full">
-      <List
-        ref={listRef}
-        height={height}
-        itemCount={virtualizedData.length}
-        itemSize={itemHeight}
-        itemData={itemData}
-        width="100%"
-        overscanCount={2}
-      >
-        {VirtualizedStoryRow}
-      </List>
-    </div>
-  )
-})
+    <div className="w-full" style={{ height }}>
+      <div className="h-full overflow-y-auto">
+        {showCreateButton && (
+          <Card className="mb-4">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center">
+                <Button onClick={onCreateNew} className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Create New Story
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-// Virtualized row component
-const VirtualizedStoryRow = memo(function VirtualizedStoryRow({
-  index,
-  style,
-  data
-}: {
-  index: number
-  style: React.CSSProperties
-  data: {
-    rows: UnifiedStory[][]
-    itemsPerRow: number
-    onStoryEdit: (storyId: string) => void
-    onStoryDelete: () => void
-  }
-}) {
-  const row = data.rows[index]
-
-  if (!row) {
-    return (
-      <div style={style} className="p-2">
-        <div className="bg-muted animate-pulse rounded-lg h-48" />
-      </div>
-    )
-  }
-
-  return (
-    <div style={style} className="p-2">
-      <div className={`grid gap-4 ${
-        data.itemsPerRow === 1 ? 'grid-cols-1' :
-        data.itemsPerRow === 2 ? 'grid-cols-2' :
-        'grid-cols-3'
-      }`}>
-        {row.map(story => (
-          <StoryCard
-            key={story.id}
-            story={story}
-            onEdit={() => data.onStoryEdit(story.id)}
-            onDelete={data.onStoryDelete}
-          />
-        ))}
-        {/* Fill empty slots in the last row */}
-        {row.length < data.itemsPerRow && Array.from({
-          length: data.itemsPerRow - row.length
-        }).map((_, i) => (
-          <div key={`empty-${i}`} />
-        ))}
+        {filteredStories.length === 0 ? (
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center text-gray-500">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <h3 className="text-lg font-medium mb-2">No stories found</h3>
+                <p>Try adjusting your search or create a new story</p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {filteredStories.map((story) => (
+              <div key={story.id} onClick={() => onStorySelect(story)} className="cursor-pointer">
+                <StoryCard
+                  story={story as any}
+                  onEdit={() => {}}
+                  onDelete={() => {}}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

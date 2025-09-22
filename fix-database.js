@@ -1,20 +1,20 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 // Load environment variables
-const envPath = path.join(__dirname, '.env.local');
+const envPath = path.join(__dirname, '.env.local')
 if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf8');
+  const envContent = fs.readFileSync(envPath, 'utf8')
   envContent.split('\n').forEach(line => {
-    const [key, ...values] = line.split('=');
+    const [key, ...values] = line.split('=')
     if (key && values.length) {
-      process.env[key.trim()] = values.join('=').trim();
+      process.env[key.trim()] = values.join('=').trim()
     }
-  });
+  })
 }
 
 async function executeSQL(sql) {
-  const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/exec`;
+  const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/exec`
 
   const response = await fetch(url, {
     method: 'POST',
@@ -25,18 +25,18 @@ async function executeSQL(sql) {
       'Prefer': 'return=minimal'
     },
     body: JSON.stringify({ query: sql })
-  });
+  })
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`HTTP ${response.status}: ${error}`);
+    const error = await response.text()
+    throw new Error(`HTTP ${response.status}: ${error}`)
   }
 
-  return response;
+  return response
 }
 
 async function createTablesDirectly() {
-  console.log('🔧 Creating database tables directly...\n');
+  console.log('🔧 Creating database tables directly...\n')
 
   const statements = [
     {
@@ -134,12 +134,12 @@ async function createTablesDirectly() {
         expires_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '7 days')
       );`
     }
-  ];
+  ]
 
   // Execute each statement
   for (const { name, sql } of statements) {
     try {
-      console.log(`📝 Creating ${name}...`);
+      console.log(`📝 Creating ${name}...`)
 
       // Use direct HTTP request to Supabase
       const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
@@ -150,29 +150,29 @@ async function createTablesDirectly() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ sql })
-      });
+      })
 
       if (response.ok) {
-        console.log(`✅ ${name} created successfully`);
+        console.log(`✅ ${name} created successfully`)
       } else {
-        const error = await response.text();
-        console.log(`❌ Failed to create ${name}: ${error}`);
+        const error = await response.text()
+        console.log(`❌ Failed to create ${name}: ${error}`)
       }
     } catch (error) {
-      console.log(`❌ Error creating ${name}: ${error.message}`);
+      console.log(`❌ Error creating ${name}: ${error.message}`)
     }
 
     // Small delay between operations
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500))
   }
 
-  console.log('\n🔑 Setting up basic RLS policies...');
+  console.log('\n🔑 Setting up basic RLS policies...')
 
   const policies = [
     'ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;',
     'CREATE POLICY IF NOT EXISTS "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);',
     'CREATE POLICY IF NOT EXISTS "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);'
-  ];
+  ]
 
   for (const policy of policies) {
     try {
@@ -184,19 +184,19 @@ async function createTablesDirectly() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ sql: policy })
-      });
+      })
 
       if (response.ok) {
-        console.log('✅ Policy applied');
+        console.log('✅ Policy applied')
       } else {
-        console.log('⚠️  Policy may already exist');
+        console.log('⚠️  Policy may already exist')
       }
     } catch (error) {
-      console.log('⚠️  Policy error (may be normal)');
+      console.log('⚠️  Policy error (may be normal)')
     }
   }
 
-  console.log('\n🎯 Creating user trigger function...');
+  console.log('\n🎯 Creating user trigger function...')
 
   const triggerFunction = `
     CREATE OR REPLACE FUNCTION handle_new_user()
@@ -216,7 +216,7 @@ async function createTablesDirectly() {
     CREATE TRIGGER on_auth_user_created
       AFTER INSERT ON auth.users
       FOR EACH ROW EXECUTE FUNCTION handle_new_user();
-  `;
+  `
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/exec_sql`, {
@@ -227,20 +227,20 @@ async function createTablesDirectly() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ sql: triggerFunction })
-    });
+    })
 
     if (response.ok) {
-      console.log('✅ User trigger created');
+      console.log('✅ User trigger created')
     } else {
-      const error = await response.text();
-      console.log('❌ Trigger creation failed:', error);
+      const error = await response.text()
+      console.log('❌ Trigger creation failed:', error)
     }
   } catch (error) {
-    console.log('❌ Trigger error:', error.message);
+    console.log('❌ Trigger error:', error.message)
   }
 
-  console.log('\n✅ Basic database setup complete!');
-  console.log('🚀 You can now test login at: http://localhost:3000');
+  console.log('\n✅ Basic database setup complete!')
+  console.log('🚀 You can now test login at: http://localhost:3000')
 }
 
-createTablesDirectly().catch(console.error);
+createTablesDirectly().catch(console.error)

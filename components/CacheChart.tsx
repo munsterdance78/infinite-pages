@@ -45,8 +45,8 @@ export default function CacheChart({ data, title, type }: CacheChartProps) {
 
   const maxValue = Math.max(...values)
   const minValue = Math.min(...values)
-  const latestValue = values[values.length - 1]
-  const previousValue = values.length > 1 ? values[values.length - 2] : latestValue
+  const latestValue = values[values.length - 1] || 0
+  const previousValue = values.length > 1 ? (values[values.length - 2] || 0) : latestValue
   const trend = latestValue - previousValue
   const trendPercentage = previousValue !== 0 ? ((trend / previousValue) * 100) : 0
 

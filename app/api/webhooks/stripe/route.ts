@@ -126,7 +126,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     // Handle different payment types
-    if (storyId && creatorId) {
+    if (storyId && creatorId && userId) {
       // This is a story purchase - handle creator revenue splitting
       await handleStoryPurchase({
         paymentIntent,
@@ -136,7 +136,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
         purchaseType: purchaseType as 'chapter' | 'bundle' | 'premium_unlock',
         chaptersUnlocked: chaptersUnlocked ? JSON.parse(chaptersUnlocked) : []
       })
-    } else if (creditsAmount) {
+    } else if (creditsAmount && userId) {
       // This is a credit package purchase
       await handleCreditPurchase({
         paymentIntent,
@@ -498,7 +498,7 @@ async function handleTransferCreated(transfer: Stripe.Transfer) {
   try {
     const { creator_id, story_id, payment_intent_id } = transfer.metadata
 
-    if (creator_id && story_id) {
+    if (creator_id && story_id && payment_intent_id) {
       await recordAutomatedTransfer({
         transferId: transfer.id,
         creatorId: creator_id,
@@ -522,7 +522,7 @@ async function handleTransferPaid(transfer: Stripe.Transfer) {
   try {
     const { creator_id, story_id, payment_intent_id } = transfer.metadata
 
-    if (creator_id && story_id) {
+    if (creator_id && story_id && payment_intent_id) {
       // Update transfer status to paid
       await recordAutomatedTransfer({
         transferId: transfer.id,
@@ -563,7 +563,7 @@ async function handleTransferFailed(transfer: Stripe.Transfer) {
   try {
     const { creator_id, story_id, payment_intent_id } = transfer.metadata
 
-    if (creator_id && story_id) {
+    if (creator_id && story_id && payment_intent_id) {
       // Update transfer status to failed
       await recordAutomatedTransfer({
         transferId: transfer.id,

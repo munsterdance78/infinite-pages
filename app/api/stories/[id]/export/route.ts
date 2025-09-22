@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { ERROR_MESSAGES } from '@/lib/constants'
 
 // LIBRARY-FIRST MODEL: Downloads are highly restricted to maintain subscriptions
 const DOWNLOAD_RESTRICTIONS = {

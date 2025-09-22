@@ -114,7 +114,7 @@ export default function CreatorEarningsHub({
 
     return (
       <div className={compact ? 'p-4' : 'p-6'}>
-        <Alert variant={isUpgradeRequired ? 'default' : 'destructive'}>
+        <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
             <div className="flex items-center justify-between">

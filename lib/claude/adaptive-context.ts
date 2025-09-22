@@ -1,4 +1,4 @@
-import { type OptimizedContext } from './context-optimizer'
+// import { type any } from './context-optimizer' // Not exported
 import { type SeriesOptimizedContext } from '../series/series-context-manager'
 
 export enum ContextLevel {
@@ -51,7 +51,7 @@ export interface AllContextData {
 
 export interface AdaptiveContextResult {
   level: ContextLevel
-  context: OptimizedContext | SeriesOptimizedContext
+  context: any | SeriesOptimizedContext
   tokenEstimate: number
   reasoning: string
   optimizations: string[]
@@ -144,7 +144,7 @@ export class AdaptiveContextSelector {
     allContext: AllContextData,
     chapterPlan: ChapterPlan,
     seriesContext?: any
-  ): OptimizedContext | SeriesOptimizedContext {
+  ): any | SeriesOptimizedContext {
     switch (level) {
       case ContextLevel.MINIMAL:
         return this.buildMinimalContext(allContext, chapterPlan)
@@ -442,7 +442,7 @@ export class AdaptiveContextSelector {
     return `${complexity.conflictLevel}_${complexity.emotionalIntensity}_${complexity.seriesImportance}_${complexity.characterCount}`
   }
 
-  private buildMinimalContext(allContext: AllContextData, chapterPlan: ChapterPlan): OptimizedContext {
+  private buildMinimalContext(allContext: AllContextData, chapterPlan: ChapterPlan): any {
     // Ultra-lean context for simple scenes
     return {
       core_facts: {
@@ -472,13 +472,13 @@ export class AdaptiveContextSelector {
     }
   }
 
-  private buildStandardContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): OptimizedContext {
+  private buildStandardContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): any {
     // Standard context for regular chapters
     const { contextOptimizer } = require('./context-optimizer')
     return contextOptimizer.selectRelevantContext(chapterPlan, allContext)
   }
 
-  private buildDetailedContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): OptimizedContext | SeriesOptimizedContext {
+  private buildDetailedContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): any | SeriesOptimizedContext {
     // Enhanced context for complex scenes
     if (seriesContext) {
       const { seriesContextManager } = require('../series/series-context-manager')
@@ -493,7 +493,7 @@ export class AdaptiveContextSelector {
     return contextOptimizer.selectRelevantContext(chapterPlan, allContext)
   }
 
-  private buildFullContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): OptimizedContext | SeriesOptimizedContext {
+  private buildFullContext(allContext: AllContextData, chapterPlan: ChapterPlan, seriesContext?: any): any | SeriesOptimizedContext {
     // Maximum context for climactic moments
     if (seriesContext) {
       const { seriesContextManager } = require('../series/series-context-manager')
