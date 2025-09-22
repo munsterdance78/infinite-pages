@@ -2,8 +2,9 @@
  * Comprehensive component prop types and interfaces
  */
 
-import { ReactNode, ComponentProps, HTMLAttributes } from 'react'
-import type { Profile, Story, Chapter, CreatorEarning } from './database'
+import type { ReactNode } from 'react'
+// import type { ComponentProps, HTMLAttributes } from 'react'
+// import type { Profile, Story, Chapter, CreatorEarning } from './database'
 import type { SubscriptionTier } from '@/lib/subscription-config'
 
 // Base component props

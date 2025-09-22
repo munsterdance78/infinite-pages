@@ -80,7 +80,7 @@ export const MINIMUM_PAYOUT_USD = 25.00
 export function calculateProportionalCredits(
   userTier: SubscriptionTier,
   storiesReadThisMonth: number,
-  totalActiveUsers: number
+  _totalActiveUsers: number
 ): number {
   const baseCredits = SUBSCRIPTION_TIERS[userTier].credits_per_month
 

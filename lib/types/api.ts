@@ -319,7 +319,7 @@ export function isValidationError(obj: unknown): obj is ValidationError {
 }
 
 // Utility types for API routes
-export type NextApiHandler<T = unknown> = (
+export type NextApiHandler<_T = unknown> = (
   req: Request,
   context?: { params?: Record<string, string> }
 ) => Promise<Response>

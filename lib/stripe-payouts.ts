@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import type { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/lib/supabase/types'
+// import type { Database } from '@/lib/supabase/types'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16'
@@ -35,7 +35,7 @@ export async function processCreatorPayout(
   payoutInfo: CreatorPayoutInfo
 ): Promise<StripePayoutResult> {
   try {
-    const { creator_id, email, amount_usd, stripe_customer_id } = payoutInfo
+    const { creator_id, email: _email, amount_usd, stripe_customer_id } = payoutInfo
 
     // Validate minimum amount after fees
     const netAmount = amount_usd - STRIPE_TRANSFER_FEE
@@ -64,7 +64,7 @@ export async function processCreatorPayout(
           error_message: 'Stripe customer account has been deleted'
         }
       }
-      customer = customerData as Stripe.Customer
+      const _customer = customerData as Stripe.Customer
     } catch (error) {
       return {
         success: false,
@@ -218,7 +218,7 @@ export async function setupCreatorStripeConnect(
     })
 
     // Create account link for onboarding
-    const accountLink = await stripe.accountLinks.create({
+    const _accountLink = await stripe.accountLinks.create({
       account: account.id,
       refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/creator/stripe/refresh`,
       return_url: `${process.env.NEXT_PUBLIC_APP_URL}/creator/stripe/success`,
