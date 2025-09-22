@@ -4,28 +4,28 @@ import Stripe from 'stripe'
 import type { Database } from '@/lib/supabase/types'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-10-16'
 })
 
 // Initialize Supabase client with environment variable validation
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl || !serviceRoleKey) {
-  console.error('[Webhook] Missing Supabase environment variables');
-  console.error('[Webhook] Required: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY');
+  console.error('[Webhook] Missing Supabase environment variables')
+  console.error('[Webhook] Required: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY')
 }
 
 const supabase = supabaseUrl && serviceRoleKey
   ? createClient<Database>(supabaseUrl, serviceRoleKey)
-  : null;
+  : null
 
 export async function POST(request: NextRequest) {
   try {
     // Check if Supabase is properly configured
     if (!supabase) {
-      console.error('[Webhook] Supabase not initialized - cannot process payment webhooks');
-      return NextResponse.json({ error: 'Database configuration error' }, { status: 500 });
+      console.error('[Webhook] Supabase not initialized - cannot process payment webhooks')
+      return NextResponse.json({ error: 'Database configuration error' }, { status: 500 })
     }
 
     const body = await request.text()
@@ -94,8 +94,8 @@ export async function POST(request: NextRequest) {
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   try {
     if (!supabase) {
-      console.error('[Webhook] Cannot process payment success - Supabase not initialized');
-      return;
+      console.error('[Webhook] Cannot process payment success - Supabase not initialized')
+      return
     }
 
     const {
@@ -469,8 +469,8 @@ async function recordManualPayoutRequired(
 async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
   try {
     if (!supabase) {
-      console.error('[Webhook] Cannot process payment failure - Supabase not initialized');
-      return;
+      console.error('[Webhook] Cannot process payment failure - Supabase not initialized')
+      return
     }
 
     const { error } = await (supabase as any)
@@ -662,7 +662,7 @@ async function processQueuedPayouts(creatorId: string, connectAccountId: string)
           creatorId,
           storyId: earning.story_id,
           paymentIntentId,
-          description: `Queued payout: Story earnings`
+          description: 'Queued payout: Story earnings'
         })
 
         // Mark this earning as processed

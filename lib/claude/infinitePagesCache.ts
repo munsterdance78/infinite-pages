@@ -1,6 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-import crypto from 'crypto';
-import { ALLOWED_GENRES } from '@/lib/constants';
+import { createClient } from '@supabase/supabase-js'
+import crypto from 'crypto'
+import { LRUCache } from 'lru-cache'
+import type { ALLOWED_GENRES } from '@/lib/constants'
 
 // Match your exact content types and API structure
 export type InfinitePagesContentType =
@@ -85,41 +86,45 @@ export interface CacheConfig {
 }
 
 class InfinitePagesCache {
-  private supabase: ReturnType<typeof createClient>;
-  private memoryCache = new Map<string, InfinitePagesCacheRecord>();
-  private isDbAvailable: boolean = true;
+  private supabase: ReturnType<typeof createClient>
+  private memoryCache = new LRUCache<string, InfinitePagesCacheRecord>({
+    max: 1000,        // Maximum 1000 entries
+    ttl: 1000 * 60 * 60 * 24, // 24 hour TTL
+    updateAgeOnGet: true
+  })
+  private isDbAvailable: boolean = true
 
   constructor() {
     try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
       if (!supabaseUrl) {
-        console.warn('[InfinitePages Cache] NEXT_PUBLIC_SUPABASE_URL not available - cache disabled');
-        this.isDbAvailable = false;
-        this.supabase = null as any;
-        return;
+        console.warn('[InfinitePages Cache] NEXT_PUBLIC_SUPABASE_URL not available - cache disabled')
+        this.isDbAvailable = false
+        this.supabase = null as any
+        return
       }
 
       if (!serviceRoleKey) {
-        console.warn('[InfinitePages Cache] SUPABASE_SERVICE_ROLE_KEY not available - cache disabled');
-        console.warn('[InfinitePages Cache] Please add SUPABASE_SERVICE_ROLE_KEY to your Vercel environment variables');
-        this.isDbAvailable = false;
-        this.supabase = null as any;
-        return;
+        console.warn('[InfinitePages Cache] SUPABASE_SERVICE_ROLE_KEY not available - cache disabled')
+        console.warn('[InfinitePages Cache] Please add SUPABASE_SERVICE_ROLE_KEY to your Vercel environment variables')
+        this.isDbAvailable = false
+        this.supabase = null as any
+        return
       }
 
-      this.supabase = createClient(supabaseUrl, serviceRoleKey);
-      console.log('[InfinitePages Cache] Successfully initialized with Supabase');
+      this.supabase = createClient(supabaseUrl, serviceRoleKey)
+      console.log('[InfinitePages Cache] Successfully initialized with Supabase')
     } catch (error) {
-      console.warn('[InfinitePages Cache] Failed to initialize Supabase client - cache disabled:', error);
-      this.isDbAvailable = false;
-      this.supabase = null as any;
+      console.warn('[InfinitePages Cache] Failed to initialize Supabase client - cache disabled:', error)
+      this.isDbAvailable = false
+      this.supabase = null as any
     }
   }
 
   private isAvailable(): boolean {
-    return this.isDbAvailable && this.supabase !== null;
+    return this.isDbAvailable && this.supabase !== null
   }
 
   private config: CacheConfig = {
@@ -243,7 +248,7 @@ class InfinitePagesCache {
       // Export
       export_pdf: 50, export_epub: 50, export_docx: 50, export_txt: 50
     }
-  };
+  }
 
   /**
    * PRIORITY 1: Foundation caching for immediate 80% cost savings
@@ -268,10 +273,10 @@ class InfinitePagesCache {
         fromCache: false,
         cacheType: 'none',
         tokensSaved: 0
-      };
+      }
     }
 
-    const premiseHash = crypto.createHash('md5').update(premise).digest('hex');
+    const premiseHash = crypto.createHash('md5').update(premise).digest('hex')
 
     try {
       // 1. Try exact premise + genre match first
@@ -279,32 +284,32 @@ class InfinitePagesCache {
         'story_foundation',
         userId,
         { genre, premise_hash: premiseHash }
-      );
+      )
 
       if (exactMatch.length > 0) {
-        const match = exactMatch[0];
-        await this.incrementHitCount(match.id);
-        console.log(`[InfinitePages Cache] EXACT foundation hit for ${genre}: ${premise.substring(0, 50)}...`);
+        const match = exactMatch[0]
+        await this.incrementHitCount(match.id)
+        console.log(`[InfinitePages Cache] EXACT foundation hit for ${genre}: ${premise.substring(0, 50)}...`)
 
         return {
           foundation: match.content,
           fromCache: true,
           cacheType: 'exact',
           tokensSaved: this.config.tokenCosts.story_foundation
-        };
+        }
       }
 
       // 2. Try theme + genre similarity for high-value matches
-      const themes = this.extractThemesFromPremise(premise);
+      const themes = this.extractThemesFromPremise(premise)
       const genreMatches = await this.getByMetadata(
         'story_foundation',
         userId,
         { genre },
         20 // Get more candidates for better matching
-      );
+      )
 
       if (genreMatches.length > 0 && themes.length > 0) {
-        const themeMatch = this.findBestThemeMatch(genreMatches, themes);
+        const themeMatch = this.findBestThemeMatch(genreMatches, themes)
         if (themeMatch && themeMatch.similarity > this.config.similarityThresholds.story_foundation) {
           // Use existing foundation with premise adapted
           const adaptedFoundation = {
@@ -315,17 +320,17 @@ class InfinitePagesCache {
             // Keep the rest of the foundation intact for maximum reuse
             _cacheAdapted: true,
             _originalCacheId: themeMatch.entry.id
-          };
+          }
 
-          await this.incrementHitCount(themeMatch.entry.id);
-          console.log(`[InfinitePages Cache] THEME-SIMILAR foundation hit for ${genre}: ${themes.join(', ')}`);
+          await this.incrementHitCount(themeMatch.entry.id)
+          console.log(`[InfinitePages Cache] THEME-SIMILAR foundation hit for ${genre}: ${themes.join(', ')}`)
 
           return {
             foundation: adaptedFoundation,
             fromCache: true,
             cacheType: 'theme-similar',
             tokensSaved: Math.floor(this.config.tokenCosts.story_foundation * 0.8) // 80% savings
-          };
+          }
         }
       }
 
@@ -334,7 +339,7 @@ class InfinitePagesCache {
         // Find high-quality, frequently reused foundations
         const highQualityMatch = genreMatches.find(entry =>
           entry.reuse_score >= 7.0 && entry.hit_count >= 2
-        );
+        )
 
         if (highQualityMatch) {
           const adaptedFoundation = {
@@ -344,36 +349,36 @@ class InfinitePagesCache {
             themes: themes.length > 0 ? themes : highQualityMatch.content.themes,
             _cacheAdapted: true,
             _originalCacheId: highQualityMatch.id
-          };
+          }
 
-          await this.incrementHitCount(highQualityMatch.id);
-          console.log(`[InfinitePages Cache] GENRE-SIMILAR foundation hit for ${genre}`);
+          await this.incrementHitCount(highQualityMatch.id)
+          console.log(`[InfinitePages Cache] GENRE-SIMILAR foundation hit for ${genre}`)
 
           return {
             foundation: adaptedFoundation,
             fromCache: true,
             cacheType: 'genre-similar',
             tokensSaved: Math.floor(this.config.tokenCosts.story_foundation * 0.6) // 60% savings
-          };
+          }
         }
       }
 
-      console.log(`[InfinitePages Cache] NO foundation cache hit for ${genre}: ${premise.substring(0, 50)}...`);
+      console.log(`[InfinitePages Cache] NO foundation cache hit for ${genre}: ${premise.substring(0, 50)}...`)
       return {
         foundation: null,
         fromCache: false,
         cacheType: 'none',
         tokensSaved: 0
-      };
+      }
 
     } catch (error) {
-      console.error('[InfinitePages Cache] Error in getFoundationWithSimilarity:', error);
+      console.error('[InfinitePages Cache] Error in getFoundationWithSimilarity:', error)
       return {
         foundation: null,
         fromCache: false,
         cacheType: 'none',
         tokensSaved: 0
-      };
+      }
     }
   }
 
@@ -391,7 +396,7 @@ class InfinitePagesCache {
   ): Promise<void> {
 
     try {
-      const premiseHash = crypto.createHash('md5').update(premise).digest('hex');
+      const premiseHash = crypto.createHash('md5').update(premise).digest('hex')
 
       const baseMetadata = {
         genre,
@@ -401,7 +406,7 @@ class InfinitePagesCache {
         setting_period: foundation.setting?.time || 'modern',
         target_audience: foundation.targetAudience || 'general',
         plot_complexity: this.assessPlotComplexity(foundation.plotStructure)
-      };
+      }
 
       // Cache the complete foundation
       await this.set(
@@ -412,12 +417,12 @@ class InfinitePagesCache {
         'story_foundation_comprehensive',
         { ...templateVariables, genre, premise, title },
         baseMetadata
-      );
+      )
 
-      console.log(`[InfinitePages Cache] Cached foundation for ${genre}: ${premise.substring(0, 50)}...`);
+      console.log(`[InfinitePages Cache] Cached foundation for ${genre}: ${premise.substring(0, 50)}...`)
 
     } catch (error) {
-      console.error('[InfinitePages Cache] Error caching story foundation:', error);
+      console.error('[InfinitePages Cache] Error caching story foundation:', error)
     }
   }
 
@@ -434,7 +439,7 @@ class InfinitePagesCache {
   ): Promise<{ result: T; fromCache: boolean; tokensSaved: number; cacheType?: string }> {
 
     // Check cache first
-    const cacheResult = await this.getFoundationWithSimilarity(genre, premise, userId, title);
+    const cacheResult = await this.getFoundationWithSimilarity(genre, premise, userId, title)
 
     if (cacheResult.fromCache && cacheResult.foundation) {
       return {
@@ -442,21 +447,21 @@ class InfinitePagesCache {
         fromCache: true,
         tokensSaved: cacheResult.tokensSaved,
         cacheType: cacheResult.cacheType
-      };
+      }
     }
 
     // Generate new content
-    const result = await claudeServiceCall();
+    const result = await claudeServiceCall()
 
     // Cache the result for future use
-    const prompt = `${genre} story: ${premise}`;
-    await this.cacheStoryFoundation(prompt, genre, premise, result, userId, title, templateVariables);
+    const prompt = `${genre} story: ${premise}`
+    await this.cacheStoryFoundation(prompt, genre, premise, result, userId, title, templateVariables)
 
     return {
       result,
       fromCache: false,
       tokensSaved: 0
-    };
+    }
   }
 
   // Private helper methods for foundation caching
@@ -469,7 +474,7 @@ class InfinitePagesCache {
 
     try {
       if (!this.isAvailable()) {
-        return [];
+        return []
       }
 
       const { data, error } = await this.supabase
@@ -481,17 +486,17 @@ class InfinitePagesCache {
         .gt('expires_at', new Date().toISOString())
         .order('hit_count', { ascending: false })
         .order('reuse_score', { ascending: false })
-        .limit(limit);
+        .limit(limit)
 
       if (error) {
-        console.error('[InfinitePages Cache] Database error in getByMetadata:', error);
-        return [];
+        console.error('[InfinitePages Cache] Database error in getByMetadata:', error)
+        return []
       }
 
-      return data || [];
+      return data || []
     } catch (error) {
-      console.error('[InfinitePages Cache] Error in getByMetadata:', error);
-      return [];
+      console.error('[InfinitePages Cache] Error in getByMetadata:', error)
+      return []
     }
   }
 
@@ -508,12 +513,12 @@ class InfinitePagesCache {
   ): Promise<void> {
     // Skip caching if Supabase is not available
     if (!this.isAvailable()) {
-      return;
+      return
     }
 
     try {
-      const cacheKey = this.generateCacheKey(prompt, contentType, metadata);
-      const semanticHash = this.generateSemanticHash(prompt, metadata);
+      const cacheKey = this.generateCacheKey(prompt, contentType, metadata)
+      const semanticHash = this.generateSemanticHash(prompt, metadata)
 
       const entry = {
         cache_key: cacheKey,
@@ -533,19 +538,19 @@ class InfinitePagesCache {
         adaptation_count: 0,
         last_accessed: new Date().toISOString(),
         token_cost_saved: 0
-      };
+      }
 
       // Type assertion to bypass schema mismatch
       const { error } = await (this.supabase as any)
         .from('infinite_pages_cache')
-        .upsert(entry);
+        .upsert(entry)
 
       if (error) {
-        console.error('[InfinitePages Cache] Database error in set:', error);
+        console.error('[InfinitePages Cache] Database error in set:', error)
       }
 
     } catch (error) {
-      console.error('[InfinitePages Cache] Error in set:', error);
+      console.error('[InfinitePages Cache] Error in set:', error)
     }
   }
 
@@ -556,11 +561,11 @@ class InfinitePagesCache {
         .from('infinite_pages_cache')
         .select('hit_count, token_cost_saved')
         .eq('id', entryId)
-        .single();
+        .single()
 
       if (fetchError || !current) {
-        console.error('[InfinitePages Cache] Error fetching current values:', fetchError);
-        return;
+        console.error('[InfinitePages Cache] Error fetching current values:', fetchError)
+        return
       }
 
       // Then update with incremented values
@@ -571,25 +576,25 @@ class InfinitePagesCache {
           last_accessed: new Date().toISOString(),
           token_cost_saved: ((current as any).token_cost_saved || 0) + 1
         })
-        .eq('id', entryId);
+        .eq('id', entryId)
 
       if (error) {
-        console.error('[InfinitePages Cache] Error incrementing hit count:', error);
+        console.error('[InfinitePages Cache] Error incrementing hit count:', error)
       }
     } catch (error) {
-      console.error('[InfinitePages Cache] Error in incrementHitCount:', error);
+      console.error('[InfinitePages Cache] Error in incrementHitCount:', error)
     }
   }
 
   private generateCacheKey(prompt: string, contentType: InfinitePagesContentType, metadata: any): string {
-    const keyData = `${contentType}_${prompt}_${JSON.stringify(metadata)}`;
-    return crypto.createHash('sha256').update(keyData).digest('hex');
+    const keyData = `${contentType}_${prompt}_${JSON.stringify(metadata)}`
+    return crypto.createHash('sha256').update(keyData).digest('hex')
   }
 
   private generateSemanticHash(prompt: string, metadata: any): string {
-    const normalized = prompt.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
-    const semantic = `${normalized}_${metadata.genre}_${metadata.target_audience || ''}`;
-    return crypto.createHash('md5').update(semantic).digest('hex');
+    const normalized = prompt.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim()
+    const semantic = `${normalized}_${metadata.genre}_${metadata.target_audience || ''}`
+    return crypto.createHash('md5').update(semantic).digest('hex')
   }
 
   private extractThemesFromPremise(premise: string): string[] {
@@ -598,55 +603,55 @@ class InfinitePagesCache {
       'power', 'friendship', 'family', 'survival', 'identity', 'justice',
       'freedom', 'loyalty', 'honor', 'forgiveness', 'corruption', 'transformation',
       'war', 'peace', 'loss', 'hope', 'fear', 'courage', 'destiny', 'fate'
-    ];
+    ]
 
-    const premiseLower = premise.toLowerCase();
+    const premiseLower = premise.toLowerCase()
     return commonThemes.filter(theme =>
       premiseLower.includes(theme.toLowerCase()) ||
       premiseLower.includes(theme.toLowerCase() + 's') ||
       premiseLower.includes(theme.toLowerCase() + 'ing')
-    );
+    )
   }
 
   private findBestThemeMatch(entries: InfinitePagesCacheRecord[], targetThemes: string[]): { entry: InfinitePagesCacheRecord; similarity: number } | null {
-    let bestMatch = null;
-    let highestSimilarity = 0;
+    let bestMatch = null
+    let highestSimilarity = 0
 
     for (const entry of entries) {
-      const entryThemes = entry.content.themes || [];
-      const similarity = this.calculateThemeSimilarity(targetThemes, entryThemes);
+      const entryThemes = entry.content.themes || []
+      const similarity = this.calculateThemeSimilarity(targetThemes, entryThemes)
 
       if (similarity > highestSimilarity) {
-        highestSimilarity = similarity;
-        bestMatch = { entry, similarity };
+        highestSimilarity = similarity
+        bestMatch = { entry, similarity }
       }
     }
 
-    return bestMatch;
+    return bestMatch
   }
 
   private calculateThemeSimilarity(themes1: string[], themes2: string[]): number {
-    if (themes1.length === 0 && themes2.length === 0) return 1;
-    if (themes1.length === 0 || themes2.length === 0) return 0;
+    if (themes1.length === 0 && themes2.length === 0) return 1
+    if (themes1.length === 0 || themes2.length === 0) return 0
 
     const intersection = themes1.filter(theme =>
       themes2.some(t2 => t2.toLowerCase().includes(theme.toLowerCase()))
-    );
-    const union = Array.from(new Set([...themes1, ...themes2]));
+    )
+    const union = Array.from(new Set([...themes1, ...themes2]))
 
-    return intersection.length / union.length;
+    return intersection.length / union.length
   }
 
   private assessPlotComplexity(plotStructure: any): 'simple' | 'moderate' | 'complex' {
-    const eventCount = Object.keys(plotStructure || {}).length;
-    if (eventCount <= 3) return 'simple';
-    if (eventCount <= 6) return 'moderate';
-    return 'complex';
+    const eventCount = Object.keys(plotStructure || {}).length
+    if (eventCount <= 3) return 'simple'
+    if (eventCount <= 6) return 'moderate'
+    return 'complex'
   }
 
   private calculateReuseScore(content: any, contentType: InfinitePagesContentType): number {
     // Calculate based on content genericness and quality
-    let score = 5.0; // Base score
+    const score = 5.0 // Base score
 
     // Adjust based on content type reusability
     const reuseFactors: Partial<Record<InfinitePagesContentType, number>> = {
@@ -659,9 +664,9 @@ class InfinitePagesCache {
       chapter_content: 3.0,
       improvement_style: 7.0,
       analysis_genre: 8.0
-    };
+    }
 
-    return Math.min(10.0, reuseFactors[contentType] || score);
+    return Math.min(10.0, reuseFactors[contentType] || score)
   }
 
   /**
@@ -681,7 +686,7 @@ class InfinitePagesCache {
   ): Promise<void> {
 
     try {
-      const prompt = `Chapter ${chapterNumber} for ${genre} story: ${storyTitle}`;
+      const prompt = `Chapter ${chapterNumber} for ${genre} story: ${storyTitle}`
       const metadata = {
         genre,
         premise_hash: '', // Not needed for chapters
@@ -690,7 +695,7 @@ class InfinitePagesCache {
         word_count: content.wordCount || targetWordCount,
         foundation_fingerprint: foundationFingerprint,
         previous_chapters_hash: previousChaptersHash
-      };
+      }
 
       await this.set(
         prompt,
@@ -708,12 +713,12 @@ class InfinitePagesCache {
         metadata,
         storyId,
         foundationFingerprint
-      );
+      )
 
-      console.log(`[InfinitePages Cache] Cached chapter ${chapterNumber} for story ${storyId}`);
+      console.log(`[InfinitePages Cache] Cached chapter ${chapterNumber} for story ${storyId}`)
 
     } catch (error) {
-      console.error('[InfinitePages Cache] Error caching chapter:', error);
+      console.error('[InfinitePages Cache] Error caching chapter:', error)
     }
   }
 
@@ -736,7 +741,7 @@ class InfinitePagesCache {
   }> {
 
     try {
-      console.log(`[InfinitePages Cache] Looking for chapter ${chapterNumber} cache...`);
+      console.log(`[InfinitePages Cache] Looking for chapter ${chapterNumber} cache...`)
 
       // 1. Try exact context match (same foundation + previous chapters)
       const exactMatch = await this.getByMetadata(
@@ -748,19 +753,19 @@ class InfinitePagesCache {
           foundation_fingerprint: foundationFingerprint,
           previous_chapters_hash: previousChaptersHash
         }
-      );
+      )
 
       if (exactMatch.length > 0) {
-        const match = exactMatch[0];
-        await this.incrementHitCount(match.id);
-        console.log(`[InfinitePages Cache] EXACT chapter cache hit for chapter ${chapterNumber}`);
+        const match = exactMatch[0]
+        await this.incrementHitCount(match.id)
+        console.log(`[InfinitePages Cache] EXACT chapter cache hit for chapter ${chapterNumber}`)
 
         return {
           chapter: match.content,
           fromCache: true,
           cacheType: 'exact',
           tokensSaved: this.config.tokenCosts.chapter_content
-        };
+        }
       }
 
       // 2. Try same foundation, different previous chapters (foundation-adapted)
@@ -773,13 +778,13 @@ class InfinitePagesCache {
           foundation_fingerprint: foundationFingerprint
         },
         10
-      );
+      )
 
       if (foundationMatches.length > 0) {
         // Find best word count match within same foundation
         const wordCountMatch = foundationMatches.find(match =>
           Math.abs((match.metadata.word_count || 2000) - targetWordCount) < 300
-        );
+        )
 
         if (wordCountMatch && wordCountMatch.reuse_score >= 6.0) {
           const adaptedChapter = this.adaptChapterContent(
@@ -787,17 +792,17 @@ class InfinitePagesCache {
             chapterNumber,
             targetWordCount,
             storyTitle
-          );
+          )
 
-          await this.incrementHitCount(wordCountMatch.id);
-          console.log(`[InfinitePages Cache] FOUNDATION-ADAPTED chapter cache hit for chapter ${chapterNumber}`);
+          await this.incrementHitCount(wordCountMatch.id)
+          console.log(`[InfinitePages Cache] FOUNDATION-ADAPTED chapter cache hit for chapter ${chapterNumber}`)
 
           return {
             chapter: adaptedChapter,
             fromCache: true,
             cacheType: 'foundation-adapted',
             tokensSaved: Math.floor(this.config.tokenCosts.chapter_content * 0.7) // 70% savings
-          };
+          }
         }
       }
 
@@ -810,7 +815,7 @@ class InfinitePagesCache {
           chapter_number: chapterNumber
         },
         15
-      );
+      )
 
       if (structureMatches.length > 0) {
         // Find chapters with similar word count and high reuse score
@@ -818,7 +823,7 @@ class InfinitePagesCache {
           Math.abs((match.metadata.word_count || 2000) - targetWordCount) < 500 &&
           match.reuse_score >= 7.0 &&
           match.hit_count >= 1
-        );
+        )
 
         if (similarStructure) {
           const adaptedChapter = this.adaptChapterContent(
@@ -826,17 +831,17 @@ class InfinitePagesCache {
             chapterNumber,
             targetWordCount,
             storyTitle
-          );
+          )
 
-          await this.incrementHitCount(similarStructure.id);
-          console.log(`[InfinitePages Cache] STRUCTURE-SIMILAR chapter cache hit for chapter ${chapterNumber}`);
+          await this.incrementHitCount(similarStructure.id)
+          console.log(`[InfinitePages Cache] STRUCTURE-SIMILAR chapter cache hit for chapter ${chapterNumber}`)
 
           return {
             chapter: adaptedChapter,
             fromCache: true,
             cacheType: 'structure-similar',
             tokensSaved: Math.floor(this.config.tokenCosts.chapter_content * 0.5) // 50% savings
-          };
+          }
         }
       }
 
@@ -847,13 +852,13 @@ class InfinitePagesCache {
           userId,
           { genre },
           20
-        );
+        )
 
         const earlyChapterMatch = genreMatches.find(match =>
           match.metadata.chapter_number === chapterNumber &&
           match.reuse_score >= 8.0 && // High quality only
           match.hit_count >= 2 // Proven reusable
-        );
+        )
 
         if (earlyChapterMatch) {
           const adaptedChapter = this.adaptChapterContent(
@@ -861,36 +866,36 @@ class InfinitePagesCache {
             chapterNumber,
             targetWordCount,
             storyTitle
-          );
+          )
 
-          await this.incrementHitCount(earlyChapterMatch.id);
-          console.log(`[InfinitePages Cache] GENRE-ADAPTED chapter cache hit for early chapter ${chapterNumber}`);
+          await this.incrementHitCount(earlyChapterMatch.id)
+          console.log(`[InfinitePages Cache] GENRE-ADAPTED chapter cache hit for early chapter ${chapterNumber}`)
 
           return {
             chapter: adaptedChapter,
             fromCache: true,
             cacheType: 'genre-adapted',
             tokensSaved: Math.floor(this.config.tokenCosts.chapter_content * 0.4) // 40% savings
-          };
+          }
         }
       }
 
-      console.log(`[InfinitePages Cache] NO chapter cache hit for chapter ${chapterNumber}`);
+      console.log(`[InfinitePages Cache] NO chapter cache hit for chapter ${chapterNumber}`)
       return {
         chapter: null,
         fromCache: false,
         cacheType: 'none',
         tokensSaved: 0
-      };
+      }
 
     } catch (error) {
-      console.error('[InfinitePages Cache] Error in getChapterWithFoundationContext:', error);
+      console.error('[InfinitePages Cache] Error in getChapterWithFoundationContext:', error)
       return {
         chapter: null,
         fromCache: false,
         cacheType: 'none',
         tokensSaved: 0
-      };
+      }
     }
   }
 
@@ -918,7 +923,7 @@ class InfinitePagesCache {
       targetWordCount,
       userId,
       storyTitle
-    );
+    )
 
     if (cacheResult.fromCache && cacheResult.chapter) {
       return {
@@ -926,11 +931,11 @@ class InfinitePagesCache {
         fromCache: true,
         tokensSaved: cacheResult.tokensSaved,
         cacheType: cacheResult.cacheType
-      };
+      }
     }
 
     // Generate new chapter
-    const result = await claudeServiceCall();
+    const result = await claudeServiceCall()
 
     // Cache the result for future use
     await this.cacheChapterWithContext(
@@ -943,13 +948,13 @@ class InfinitePagesCache {
       targetWordCount,
       userId,
       storyTitle
-    );
+    )
 
     return {
       result,
       fromCache: false,
       tokensSaved: 0
-    };
+    }
   }
 
   /**
@@ -962,9 +967,9 @@ class InfinitePagesCache {
       plotStructure: Object.keys(foundation.plotStructure || {}),
       themes: foundation.themes || [],
       setting: foundation.setting?.place || 'unknown'
-    };
+    }
 
-    return crypto.createHash('md5').update(JSON.stringify(keyElements)).digest('hex');
+    return crypto.createHash('md5').update(JSON.stringify(keyElements)).digest('hex')
   }
 
   /**
@@ -974,9 +979,9 @@ class InfinitePagesCache {
     const contextData = chapters.map(ch => ({
       summary: ch.summary,
       contentPreview: ch.content.substring(0, 200) // First 200 chars for context
-    }));
+    }))
 
-    return crypto.createHash('md5').update(JSON.stringify(contextData)).digest('hex');
+    return crypto.createHash('md5').update(JSON.stringify(contextData)).digest('hex')
   }
 
   /**
@@ -998,7 +1003,7 @@ class InfinitePagesCache {
       _adaptedAt: new Date().toISOString(),
       _targetWordCount: targetWordCount,
       _storyTitle: storyTitle
-    };
+    }
   }
 
   /**
@@ -1019,22 +1024,22 @@ class InfinitePagesCache {
         topGenres: [],
         foundationReuseRate: 0,
         costSavingsThisMonth: 0
-      };
+      }
     }
 
     try {
       const { data, error } = await (this.supabase as any)
-        .rpc('get_infinite_pages_analytics', { user_id: userId });
+        .rpc('get_infinite_pages_analytics', { user_id: userId })
 
       if (error) {
-        console.error('[InfinitePages Cache] Analytics error:', error);
+        console.error('[InfinitePages Cache] Analytics error:', error)
         return {
           totalTokensSaved: 0,
           cacheHitRateByType: {},
           topGenres: [],
           foundationReuseRate: 0,
           costSavingsThisMonth: 0
-        };
+        }
       }
 
       return data || {
@@ -1043,19 +1048,100 @@ class InfinitePagesCache {
         topGenres: [],
         foundationReuseRate: 0,
         costSavingsThisMonth: 0
-      };
+      }
     } catch (error) {
-      console.error('[InfinitePages Cache] Error getting analytics:', error);
+      console.error('[InfinitePages Cache] Error getting analytics:', error)
       return {
         totalTokensSaved: 0,
         cacheHitRateByType: {},
         topGenres: [],
         foundationReuseRate: 0,
         costSavingsThisMonth: 0
-      };
+      }
+    }
+  }
+
+  /**
+   * Get memory cache statistics for monitoring
+   */
+  getCacheStats(): {
+    size: number;
+    maxSize: number;
+    hitRate: number;
+    memoryUsage: {
+      rss: number;
+      heapUsed: number;
+      heapTotal: number;
+      external: number;
+    };
+    cacheConfig: {
+      maxEntries: number;
+      ttlMs: number;
+    };
+  } {
+    const memoryUsage = process.memoryUsage()
+
+    return {
+      size: this.memoryCache.size,
+      maxSize: this.memoryCache.max,
+      hitRate: this.memoryCache.calculatedSize || 0,
+      memoryUsage: {
+        rss: Math.round(memoryUsage.rss / 1024 / 1024), // MB
+        heapUsed: Math.round(memoryUsage.heapUsed / 1024 / 1024), // MB
+        heapTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024), // MB
+        external: Math.round(memoryUsage.external / 1024 / 1024) // MB
+      },
+      cacheConfig: {
+        maxEntries: this.memoryCache.max,
+        ttlMs: this.memoryCache.ttl || 0
+      }
+    }
+  }
+
+  /**
+   * Clear the memory cache for memory management
+   */
+  clearMemoryCache(): void {
+    this.memoryCache.clear()
+    console.log('[InfinitePages Cache] Memory cache cleared')
+  }
+
+  /**
+   * Check if cache is healthy (not approaching memory limits)
+   */
+  isCacheHealthy(): {
+    healthy: boolean;
+    warnings: string[];
+    stats: ReturnType<typeof this.getCacheStats>;
+  } {
+    const stats = this.getCacheStats()
+    const warnings: string[] = []
+    let healthy = true
+
+    // Check memory usage
+    if (stats.memoryUsage.heapUsed > 512) { // 512MB threshold
+      warnings.push(`High heap usage: ${stats.memoryUsage.heapUsed}MB`)
+      healthy = false
+    }
+
+    // Check cache size vs max
+    if (stats.size > stats.maxSize * 0.9) {
+      warnings.push(`Cache near capacity: ${stats.size}/${stats.maxSize}`)
+    }
+
+    // Check for memory pressure
+    if (stats.memoryUsage.rss > 1024) { // 1GB threshold
+      warnings.push(`High RSS memory: ${stats.memoryUsage.rss}MB`)
+      healthy = false
+    }
+
+    return {
+      healthy,
+      warnings,
+      stats
     }
   }
 }
 
 // Export singleton instance for immediate use
-export const infinitePagesCache = new InfinitePagesCache();
+export const infinitePagesCache = new InfinitePagesCache()

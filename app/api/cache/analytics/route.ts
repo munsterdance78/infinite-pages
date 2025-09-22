@@ -1,17 +1,14 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import { infinitePagesCache } from '@/lib/claude/infinitePagesCache'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const authResult = await requireAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     // Get cache analytics from server-side cache system
     const analytics = await infinitePagesCache.getInfinitePagesAnalytics(user.id)

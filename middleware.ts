@@ -265,8 +265,8 @@ async function getUserSubscriptionTier(userId: string): Promise<'free' | 'pro'> 
   try {
     // Check if required environment variables are available
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      console.warn('[Middleware] Supabase environment variables not available, defaulting to free tier');
-      return 'free';
+      console.warn('[Middleware] Supabase environment variables not available, defaulting to free tier')
+      return 'free'
     }
 
     // This would typically be cached in Redis/memory for performance
@@ -330,7 +330,7 @@ export async function middleware(req: NextRequest) {
     const supabase = createMiddlewareClient({ req, res })
     
     const {
-      data: { user },
+      data: { user }
     } = await supabase.auth.getUser()
 
     if (!user) {
@@ -429,6 +429,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder files
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
+  ]
 }

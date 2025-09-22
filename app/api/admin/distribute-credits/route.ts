@@ -1,31 +1,14 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireAdminAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import { calculateProportionalCredits, SUBSCRIPTION_TIERS, type SubscriptionTier } from '@/lib/subscription-config'
 import type { Database } from '@/lib/supabase/types'
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    // Verify admin access
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
-
-    // Check if user is admin (you may want to implement proper admin role checking)
-    const { data: adminProfile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .single()
-
-    if (!adminProfile?.is_admin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-    }
+    const authResult = await requireAdminAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     const body = await request.json()
     const { month, year, dryRun = false } = body
@@ -183,7 +166,7 @@ export async function POST(request: NextRequest) {
           acc[tier].credits += r.totalCreditsDistributed
           acc[tier].bonusCredits += r.bonusCredits
           return acc
-        }, {} as Record<string, any>)
+        }, {} as Record<string, { users: number; credits: number; bonusCredits: number }>)
       }
     }
 
@@ -207,23 +190,9 @@ export async function POST(request: NextRequest) {
 // Get distribution history
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
-
-    const { data: adminProfile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .single()
-
-    if (!adminProfile?.is_admin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-    }
+    const authResult = await requireAdminAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     // Get recent distribution transactions
     const { data: distributions } = await supabase
@@ -261,7 +230,7 @@ export async function GET(request: NextRequest) {
       acc[month].byTier[tier].credits += transaction.amount
 
       return acc
-    }, {} as Record<string, any>) || {}
+    }, {} as Record<string, { users: number; credits: number; bonusCredits: number }>) || {}
 
     return NextResponse.json({
       distributionHistory: Object.values(distributionHistory)

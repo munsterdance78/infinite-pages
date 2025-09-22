@@ -1,10 +1,35 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // appDir is now stable in Next.js 13.4+, no longer experimental
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
+    // ESLint enforcement enabled to ensure code quality in production
+    ignoreDuringBuilds: false,
+  },
+  webpack: (config, { isServer }) => {
+    // Code splitting optimization for icons
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization.splitChunks,
+          cacheGroups: {
+            ...config.optimization.splitChunks?.cacheGroups,
+            icons: {
+              name: 'icons',
+              test: /[\\/]node_modules[\\/]lucide-react/,
+              chunks: 'all',
+              priority: 10,
+            },
+          },
+        },
+      }
+    }
+
+    return config
   },
   async headers() {
     return [
@@ -21,4 +46,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

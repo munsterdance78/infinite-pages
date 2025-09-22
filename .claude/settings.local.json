@@ -23,7 +23,10 @@
       "Bash(git reset:*)",
       "Bash(npm run start:*)",
       "Bash(findstr:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(find:*)",
+      "Bash(ANALYZE=true npm run build)",
+      "Bash(set ANALYZE=true)"
     ],
     "deny": [],
     "ask": []

@@ -1,12 +1,11 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import Stripe from 'stripe'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireCreatorAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-10-16'
 })
 
 // Environment variable validation
@@ -25,15 +24,13 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const authResult = await requireCreatorAuth(request)
+    if (!isAuthSuccess(authResult)) {
       return NextResponse.redirect(
         `${SITE_URL}/auth/signin?redirect_to=/creator/stripe/callback`
       )
     }
+    const { user, supabase } = authResult
 
     // Verify this account belongs to the current user
     const { data: profile } = await supabase

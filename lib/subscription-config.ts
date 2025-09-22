@@ -103,9 +103,9 @@ export function canUserAccessFeature(
 
 export function getSubscriptionUpgradeMessage(currentTier: SubscriptionTier): string {
   if (currentTier === 'basic') {
-    return "Upgrade to Premium for unlimited stories, premium covers, and download access!"
+    return 'Upgrade to Premium for unlimited stories, premium covers, and download access!'
   }
-  return "You have full Premium access to all features!"
+  return 'You have full Premium access to all features!'
 }
 
 // Subscription enforcement - no free access

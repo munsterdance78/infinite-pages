@@ -1,7 +1,6 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireAdminAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import { MINIMUM_PAYOUT_USD } from '@/lib/subscription-config'
 import Stripe from 'stripe'
 import type { Database } from '@/lib/supabase/types'
@@ -30,24 +29,9 @@ function getProfileData(profiles: any) {
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    // Verify admin access
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
-
-    const { data: adminProfile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .single()
-
-    if (!adminProfile?.is_admin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-    }
+    const authResult = await requireAdminAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     const body = await request.json()
     const { batch_date, dry_run = false, minimum_payout = MINIMUM_PAYOUT_USD } = body
@@ -288,23 +272,9 @@ export async function POST(request: NextRequest) {
 // Get payout batch status
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
-
-    const { data: adminProfile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .single()
-
-    if (!adminProfile?.is_admin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-    }
+    const authResult = await requireAdminAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     // Get recent payout batches
     const { data: batches } = await supabase

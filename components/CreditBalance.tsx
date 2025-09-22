@@ -64,7 +64,7 @@ export default function CreditBalance({
 
   if (loading) {
     return (
-      <div className={compact ? "p-3" : "p-4"}>
+      <div className={compact ? 'p-3' : 'p-4'}>
         <div className="animate-pulse flex space-x-4">
           <div className="rounded-full bg-gray-200 h-10 w-10"></div>
           <div className="flex-1 space-y-2 py-1">
@@ -78,7 +78,7 @@ export default function CreditBalance({
 
   if (error || !data) {
     return (
-      <div className={`${compact ? "p-3" : "p-4"} text-red-600`}>
+      <div className={`${compact ? 'p-3' : 'p-4'} text-red-600`}>
         {error || 'Failed to load balance'}
       </div>
     )

@@ -1,7 +1,6 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
 
 const WEBUI_API_URL = process.env.STABLE_DIFFUSION_WEBUI_URL || 'http://localhost:7860'
@@ -45,13 +44,9 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
+    const authResult = await requireAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     const { style = 'artistic', custom_prompt = '' } = await request.json()
     const storyId = params.id
@@ -191,13 +186,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
+    const authResult = await requireAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     const storyId = params.id
 

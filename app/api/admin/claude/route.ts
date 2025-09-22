@@ -1,30 +1,14 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 // import { claudeService } from '@/lib/claude'
 import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireAdminAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 
-export async function GET(_request: NextRequest) {
-  const cookieStore = cookies()
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+export async function GET(request: NextRequest) {
+  const authResult = await requireAdminAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-  }
-
-  // Check if user is admin (you may want to add an admin role check)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('email')
-    .eq('id', user.id)
-    .single()
-
-  // Basic admin check - you should implement proper role-based access
-  const isAdmin = profile?.email?.includes('admin') || false
-  if (!isAdmin) {
-    return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-  }
+  const { user, supabase } = authResult
 
   try {
     // Temporarily disabled - Claude service import causing build issues
@@ -41,25 +25,10 @@ export async function GET(_request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const cookieStore = cookies()
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+  const authResult = await requireAdminAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-  }
-
-  // Check if user is admin
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('email')
-    .eq('id', user.id)
-    .single()
-
-  const isAdmin = profile?.email?.includes('admin') || false
-  if (!isAdmin) {
-    return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-  }
+  const { user, supabase } = authResult
 
   try {
     const body = await request.json()

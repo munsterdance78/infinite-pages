@@ -75,21 +75,21 @@ export async function POST(
     }
 
     // PRIORITY 2: Generate chapter with caching for 60% cost savings
-    const targetWordCount = 2000; // Default target
+    const targetWordCount = 2000 // Default target
 
     // Generate foundation fingerprint for dependency tracking
-    const foundationFingerprint = infinitePagesCache.generateFoundationFingerprint(story.foundation);
+    const foundationFingerprint = infinitePagesCache.generateFoundationFingerprint(story.foundation)
 
     // Generate previous chapters hash for context matching
-    const previousChapters = story.chapters || [];
+    const previousChapters = story.chapters || []
     const previousChaptersHash = infinitePagesCache.generatePreviousChaptersHash(
       previousChapters.map((ch: any) => ({ content: ch.content || '', summary: ch.summary || '' }))
-    );
+    )
 
-    let chapterResult;
-    let tokensSaved = 0;
-    let fromCache = false;
-    let cacheType = 'none';
+    let chapterResult
+    let tokensSaved = 0
+    let fromCache = false
+    let cacheType = 'none'
 
     try {
       // Use chapter caching wrapper
@@ -101,14 +101,14 @@ Story Title: ${story.title}
 Genre: ${story.genre}
 Premise: ${story.premise}
 Foundation: ${JSON.stringify(story.foundation, null, 2)}
-`;
+`
 
           const previousChapter = previousChapters
-            ?.find((ch: any) => ch.chapter_number === chapter_number - 1);
+            ?.find((ch: any) => ch.chapter_number === chapter_number - 1)
 
           const previousContext = previousChapter
             ? `Previous Chapter Content: ${previousChapter.content}`
-            : 'This is the first chapter.';
+            : 'This is the first chapter.'
 
           const prompt = `Write Chapter ${chapter_number} for this story:
 
@@ -132,36 +132,36 @@ Return the response as JSON:
   "wordCount": number_of_words
 }
 
-Make this chapter compelling and well-written.`;
+Make this chapter compelling and well-written.`
 
           const message = await anthropic.messages.create({
             model: 'claude-3-sonnet-20240229',
             max_tokens: 4000,
             messages: [{ role: 'user', content: prompt }]
-          });
+          })
 
-          const content = message.content[0].type === 'text' ? message.content[0].text : '';
-          const inputTokens = message.usage.input_tokens;
-          const outputTokens = message.usage.output_tokens;
+          const content = message.content[0].type === 'text' ? message.content[0].text : ''
+          const inputTokens = message.usage.input_tokens
+          const outputTokens = message.usage.output_tokens
 
           // Parse AI response
-          let chapterData;
+          let chapterData
           try {
-            chapterData = JSON.parse(content);
+            chapterData = JSON.parse(content)
           } catch {
             chapterData = {
               title: title || `Chapter ${chapter_number}`,
               content: content,
               summary: '',
               wordCount: content.split(/\s+/).length
-            };
+            }
           }
 
           return {
             ...chapterData,
             usage: { inputTokens, outputTokens },
             cost: (inputTokens * 0.000003) + (outputTokens * 0.000015)
-          };
+          }
         },
         chapter_number,
         params.id, // storyId
@@ -171,27 +171,27 @@ Make this chapter compelling and well-written.`;
         targetWordCount,
         user.id,
         story.title
-      );
+      )
 
-      chapterResult = cachedResult.result;
-      tokensSaved = cachedResult.tokensSaved;
-      fromCache = cachedResult.fromCache;
-      cacheType = cachedResult.cacheType || 'none';
+      chapterResult = cachedResult.result
+      tokensSaved = cachedResult.tokensSaved
+      fromCache = cachedResult.fromCache
+      cacheType = cachedResult.cacheType || 'none'
 
-      console.log(`[Chapter Generation] ${fromCache ? 'CACHE HIT' : 'NEW GENERATION'} - Chapter ${chapter_number}, Tokens saved: ${tokensSaved}, Type: ${cacheType}`);
+      console.log(`[Chapter Generation] ${fromCache ? 'CACHE HIT' : 'NEW GENERATION'} - Chapter ${chapter_number}, Tokens saved: ${tokensSaved}, Type: ${cacheType}`)
 
     } catch (error) {
-      console.error('Chapter generation error:', error);
+      console.error('Chapter generation error:', error)
       return NextResponse.json({ error: 'Failed to generate chapter' }, {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
-      });
+      })
     }
 
-    const chapterData = chapterResult;
-    const inputTokens = chapterResult.usage?.inputTokens || 0;
-    const outputTokens = chapterResult.usage?.outputTokens || 0;
-    const costUSD = chapterResult.cost || 0;
+    const chapterData = chapterResult
+    const inputTokens = chapterResult.usage?.inputTokens || 0
+    const outputTokens = chapterResult.usage?.outputTokens || 0
+    const costUSD = chapterResult.cost || 0
 
     // Content moderation
     const isContentSafe = await moderateContent(chapterData.content || '')
@@ -209,10 +209,10 @@ Make this chapter compelling and well-written.`;
     // Calculate actual token usage accounting for cache savings
     const actualTokensUsed = fromCache
       ? Math.max(0, TOKEN_COSTS.CHAPTER_GENERATION - tokensSaved)
-      : TOKEN_COSTS.CHAPTER_GENERATION;
+      : TOKEN_COSTS.CHAPTER_GENERATION
     const actualCost = fromCache
       ? Math.max(0, costUSD - (tokensSaved * 0.000015))
-      : costUSD;
+      : costUSD
 
     // Create chapter
     const { data: chapter, error } = await supabase

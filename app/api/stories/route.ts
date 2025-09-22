@@ -1,6 +1,6 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import {
   TOKEN_COSTS,
   CONTENT_LIMITS,
@@ -141,13 +141,10 @@ function sanitizeString(input: string): string {
 }
 
 export async function GET(request: NextRequest) {
-  const cookieStore = cookies()
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-  }
+  const authResult = await requireAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
+
+  const { user, supabase } = authResult
 
   // Apply rate limiting for general API requests
   const rateLimitResult = await subscriptionAwareRateLimit(
@@ -197,13 +194,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const cookieStore = cookies()
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-  }
+  const authResult = await requireAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
+
+  const { user, supabase } = authResult
 
   try {
     // Get user profile first to determine subscription tier for rate limiting
@@ -326,14 +320,14 @@ export async function POST(request: NextRequest) {
         user.id,
         title,
         { includeWritingTips: false }
-      );
+      )
 
-      claudeResponse = cachedResult.result;
-      tokensSaved = cachedResult.tokensSaved;
-      fromCache = cachedResult.fromCache;
-      cacheType = cachedResult.cacheType || 'none';
+      claudeResponse = cachedResult.result
+      tokensSaved = cachedResult.tokensSaved
+      fromCache = cachedResult.fromCache
+      cacheType = cachedResult.cacheType || 'none'
 
-      console.log(`[Foundation Generation] ${fromCache ? 'CACHE HIT' : 'NEW GENERATION'} - Tokens saved: ${tokensSaved}, Type: ${cacheType}`);
+      console.log(`[Foundation Generation] ${fromCache ? 'CACHE HIT' : 'NEW GENERATION'} - Tokens saved: ${tokensSaved}, Type: ${cacheType}`)
 
     } catch (error: any) {
       console.error('Claude service error:', error)
@@ -354,11 +348,11 @@ export async function POST(request: NextRequest) {
       if (typeof claudeResponse === 'object' && claudeResponse.content) {
         foundation = typeof claudeResponse.content === 'string'
           ? JSON.parse(claudeResponse.content)
-          : claudeResponse.content;
+          : claudeResponse.content
       } else if (typeof content === 'string') {
         foundation = JSON.parse(content)
       } else {
-        foundation = claudeResponse; // Already parsed from cache
+        foundation = claudeResponse // Already parsed from cache
       }
     } catch (parseError) {
       console.warn('Failed to parse AI response as JSON, storing as text:', parseError)
@@ -401,8 +395,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Update user tokens and stats - account for cache savings
-    const actualTokensUsed = fromCache ? Math.max(0, requiredTokens - tokensSaved) : requiredTokens;
-    const actualCost = fromCache ? Math.max(0, costUSD - (tokensSaved * 0.000015)) : costUSD;
+    const actualTokensUsed = fromCache ? Math.max(0, requiredTokens - tokensSaved) : requiredTokens
+    const actualCost = fromCache ? Math.max(0, costUSD - (tokensSaved * 0.000015)) : costUSD
 
     const { error: updateError } = await supabase
       .from('profiles')

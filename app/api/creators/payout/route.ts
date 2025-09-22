@@ -1,25 +1,20 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import Stripe from 'stripe'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireCreatorAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-10-16'
 })
 
 const MINIMUM_PAYOUT = 25.00 // $25 minimum payout
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
+    const authResult = await requireCreatorAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     // Get creator profile
     const { data: profile } = await supabase

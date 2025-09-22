@@ -1,9 +1,14 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireCreatorAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import { CREATOR_REVENUE_SHARE } from '@/lib/subscription-config'
 import type { Database } from '@/lib/supabase/types'
+
+// DEPRECATED: This endpoint is deprecated as of [DATE].
+// Please use /api/creators/earnings?view=enhanced instead.
+// This endpoint will be removed on [REMOVAL_DATE].
+const DEPRECATION_DATE = '2024-01-01'
+const REMOVAL_DATE = '2024-02-01'
 
 // Helper function to safely access relation data
 function getRelationData(relation: any) {
@@ -15,16 +20,72 @@ function getRelationData(relation: any) {
 
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
+    // Add deprecation warning headers and redirect to new endpoint
+    const response = await handleDeprecatedEnhancedRequest(request)
+    return response
+  } catch (error) {
+    console.error('Enhanced creator earnings endpoint error:', error)
+    return NextResponse.json({ error: 'Failed to fetch enhanced earnings data' }, { status: 500 })
+  }
+}
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
+async function handleDeprecatedEnhancedRequest(request: NextRequest) {
+  // Log deprecation usage for monitoring
+  console.warn(`DEPRECATED ENDPOINT USAGE: /api/creators/earnings/enhanced accessed at ${new Date().toISOString()}`)
 
-    const { searchParams } = new URL(request.url)
-    const period = searchParams.get('period') || 'current_month'
+  // Parse original query parameters
+  const { searchParams } = new URL(request.url)
+
+  // Map legacy parameters to new unified endpoint format
+  const newParams = new URLSearchParams()
+  newParams.set('view', 'enhanced')
+
+  // Map period parameter
+  const period = searchParams.get('period') || 'current_month'
+  newParams.set('period', period)
+
+  // Add format parameter to maintain response structure
+  newParams.set('legacy_format', 'enhanced')
+
+  // Redirect to new unified endpoint
+  const newUrl = `/api/creators/earnings?${newParams.toString()}`
+
+  try {
+    // Make internal request to new endpoint
+    const baseUrl = new URL(request.url).origin
+    const response = await fetch(`${baseUrl}${newUrl}`, {
+      method: 'GET',
+      headers: {
+        'Cookie': request.headers.get('Cookie') || '',
+        'Authorization': request.headers.get('Authorization') || ''
+      }
+    })
+
+    const data = await response.json()
+
+    // Add deprecation headers to response
+    const deprecationResponse = NextResponse.json(data, { status: response.status })
+    deprecationResponse.headers.set('X-API-Deprecated', 'true')
+    deprecationResponse.headers.set('X-API-Deprecation-Date', DEPRECATION_DATE)
+    deprecationResponse.headers.set('X-API-Removal-Date', REMOVAL_DATE)
+    deprecationResponse.headers.set('X-API-Migration-Guide', '/api/creators/earnings?view=enhanced')
+    deprecationResponse.headers.set('Warning', '299 - "This API endpoint is deprecated. Please migrate to /api/creators/earnings?view=enhanced"')
+
+    return deprecationResponse
+
+  } catch (error) {
+    console.error('Error calling new unified endpoint:', error)
+    return await fallbackToOriginalEnhancedLogic(request)
+  }
+}
+
+async function fallbackToOriginalEnhancedLogic(request: NextRequest) {
+  const authResult = await requireCreatorAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
+  const { user, supabase } = authResult
+
+  const { searchParams } = new URL(request.url)
+  const period = searchParams.get('period') || 'current_month'
 
     // Calculate date range based on period
     const now = new Date()
@@ -56,10 +117,6 @@ export async function GET(request: NextRequest) {
       .select('is_creator, creator_tier, total_earnings_usd, pending_payout_usd')
       .eq('id', user.id)
       .single()
-
-    if (!profile?.is_creator) {
-      return NextResponse.json({ error: 'Creator access required' }, { status: 403 })
-    }
 
     // Get detailed earnings with story and reader information
     const { data: earnings } = await supabase
@@ -170,24 +227,29 @@ export async function GET(request: NextRequest) {
     const storiesWithEarnings = earningsByStory.length
     const averageEarningsPerStory = storiesWithEarnings > 0 ? totalUsdEarnings / storiesWithEarnings : 0
 
-    return NextResponse.json({
-      summary: {
-        totalCreditsEarned,
-        totalUsdEarnings,
-        uniqueReaders,
-        storiesWithEarnings,
-        averageEarningsPerStory,
-        pendingPayout: profile.pending_payout_usd || 0,
-        lifetimeEarnings: profile.total_earnings_usd || 0,
-        creatorSharePercentage: CREATOR_REVENUE_SHARE * 100 // 70%
-      },
-      earningsByStory,
-      recentTransactions,
-      monthlyTrend
-    })
+  // Add deprecation headers to fallback response
+  const fallbackResponse = NextResponse.json({
+    summary: {
+      totalCreditsEarned,
+      totalUsdEarnings,
+      uniqueReaders,
+      storiesWithEarnings,
+      averageEarningsPerStory,
+      pendingPayout: profile.pending_payout_usd || 0,
+      lifetimeEarnings: profile.total_earnings_usd || 0,
+      creatorSharePercentage: CREATOR_REVENUE_SHARE * 100 // 70%
+    },
+    earningsByStory,
+    recentTransactions,
+    monthlyTrend
+  })
 
-  } catch (error) {
-    console.error('Enhanced creator earnings endpoint error:', error)
-    return NextResponse.json({ error: 'Failed to fetch enhanced earnings data' }, { status: 500 })
-  }
+  // Add deprecation headers
+  fallbackResponse.headers.set('X-API-Deprecated', 'true')
+  fallbackResponse.headers.set('X-API-Deprecation-Date', DEPRECATION_DATE)
+  fallbackResponse.headers.set('X-API-Removal-Date', REMOVAL_DATE)
+  fallbackResponse.headers.set('X-API-Migration-Guide', '/api/creators/earnings?view=enhanced')
+  fallbackResponse.headers.set('Warning', '299 - "This API endpoint is deprecated. Please migrate to /api/creators/earnings?view=enhanced"')
+
+  return fallbackResponse
 }

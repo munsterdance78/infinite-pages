@@ -363,7 +363,7 @@ export default function StoryLibrary({ userProfile }: StoryLibraryProps) {
             return (
               <Button
                 key={pageNum}
-                variant={currentPage === pageNum ? "default" : "outline"}
+                variant={currentPage === pageNum ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setCurrentPage(pageNum)}
               >

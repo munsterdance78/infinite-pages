@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { 
-  CLAUDE_PRICING, 
-  calculateCost, 
+import {
+  CLAUDE_PRICING,
+  calculateCost,
   ERROR_MESSAGES,
   CONTENT_LIMITS,
   MODERATION_PATTERNS,
@@ -10,6 +10,7 @@ import {
 import { claudeCache } from './cache'
 import { analyticsService } from './analytics'
 import { promptTemplateManager } from './prompts'
+import { contextOptimizer, type OptimizedContext } from './context-optimizer'
 
 // Enhanced Claude service with better error handling and features
 export class ClaudeService {
@@ -262,30 +263,54 @@ Make this foundation comprehensive, engaging, and detailed. This will serve as t
   }
 
   /**
-   * Generate a chapter with context from previous chapters
+   * Generate a chapter with optimized context (70% token reduction)
    */
   async generateChapter({
     storyContext,
     chapterNumber,
     previousChapters,
-    targetWordCount = 2000
+    targetWordCount = 2000,
+    chapterPlan,
+    useOptimizedContext = true
   }: {
-    storyContext: string
+    storyContext: string | any
     chapterNumber: number
     previousChapters: Array<{ number: number; content: string; summary: string }>
     targetWordCount?: number
+    chapterPlan?: any
+    useOptimizedContext?: boolean
   }) {
     const systemPrompt = 'You are a professional novelist and creative writing expert. Your task is to write compelling, well-crafted chapters that advance the story while maintaining consistency with established characters, plot, and themes. Focus on engaging dialogue, vivid descriptions, and meaningful character development.'
 
-    const previousContext = previousChapters.length > 0
-      ? `Previous Chapters Context:\n${previousChapters.map(ch => 
-          `Chapter ${ch.number}: ${ch.summary}\n${ch.content.slice(-500)}...`
-        ).join('\n\n')}`
-      : 'This is the first chapter.'
+    let prompt: string
+    let tokenAnalysis: any = null
 
-    const prompt = `Write Chapter ${chapterNumber} for this story:
+    if (useOptimizedContext && typeof storyContext === 'object') {
+      // Use optimized context approach for 70% token reduction
+      const optimizedContext = contextOptimizer.selectRelevantContext(
+        chapterPlan || { purpose: 'advance story', keyEvents: [] },
+        {
+          ...storyContext,
+          previousChapters
+        }
+      )
 
-${storyContext}
+      // Calculate token savings
+      const originalContextStr = `Story: ${JSON.stringify(storyContext)}\nPrevious: ${previousChapters.map(ch => `Ch${ch.number}: ${ch.summary}\n${ch.content.slice(-500)}`).join('\n')}`
+      tokenAnalysis = contextOptimizer.analyzeTokenReduction(originalContextStr, optimizedContext)
+
+      prompt = this.buildOptimizedChapterPrompt(optimizedContext, chapterNumber, targetWordCount)
+    } else {
+      // Fallback to original verbose approach
+      const previousContext = previousChapters.length > 0
+        ? `Previous Chapters Context:\n${previousChapters.map(ch =>
+            `Chapter ${ch.number}: ${ch.summary}\n${ch.content.slice(-500)}...`
+          ).join('\n\n')}`
+        : 'This is the first chapter.'
+
+      prompt = `Write Chapter ${chapterNumber} for this story:
+
+${typeof storyContext === 'string' ? storyContext : JSON.stringify(storyContext)}
 
 ${previousContext}
 
@@ -311,12 +336,64 @@ Return the response as JSON:
 }
 
 Make this chapter compelling, well-written, and integral to the overall story.`
+    }
 
-    return this.generateContent({
+    const result = await this.generateContent({
       prompt,
       systemPrompt,
-      maxTokens: 6000
+      maxTokens: 6000,
+      operation: 'chapter_generation'
     })
+
+    // Add token optimization analytics
+    if (tokenAnalysis) {
+      result.optimization = {
+        tokensSaved: tokenAnalysis.before_optimization - tokenAnalysis.after_optimization,
+        compressionRatio: tokenAnalysis.compression_ratio,
+        costSavings: tokenAnalysis.cost_savings_usd,
+        optimizedContext: useOptimizedContext
+      }
+    }
+
+    return result
+  }
+
+  /**
+   * Build optimized prompt using fact-based context
+   */
+  private buildOptimizedChapterPrompt(context: OptimizedContext, chapterNumber: number, targetWordCount: number): string {
+    const { core_facts, active_characters, recent_events, chapter_goals } = context
+
+    return `STORY CORE:
+Genre: ${core_facts.genre} | Setting: ${core_facts.setting.location} (${core_facts.setting.atmosphere})
+Protagonist: ${core_facts.protagonist} | Conflict: ${core_facts.central_conflict}
+Current: ${core_facts.setting.current_condition} | Features: ${core_facts.setting.key_features.join(', ')}
+
+CHAPTER ${chapterNumber} - ${chapter_goals.primary_goal}:
+
+ACTIVE CHARACTERS:
+${active_characters.map(c => `${c.name}: wants ${c.current_goal}, ${c.key_trait}, feeling ${c.current_emotion}`).join('\n')}
+
+RECENT EVENTS:
+${recent_events.map(e => `Ch${e.number}: ${e.key_event} → ${e.consequences}`).join(' | ')}
+
+GOALS:
+1. ${chapter_goals.primary_goal}
+2. ${chapter_goals.secondary_goal}
+3. Advance: ${chapter_goals.plot_advancement}
+
+Write ${targetWordCount} words. Focus on ACTION and DIALOGUE. Show don't tell.
+
+Return as JSON:
+{
+  "title": "Chapter ${chapterNumber} title",
+  "content": "The full chapter content",
+  "summary": "Brief summary of what happens in this chapter",
+  "wordCount": number_of_words,
+  "keyEvents": ["Important events that occur in this chapter"],
+  "characterDevelopment": "How characters grow or change in this chapter",
+  "foreshadowing": "Any hints or foreshadowing for future events"
+}`
   }
 
   /**

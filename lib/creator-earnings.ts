@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+import type { createClient } from '@/lib/supabase/client'
 import { CREATOR_REVENUE_SHARE } from '@/lib/subscription-config'
 import type { Database } from '@/lib/supabase/types'
 

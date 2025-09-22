@@ -78,6 +78,19 @@ export interface ClaudeAnalytics {
   }
 }
 
+export interface ContextOptimizationMetrics {
+  chapter_id: string
+  tokens_before_optimization: number
+  tokens_after_optimization: number
+  compression_ratio: number
+  generation_time_ms: number
+  cost_before: number
+  cost_after: number
+  quality_maintained: boolean
+  optimization_technique: string
+  context_level: 'minimal' | 'standard' | 'detailed' | 'full'
+}
+
 export interface AnalyticsEvent {
   id: string
   userId: string
@@ -95,6 +108,7 @@ export interface AnalyticsEvent {
     genre?: string
     wordCount?: number
     improvementType?: string
+    optimization?: ContextOptimizationMetrics
     [key: string]: any
   }
 }
@@ -468,15 +482,160 @@ export class ClaudeAnalyticsService {
   }
 
   /**
+   * Track context optimization specifically
+   */
+  async trackContextOptimization(metrics: ContextOptimizationMetrics): Promise<void> {
+    const event: Omit<AnalyticsEvent, 'id' | 'timestamp'> = {
+      userId: 'system', // Or pass userId parameter
+      operation: 'context_optimization',
+      model: 'optimization_tracker',
+      inputTokens: metrics.tokens_before_optimization,
+      outputTokens: metrics.tokens_after_optimization,
+      cost: metrics.cost_after,
+      responseTime: metrics.generation_time_ms,
+      success: metrics.quality_maintained,
+      cached: false,
+      metadata: {
+        optimization: metrics
+      }
+    }
+
+    await this.trackOperation(event)
+  }
+
+  /**
+   * Get optimization performance report
+   */
+  async getOptimizationReport(timeRange?: { start: Date; end: Date }): Promise<{
+    totalOptimizations: number
+    averageCompressionRatio: number
+    totalTokensSaved: number
+    totalCostSavings: number
+    qualityMaintainanceRate: number
+    optimizationsByTechnique: Record<string, number>
+    optimizationsByContextLevel: Record<string, number>
+  }> {
+    const analytics = await this.getAnalytics(timeRange)
+    const optimizationEvents = this.events.filter(e =>
+      e.operation === 'context_optimization' &&
+      e.metadata?.optimization
+    )
+
+    if (optimizationEvents.length === 0) {
+      return {
+        totalOptimizations: 0,
+        averageCompressionRatio: 0,
+        totalTokensSaved: 0,
+        totalCostSavings: 0,
+        qualityMaintainanceRate: 0,
+        optimizationsByTechnique: {},
+        optimizationsByContextLevel: {}
+      }
+    }
+
+    const totalOptimizations = optimizationEvents.length
+    const compressionRatios = optimizationEvents.map(e => e.metadata!.optimization!.compression_ratio)
+    const averageCompressionRatio = compressionRatios.reduce((sum, ratio) => sum + ratio, 0) / totalOptimizations
+
+    const totalTokensSaved = optimizationEvents.reduce((sum, e) => {
+      const opt = e.metadata!.optimization!
+      return sum + (opt.tokens_before_optimization - opt.tokens_after_optimization)
+    }, 0)
+
+    const totalCostSavings = optimizationEvents.reduce((sum, e) => {
+      const opt = e.metadata!.optimization!
+      return sum + (opt.cost_before - opt.cost_after)
+    }, 0)
+
+    const qualityMaintained = optimizationEvents.filter(e => e.metadata!.optimization!.quality_maintained).length
+    const qualityMaintainanceRate = qualityMaintained / totalOptimizations
+
+    // Group by technique
+    const optimizationsByTechnique: Record<string, number> = {}
+    optimizationEvents.forEach(e => {
+      const technique = e.metadata!.optimization!.optimization_technique
+      optimizationsByTechnique[technique] = (optimizationsByTechnique[technique] || 0) + 1
+    })
+
+    // Group by context level
+    const optimizationsByContextLevel: Record<string, number> = {}
+    optimizationEvents.forEach(e => {
+      const level = e.metadata!.optimization!.context_level
+      optimizationsByContextLevel[level] = (optimizationsByContextLevel[level] || 0) + 1
+    })
+
+    return {
+      totalOptimizations,
+      averageCompressionRatio,
+      totalTokensSaved,
+      totalCostSavings,
+      qualityMaintainanceRate,
+      optimizationsByTechnique,
+      optimizationsByContextLevel
+    }
+  }
+
+  /**
+   * Get real-time optimization metrics
+   */
+  getRealTimeOptimizationMetrics(): {
+    currentCompressionRatio: number
+    tokensPerMinute: number
+    costSavingsPerHour: number
+    optimizationSuccessRate: number
+  } {
+    const lastHour = new Date(Date.now() - 60 * 60 * 1000)
+    const recentOptimizations = this.events.filter(e =>
+      e.operation === 'context_optimization' &&
+      e.timestamp >= lastHour &&
+      e.metadata?.optimization
+    )
+
+    if (recentOptimizations.length === 0) {
+      return {
+        currentCompressionRatio: 1.0,
+        tokensPerMinute: 0,
+        costSavingsPerHour: 0,
+        optimizationSuccessRate: 0
+      }
+    }
+
+    const compressionRatios = recentOptimizations.map(e => e.metadata!.optimization!.compression_ratio)
+    const currentCompressionRatio = compressionRatios.reduce((sum, ratio) => sum + ratio, 0) / compressionRatios.length
+
+    const totalTokensSaved = recentOptimizations.reduce((sum, e) => {
+      const opt = e.metadata!.optimization!
+      return sum + (opt.tokens_before_optimization - opt.tokens_after_optimization)
+    }, 0)
+    const tokensPerMinute = totalTokensSaved / 60
+
+    const totalCostSavings = recentOptimizations.reduce((sum, e) => {
+      const opt = e.metadata!.optimization!
+      return sum + (opt.cost_before - opt.cost_after)
+    }, 0)
+    const costSavingsPerHour = totalCostSavings
+
+    const successfulOptimizations = recentOptimizations.filter(e => e.metadata!.optimization!.quality_maintained).length
+    const optimizationSuccessRate = successfulOptimizations / recentOptimizations.length
+
+    return {
+      currentCompressionRatio,
+      tokensPerMinute,
+      costSavingsPerHour,
+      optimizationSuccessRate
+    }
+  }
+
+  /**
    * Export analytics data
    */
   exportAnalytics(format: 'json' | 'csv' = 'json'): string {
     if (format === 'csv') {
       const headers = [
-        'id', 'userId', 'operation', 'model', 'inputTokens', 'outputTokens', 
+        'id', 'userId', 'operation', 'model', 'inputTokens', 'outputTokens',
         'cost', 'responseTime', 'success', 'cached', 'timestamp'
       ].join(',')
-      
+
       const rows = this.events.map(event => [
         event.id,
         event.userId,
@@ -490,10 +649,10 @@ export class ClaudeAnalyticsService {
         event.cached,
         event.timestamp.toISOString()
       ].join(','))
-      
+
       return [headers, ...rows].join('\n')
     }
-    
+
     return JSON.stringify(this.events, null, 2)
   }
 }

@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { createClient } from '@/lib/supabase/client'
+import type { createClient } from '@/lib/supabase/client'
 import type { Database } from '@/lib/supabase/types'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -227,7 +227,7 @@ export async function setupCreatorStripeConnect(
 
     return {
       success: true,
-      account_id: account.id,
+      account_id: account.id
       // In practice, you'd redirect the user to accountLink.url
     }
 

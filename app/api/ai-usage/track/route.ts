@@ -1,7 +1,8 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { cookies } from 'next/headers'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import { calculateActualCost } from '@/lib/ai-cost-calculator'
 import type { Database } from '@/lib/supabase/types'
 
@@ -17,13 +18,9 @@ interface TrackingRequest {
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore })
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
-    }
+    const authResult = await requireAuth(request)
+    if (!isAuthSuccess(authResult)) return authResult
+    const { user, supabase } = authResult
 
     const trackingData: TrackingRequest = await request.json()
 
@@ -98,7 +95,7 @@ export async function GET(request: NextRequest) {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      return NextResponse.json({ error: ERROR_MESSAGES.UNAUTHORIZED }, { status: 401 })
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 
     const { searchParams } = new URL(request.url)
@@ -155,7 +152,7 @@ export async function GET(request: NextRequest) {
         acc[log.operation_type].cost += log.actual_cost_usd
         acc[log.operation_type].charged += log.charged_amount_usd
         return acc
-      }, {} as Record<string, any>) || {}
+      }, {} as Record<string, { total_tokens: number; total_cost: number; operation_count: number }>) || {}
     }
 
     return NextResponse.json({

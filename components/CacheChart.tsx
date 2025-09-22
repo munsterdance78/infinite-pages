@@ -36,66 +36,66 @@ export default function CacheChart({ data, title, type }: CacheChartProps) {
   // Calculate trends and max values for scaling
   const values = data.map(d => {
     switch (type) {
-      case 'hitRate': return d.hitRate;
-      case 'tokensSaved': return d.tokensSaved;
-      case 'requests': return d.requests;
-      default: return d.hitRate;
+      case 'hitRate': return d.hitRate
+      case 'tokensSaved': return d.tokensSaved
+      case 'requests': return d.requests
+      default: return d.hitRate
     }
-  });
+  })
 
-  const maxValue = Math.max(...values);
-  const minValue = Math.min(...values);
-  const latestValue = values[values.length - 1];
-  const previousValue = values.length > 1 ? values[values.length - 2] : latestValue;
-  const trend = latestValue - previousValue;
-  const trendPercentage = previousValue !== 0 ? ((trend / previousValue) * 100) : 0;
+  const maxValue = Math.max(...values)
+  const minValue = Math.min(...values)
+  const latestValue = values[values.length - 1]
+  const previousValue = values.length > 1 ? values[values.length - 2] : latestValue
+  const trend = latestValue - previousValue
+  const trendPercentage = previousValue !== 0 ? ((trend / previousValue) * 100) : 0
 
   // Format value based on type
   const formatValue = (value: number) => {
     switch (type) {
-      case 'hitRate': return `${value.toFixed(1)}%`;
-      case 'tokensSaved': return value.toLocaleString();
-      case 'requests': return value.toLocaleString();
-      default: return value.toString();
+      case 'hitRate': return `${value.toFixed(1)}%`
+      case 'tokensSaved': return value.toLocaleString()
+      case 'requests': return value.toLocaleString()
+      default: return value.toString()
     }
-  };
+  }
 
   // Generate SVG path for line chart
   const generatePath = () => {
-    if (values.length < 2) return '';
+    if (values.length < 2) return ''
 
-    const width = 300;
-    const height = 100;
-    const padding = 20;
+    const width = 300
+    const height = 100
+    const padding = 20
 
-    const xStep = (width - 2 * padding) / (values.length - 1);
-    const yRange = maxValue - minValue || 1; // Avoid division by zero
+    const xStep = (width - 2 * padding) / (values.length - 1)
+    const yRange = maxValue - minValue || 1 // Avoid division by zero
 
     const points = values.map((value, index) => {
-      const x = padding + index * xStep;
-      const y = height - padding - ((value - minValue) / yRange) * (height - 2 * padding);
-      return `${x},${y}`;
-    });
+      const x = padding + index * xStep
+      const y = height - padding - ((value - minValue) / yRange) * (height - 2 * padding)
+      return `${x},${y}`
+    })
 
-    return `M ${points.join(' L ')}`;
-  };
+    return `M ${points.join(' L ')}`
+  }
 
   const getTrendIcon = () => {
-    if (Math.abs(trendPercentage) < 1) return <Minus className="w-3 h-3" />;
-    return trend > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />;
-  };
+    if (Math.abs(trendPercentage) < 1) return <Minus className="w-3 h-3" />
+    return trend > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />
+  }
 
   const getTrendColor = () => {
-    if (Math.abs(trendPercentage) < 1) return 'text-gray-500';
+    if (Math.abs(trendPercentage) < 1) return 'text-gray-500'
 
     // For hit rate and tokens saved, up is good
     if (type === 'hitRate' || type === 'tokensSaved') {
-      return trend > 0 ? 'text-green-500' : 'text-red-500';
+      return trend > 0 ? 'text-green-500' : 'text-red-500'
     }
 
     // For requests, up might be neutral (more usage)
-    return trend > 0 ? 'text-blue-500' : 'text-gray-500';
-  };
+    return trend > 0 ? 'text-blue-500' : 'text-gray-500'
+  }
 
   return (
     <Card>
@@ -153,14 +153,14 @@ export default function CacheChart({ data, title, type }: CacheChartProps) {
 
               {/* Data points */}
               {values.map((value, index) => {
-                const width = 300;
-                const height = 100;
-                const padding = 20;
-                const xStep = (width - 2 * padding) / Math.max(values.length - 1, 1);
-                const yRange = maxValue - minValue || 1;
+                const width = 300
+                const height = 100
+                const padding = 20
+                const xStep = (width - 2 * padding) / Math.max(values.length - 1, 1)
+                const yRange = maxValue - minValue || 1
 
-                const x = padding + index * xStep;
-                const y = height - padding - ((value - minValue) / yRange) * (height - 2 * padding);
+                const x = padding + index * xStep
+                const y = height - padding - ((value - minValue) / yRange) * (height - 2 * padding)
 
                 return (
                   <circle
@@ -171,7 +171,7 @@ export default function CacheChart({ data, title, type }: CacheChartProps) {
                     fill="rgb(59, 130, 246)"
                     className="drop-shadow-sm"
                   />
-                );
+                )
               })}
             </svg>
           </div>

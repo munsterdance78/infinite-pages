@@ -1,8 +1,7 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { ERROR_MESSAGES } from '@/lib/constants'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import type { Database } from '@/lib/supabase/types'
 
 // LIBRARY-FIRST MODEL: Downloads are highly restricted to maintain subscriptions

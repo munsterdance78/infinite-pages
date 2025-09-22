@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import CreatorEarningsHub from '@/components/CreatorEarningsHub'
 import {
   DollarSign,
   TrendingUp,
@@ -58,12 +59,6 @@ interface Story {
   status: string
 }
 
-interface EarningsData {
-  date: string
-  amount: number
-  story_title: string
-  type: 'view' | 'download' | 'tip'
-}
 
 export default function CreatorHub({ userProfile }: CreatorHubProps) {
   const [creatorStats, setCreatorStats] = useState<CreatorStats>({
@@ -78,7 +73,6 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
   })
 
   const [topStories, setTopStories] = useState<Story[]>([])
-  const [recentEarnings, setRecentEarnings] = useState<EarningsData[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
 
@@ -96,8 +90,7 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
     try {
       await Promise.all([
         loadCreatorStats(),
-        loadTopStories(),
-        loadRecentEarnings()
+        loadTopStories()
       ])
     } catch (error) {
       console.error('Error loading creator data:', error)
@@ -166,37 +159,6 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
     }
   }
 
-  const loadRecentEarnings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('creator_earnings')
-        .select(`
-          credits_earned,
-          usd_equivalent,
-          created_at,
-          stories (title)
-        `)
-        .eq('creator_id', userProfile.id)
-        .order('created_at', { ascending: false })
-        .limit(10)
-
-      if (error) {
-        console.error('Error loading recent earnings:', error)
-        return
-      }
-
-      const formattedEarnings = data?.map(earning => ({
-        date: earning.created_at,
-        amount: earning.usd_equivalent || 0,
-        story_title: (earning.stories as any)?.title || 'Unknown Story',
-        type: 'view' as 'view' | 'download' | 'tip'
-      })) || []
-
-      setRecentEarnings(formattedEarnings)
-    } catch (error) {
-      console.error('Error loading recent earnings:', error)
-    }
-  }
 
   const handleBecomeCreator = async () => {
     try {
@@ -424,33 +386,22 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
 
             <Card>
               <CardHeader>
-                <CardTitle>Recent Earnings</CardTitle>
+                <CardTitle>Quick Earnings Access</CardTitle>
               </CardHeader>
               <CardContent>
-                {recentEarnings.length > 0 ? (
-                  <div className="space-y-3">
-                    {recentEarnings.slice(0, 5).map((earning, index) => (
-                      <div key={index} className="flex justify-between items-center">
-                        <div>
-                          <p className="font-medium text-sm truncate max-w-[200px]">
-                            {earning.story_title}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(earning.date).toLocaleDateString()} • {earning.type}
-                          </p>
-                        </div>
-                        <span className="font-semibold text-green-600">
-                          +${earning.amount.toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <DollarSign className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">No earnings yet</p>
-                  </div>
-                )}
+                <div className="text-center py-8">
+                  <DollarSign className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                  <h3 className="font-medium text-gray-900 mb-2">View Detailed Earnings</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Access comprehensive earnings data, analytics, and payout management
+                  </p>
+                  <Button
+                    onClick={() => setActiveTab('earnings')}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    View Earnings Dashboard
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -512,71 +463,17 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
       )}
 
       {activeTab === 'earnings' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardContent className="p-6 text-center">
-                <DollarSign className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-900 mb-1">This Month</h3>
-                <p className="text-2xl font-bold text-green-600">
-                  ${creatorStats.monthly_earnings.toFixed(2)}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6 text-center">
-                <TrendingUp className="w-12 h-12 text-blue-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-900 mb-1">Total Earned</h3>
-                <p className="text-2xl font-bold text-blue-600">
-                  ${creatorStats.total_earnings.toFixed(2)}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Calendar className="w-12 h-12 text-purple-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-900 mb-1">Next Payout</h3>
-                <p className="text-lg font-semibold text-purple-600">
-                  {new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toLocaleDateString()}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Earnings History</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {recentEarnings.length > 0 ? (
-                <div className="space-y-3">
-                  {recentEarnings.map((earning, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                      <div>
-                        <p className="font-medium">{earning.story_title}</p>
-                        <p className="text-sm text-gray-600">
-                          {new Date(earning.date).toLocaleDateString()} •
-                          <span className="capitalize ml-1">{earning.type}</span>
-                        </p>
-                      </div>
-                      <span className="font-semibold text-green-600">
-                        +${earning.amount.toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <DollarSign className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p>No earnings history yet</p>
-                  <p className="text-sm">Earnings will appear here as readers engage with your stories</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        <CreatorEarningsHub
+          mode="enhanced"
+          onPayoutRequest={(amount) => {
+            console.log('Payout requested:', amount)
+            // Handle payout request logic here
+          }}
+          onUpgradeRequired={() => {
+            console.log('Upgrade required')
+            // Handle upgrade logic here
+          }}
+        />
       )}
 
       {activeTab === 'analytics' && (

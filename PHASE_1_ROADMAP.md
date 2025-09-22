@@ -433,7 +433,7 @@ $$ LANGUAGE plpgsql;
    - Replace current access controls with credit-based system
 
 3. **Creator Dashboard**
-   - Add `CreatorEarnings` component to creator pages
+   - Add `CreatorEarningsHub` component to creator pages
    - Integrate payout request functionality
 
 4. **Credit Purchase Modal**

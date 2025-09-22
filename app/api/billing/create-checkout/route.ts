@@ -1,6 +1,7 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth/middleware'
+import { isAuthSuccess } from '@/lib/auth/utils'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -10,15 +11,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // Environment variable validation
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
 
-export async function POST() {
-  const cookieStore = cookies()
-  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-  
-  const { data: { user } } = await supabase.auth.getUser()
+export async function POST(request: NextRequest) {
+  const authResult = await requireAuth(request)
+  if (!isAuthSuccess(authResult)) return authResult
+  const { user, supabase } = authResult
+
   if (!user?.email) {
     return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401, headers: { 'Content-Type': 'application/json' } }
+      { error: 'User email required' },
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
     )
   }
 
