@@ -151,7 +151,7 @@ export class ClaudeBatchProcessor {
           response.model,
           {
             operation: operation.type,
-            userId: operation.userId
+            ...(operation.userId && { userId: operation.userId })
           }
         )
       }
@@ -316,7 +316,7 @@ export async function batchGenerateStoryFoundations(
       genre: story.genre,
       premise: story.premise
     },
-    userId: story.userId,
+    ...(story.userId && { userId: story.userId }),
     cacheKey: `story_foundation_${story.genre}_${story.premise.slice(0, 100)}`
   }))
 
@@ -338,7 +338,7 @@ export async function batchAnalyzeContent(
     id: item.id,
     type: 'content_analysis',
     params: { content: item.content },
-    userId: item.userId,
+    ...(item.userId && { userId: item.userId }),
     cacheKey: `analysis_${item.content.slice(0, 100)}`
   }))
 
@@ -366,7 +366,7 @@ export async function batchImproveContent(
       feedback: item.feedback,
       improvementType: item.improvementType
     },
-    userId: item.userId,
+    ...(item.userId && { userId: item.userId }),
     cacheKey: `improve_${item.content.slice(0, 50)}_${item.feedback.slice(0, 50)}`
   }))
 

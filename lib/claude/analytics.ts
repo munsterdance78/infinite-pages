@@ -240,9 +240,9 @@ export class ClaudeAnalyticsService {
       if (!modelUsage[event.model]) {
         modelUsage[event.model] = { requests: 0, tokens: 0, cost: 0 }
       }
-      modelUsage[event.model].requests++
-      modelUsage[event.model].tokens += event.inputTokens + event.outputTokens
-      modelUsage[event.model].cost += event.cost
+      modelUsage[event.model]!.requests++
+      modelUsage[event.model]!.tokens += event.inputTokens + event.outputTokens
+      modelUsage[event.model]!.cost += event.cost
     })
 
     // Operation usage
@@ -251,14 +251,14 @@ export class ClaudeAnalyticsService {
       if (!operationUsage[event.operation]) {
         operationUsage[event.operation] = { requests: 0, tokens: 0, cost: 0, averageTokens: 0 }
       }
-      operationUsage[event.operation].requests++
-      operationUsage[event.operation].tokens += event.inputTokens + event.outputTokens
-      operationUsage[event.operation].cost += event.cost
+      operationUsage[event.operation]!.requests++
+      operationUsage[event.operation]!.tokens += event.inputTokens + event.outputTokens
+      operationUsage[event.operation]!.cost += event.cost
     })
 
     // Calculate average tokens per operation
     Object.keys(operationUsage).forEach(operation => {
-      const usage = operationUsage[operation]
+      const usage = operationUsage[operation]!
       usage.averageTokens = usage.tokens / usage.requests
     })
 

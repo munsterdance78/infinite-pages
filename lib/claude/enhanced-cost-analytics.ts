@@ -531,9 +531,11 @@ export class EnhancedCostAnalytics {
 
     if (opportunities.length > 0) {
       const topOpportunity = opportunities[0]
-      recommendations.push(
-        `💡 Top optimization: ${topOpportunity.description} (save ~$${topOpportunity.estimatedSavings.toFixed(3)})`
-      )
+      if (topOpportunity) {
+        recommendations.push(
+          `💡 Top optimization: ${topOpportunity.description} (save ~$${topOpportunity.estimatedSavings.toFixed(3)})`
+        )
+      }
     }
 
     return recommendations

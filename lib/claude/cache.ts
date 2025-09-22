@@ -131,7 +131,7 @@ export class ClaudeCache {
       metadata: {
         promptHash: key,
         operation: options.operation || 'general',
-        userId: options.userId
+        ...(options.userId && { userId: options.userId })
       }
     }
 
@@ -268,14 +268,14 @@ export class ClaudeCache {
     } = {}
   ): string {
     const key = this.generateCacheKey(prompt, {
-      operation: options.operation,
+      ...(options.operation && { operation: options.operation }),
       ...options.cacheOptions
     })
 
     this.set(key, response.content, response.usage, response.model, {
-      ttl: options.ttl,
-      operation: options.operation,
-      userId: options.userId
+      ...(options.ttl && { ttl: options.ttl }),
+      ...(options.operation && { operation: options.operation }),
+      ...(options.userId && { userId: options.userId })
     })
 
     return key
@@ -297,7 +297,7 @@ export class ClaudeCache {
     } = {}
   ): CacheEntry | null {
     const key = this.generateCacheKey(prompt, {
-      operation: options.operation,
+      ...(options.operation && { operation: options.operation }),
       ...options.cacheOptions
     })
 

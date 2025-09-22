@@ -243,9 +243,9 @@ export class AICostOptimizationHub {
       userId: request.userId,
       model: this.getModelShortName(strategy.selectedModel),
       templateId: strategy.templateUsed,
-      deadline: request.options?.deadline,
-      costThreshold: request.options?.maxBudget
-    }
+      ...(request.options?.deadline && { deadline: request.options.deadline }),
+      ...(request.options?.maxBudget && { costThreshold: request.options.maxBudget })
+    } as EnhancedBatchOperation
 
     // Apply template optimization if available
     if (strategy.templateUsed) {
@@ -286,9 +286,9 @@ export class AICostOptimizationHub {
         variables,
         {
           model: modelName,
-          userId: request.userId,
-          maxTokens: request.params.maxTokens,
-          temperature: request.params.temperature
+          ...(request.userId && { userId: request.userId }),
+          ...(request.params.maxTokens && { maxTokens: request.params.maxTokens }),
+          ...(request.params.temperature && { temperature: request.params.temperature })
         }
       )
     } else {
@@ -374,7 +374,7 @@ export class AICostOptimizationHub {
       recommendations.push('🚀 Enable optimized prompts to save ~20-30% on costs')
     }
 
-    if (request.options?.urgency === 'immediate' && request.options?.priority < 8) {
+    if (request.options?.urgency === 'immediate' && (request.options?.priority || 0) < 8) {
       recommendations.push('⚡ Consider batch processing for non-urgent requests to save costs')
     }
 
@@ -569,11 +569,12 @@ export class AICostOptimizationHub {
   }
 
   private findOptimalTemplate(request: OptimizedAIRequest): any {
-    const templateMap = {
+    const templateMap: Record<string, string> = {
       foundation: 'optimized_foundation',
       chapter: 'optimized_chapter',
       improvement: 'optimized_improvement',
-      analysis: 'optimized_analysis'
+      analysis: 'optimized_analysis',
+      general: 'optimized_general'
     }
 
     const templateId = templateMap[request.type]

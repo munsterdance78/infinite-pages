@@ -71,7 +71,7 @@ export class ContextOptimizer {
 
     featurePatterns.forEach(pattern => {
       const matches = settingDescription.matchAll(pattern)
-      for (const match of matches) {
+      for (const match of Array.from(matches)) {
         const feature = match[1]?.trim().toLowerCase()
         if (feature && feature.length < 30) {
           features.push(feature)
@@ -278,7 +278,7 @@ export class ContextOptimizer {
     const content = chapter.content || chapter.summary || ''
 
     const sentences = content.split(/[.!?]+/)
-    const devSentence = sentences.find(sentence =>
+    const devSentence = sentences.find((sentence: string) =>
       developmentWords.some(word => sentence.toLowerCase().includes(word))
     )
 
@@ -291,7 +291,7 @@ export class ContextOptimizer {
     const content = chapter.content || chapter.summary || ''
 
     const sentences = content.split(/[.!?]+/)
-    const plotSentence = sentences.find(sentence =>
+    const plotSentence = sentences.find((sentence: string) =>
       plotWords.some(word => sentence.toLowerCase().includes(word))
     )
 
@@ -304,7 +304,7 @@ export class ContextOptimizer {
     const content = chapter.content || chapter.summary || ''
 
     const sentences = content.split(/[.!?]+/)
-    const conseqSentence = sentences.find(sentence =>
+    const conseqSentence = sentences.find((sentence: string) =>
       consequenceWords.some(word => sentence.toLowerCase().includes(word))
     )
 
