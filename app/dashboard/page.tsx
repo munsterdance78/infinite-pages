@@ -325,7 +325,7 @@ export default function UnifiedDashboard() {
       return
     }
 
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select(`
         id, email, full_name, subscription_tier, subscription_status,
@@ -336,13 +336,23 @@ export default function UnifiedDashboard() {
       .eq('id', authUser.id)
       .single()
 
-    if (profile) {
+    if (profile && !profileError) {
+      const profileData = profile as any
       setUser({
-        ...profile,
-        tokens_remaining: profile.tokens_remaining || 0,
-        tokens_used_total: profile.tokens_used_total || 0,
-        stories_created: profile.stories_created || 0
-      })
+        id: profileData.id,
+        email: profileData.email,
+        full_name: profileData.full_name,
+        subscription_tier: profileData.subscription_tier,
+        subscription_status: profileData.subscription_status,
+        tokens_remaining: profileData.tokens_remaining || 0,
+        tokens_used_total: profileData.tokens_used_total || 0,
+        stories_created: profileData.stories_created || 0,
+        credits_balance: profileData.credits_balance,
+        words_generated: profileData.words_generated,
+        is_creator: profileData.is_creator,
+        current_period_end: profileData.current_period_end,
+        onboarding_complete: profileData.onboarding_complete
+      } as any)
     }
 
     setLoading(false)

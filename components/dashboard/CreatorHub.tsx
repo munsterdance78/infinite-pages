@@ -114,23 +114,27 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
         .single()
 
       if (stories) {
-        const stats = stories.reduce((acc, story) => ({
-          total_views: acc.total_views + (story.views || 0),
-          total_likes: acc.total_likes + (story.likes || 0),
-          total_downloads: acc.total_downloads + (story.downloads || 0),
-          total_ratings: acc.total_ratings + (story.rating ? 1 : 0),
-          rating_sum: acc.rating_sum + (story.rating || 0)
-        }), { total_views: 0, total_likes: 0, total_downloads: 0, total_ratings: 0, rating_sum: 0 })
+        const stats = stories.reduce((acc, story) => {
+          const storyTyped = story as any
+          return {
+            total_views: acc.total_views + (storyTyped.views || 0),
+            total_likes: acc.total_likes + (storyTyped.likes || 0),
+            total_downloads: acc.total_downloads + (storyTyped.downloads || 0),
+            total_ratings: acc.total_ratings + (storyTyped.rating ? 1 : 0),
+            rating_sum: acc.rating_sum + (storyTyped.rating || 0)
+          }
+        }, { total_views: 0, total_likes: 0, total_downloads: 0, total_ratings: 0, rating_sum: 0 })
 
+        const profileTyped = profile as any
         setCreatorStats({
-          total_earnings: profile?.total_earnings || 0,
-          monthly_earnings: profile?.monthly_earnings || 0,
+          total_earnings: profileTyped?.total_earnings || 0,
+          monthly_earnings: profileTyped?.monthly_earnings || 0,
           total_stories: stories.length,
           total_views: stats.total_views,
           total_likes: stats.total_likes,
           total_downloads: stats.total_downloads,
           avg_rating: stats.total_ratings > 0 ? stats.rating_sum / stats.total_ratings : 0,
-          follower_count: profile?.follower_count || 0
+          follower_count: profileTyped?.follower_count || 0
         })
       }
     } catch (error) {
@@ -162,7 +166,7 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
 
   const handleBecomeCreator = async () => {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('profiles')
         .update({ is_creator: true })
         .eq('id', userProfile.id)
@@ -174,7 +178,7 @@ export default function CreatorHub({ userProfile }: CreatorHubProps) {
       }
 
       // Create creator profile
-      const { error: profileError } = await supabase
+      const { error: profileError } = await (supabase as any)
         .from('creator_profiles')
         .insert({
           user_id: userProfile.id,

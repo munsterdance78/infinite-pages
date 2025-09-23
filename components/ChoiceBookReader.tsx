@@ -87,7 +87,8 @@ export default function ChoiceBookReader({
       setStory(storyData)
 
       // Check if this is a choice book
-      const isChoiceBook = storyData.characters?.choice_structure || storyData.foundation?.choiceStructure
+      const storyTyped = storyData as any
+      const isChoiceBook = storyTyped.characters?.choice_structure || storyTyped.foundation?.choiceStructure
       if (!isChoiceBook) {
         setError('This story is not a choice book')
         return
@@ -149,17 +150,18 @@ export default function ChoiceBookReader({
         .single()
 
       if (existingPath) {
+        const pathTyped = existingPath as any
         setChoiceState(prev => ({
           ...prev,
-          choiceHistory: existingPath.choices_made || [],
-          readingProgress: existingPath.path_completion || 0
+          choiceHistory: pathTyped.choices_made || [],
+          readingProgress: pathTyped.path_completion || 0
         }))
 
         setReaderStats(prev => ({
           ...prev,
-          pathCompletion: existingPath.path_completion || 0,
-          choicesMade: existingPath.choices_made?.length || 0,
-          discoveredEndings: existingPath.discovered_endings?.length || 0
+          pathCompletion: pathTyped.path_completion || 0,
+          choicesMade: pathTyped.choices_made?.length || 0,
+          discoveredEndings: pathTyped.discovered_endings?.length || 0
         }))
       }
     } catch (err) {

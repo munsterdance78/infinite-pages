@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 })
 
 // Environment variable validation
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infinite-pages.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://extracted-project-7kf26y4tj-munsterdance78s-projects.vercel.app'
 
 export async function POST(request: NextRequest) {
   const authResult = await requireAuth(request)

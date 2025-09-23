@@ -1,6 +1,8 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/client'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import type { Database } from '@/lib/supabase/types'
 import {
   aiCostOptimizationHub,
   generateOptimized,
@@ -17,7 +19,7 @@ import {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient()
+    const supabase = createRouteHandlerClient<Database>({ cookies })
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
@@ -39,15 +41,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user profile for budget checking
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single()
 
-    if (!profile) {
+    if (profileError || !profile) {
       return NextResponse.json(
-        { error: 'User profile not found' },
+        { error: 'User profile not found', details: profileError },
         { status: 404 }
       )
     }
@@ -155,7 +157,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient()
+    const supabase = createRouteHandlerClient<Database>({ cookies })
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {
@@ -254,7 +256,7 @@ export async function GET(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = createClient()
+    const supabase = createRouteHandlerClient<Database>({ cookies })
     const { data: { user }, error: authError } = await supabase.auth.getUser()
 
     if (authError || !user) {

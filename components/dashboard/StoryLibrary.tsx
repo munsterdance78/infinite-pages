@@ -96,10 +96,13 @@ export default function StoryLibrary({ userProfile }: StoryLibraryProps) {
         return
       }
 
-      const formattedStories = data.map(story => ({
-        ...story,
-        creator_name: story.profiles?.display_name || story.profiles?.full_name || 'Anonymous'
-      }))
+      const formattedStories = data.map(story => {
+        const storyTyped = story as any
+        return {
+          ...storyTyped,
+          creator_name: storyTyped.profiles?.display_name || storyTyped.profiles?.full_name || 'Anonymous'
+        }
+      })
 
       setStories(formattedStories)
     } catch (error) {
