@@ -1,0 +1,624 @@
+{
+  "infinite_pages_api_specification": {
+    "version": "1.0.0",
+    "description": "Complete API specification for Infinite Pages writing platform",
+    "base_url": "https://infinite-pages.com/api",
+    "authentication": {
+      "type": "Supabase Auth",
+      "required_headers": {
+        "Authorization": "Bearer <supabase_jwt_token>",
+        "Content-Type": "application/json"
+      }
+    },
+
+    "core_workflows": {
+      "story_creation": {
+        "name": "Story Creation Workflow",
+        "description": "Complete flow from user input to generated story foundation",
+        "components": {
+          "frontend": {
+            "component": "UnifiedStoryCreator",
+            "file": "components/UnifiedStoryCreator.tsx",
+            "key_functions": [
+              "handleCreateStory()",
+              "validateForm()",
+              "generateStoryContent()"
+            ]
+          },
+          "backend": {
+            "endpoint": "/api/stories",
+            "file": "app/api/stories/route.ts",
+            "methods": ["GET", "POST", "OPTIONS"]
+          }
+        },
+        "data_flow": [
+          {
+            "step": 1,
+            "action": "User Input Collection",
+            "component": "UnifiedStoryCreator",
+            "data": {
+              "title": "string",
+              "genre": "string",
+              "premise": "string",
+              "mode": "story|novel|choice-book|ai-builder"
+            }
+          },
+          {
+            "step": 2,
+            "action": "Form Validation",
+            "component": "validateForm()",
+            "validations": [
+              "Title required (3-100 chars)",
+              "Genre must be from allowed list",
+              "Premise required (10-500 chars)",
+              "Mode-specific validations"
+            ]
+          },
+          {
+            "step": 3,
+            "action": "Database Insert",
+            "component": "Supabase Client",
+            "table": "stories",
+            "operation": "INSERT",
+            "data": {
+              "user_id": "uuid",
+              "title": "string",
+              "genre": "string",
+              "premise": "string",
+              "type": "enum",
+              "status": "creating"
+            }
+          },
+          {
+            "step": 4,
+            "action": "API Call",
+            "endpoint": "POST /api/stories",
+            "payload": {
+              "storyId": "uuid",
+              "title": "string",
+              "genre": "string",
+              "premise": "string",
+              "mode": "string"
+            }
+          },
+          {
+            "step": 5,
+            "action": "Cache Check",
+            "service": "InfinitePagesCache",
+            "method": "wrapFoundationGeneration()",
+            "cache_types": [
+              "genre_match",
+              "premise_similarity",
+              "template_match"
+            ]
+          },
+          {
+            "step": 6,
+            "action": "AI Generation",
+            "service": "Claude AI",
+            "method": "generateStoryFoundation()",
+            "cost_optimization": "80% reduction via caching"
+          },
+          {
+            "step": 7,
+            "action": "Database Update",
+            "operations": [
+              {
+                "table": "stories",
+                "action": "UPDATE foundation, tokens_used"
+              },
+              {
+                "table": "profiles",
+                "action": "UPDATE tokens_remaining, stories_created"
+              },
+              {
+                "table": "generation_logs",
+                "action": "INSERT activity log"
+              }
+            ]
+          },
+          {
+            "step": 8,
+            "action": "Response to Frontend",
+            "data": {
+              "story": "Story object",
+              "tokensUsed": "number",
+              "tokensSaved": "number",
+              "fromCache": "boolean",
+              "cacheType": "string",
+              "remainingTokens": "number",
+              "message": "string"
+            }
+          }
+        ]
+      },
+
+      "chapter_generation": {
+        "name": "Chapter Generation Workflow",
+        "description": "Generate individual chapters with context optimization",
+        "components": {
+          "frontend": {
+            "component": "UnifiedStoryCreator",
+            "trigger": "generateStoryContent()",
+            "progress_tracking": "setProgress()"
+          },
+          "backend": {
+            "endpoint": "/api/stories/[id]/chapters",
+            "file": "app/api/stories/[id]/chapters/route.ts",
+            "methods": ["POST", "OPTIONS"]
+          }
+        },
+        "data_flow": [
+          {
+            "step": 1,
+            "action": "Chapter Request",
+            "component": "UnifiedStoryCreator",
+            "data": {
+              "chapter_number": "number",
+              "title": "string"
+            }
+          },
+          {
+            "step": 2,
+            "action": "Authentication & Ownership",
+            "checks": [
+              "User authentication",
+              "Story ownership verification",
+              "Story exists in database"
+            ]
+          },
+          {
+            "step": 3,
+            "action": "Context Retrieval",
+            "component": "Supabase Query",
+            "data": {
+              "story_foundation": "jsonb",
+              "existing_chapters": "array",
+              "chapter_context": "optimized_string"
+            }
+          },
+          {
+            "step": 4,
+            "action": "Cache Check",
+            "service": "Chapter Cache",
+            "method": "fingerprint matching",
+            "optimization": "60% cost reduction"
+          },
+          {
+            "step": 5,
+            "action": "AI Generation",
+            "service": "Claude AI",
+            "method": "generateChapter()",
+            "context_optimization": "70% token reduction",
+            "input": {
+              "story_context": "string",
+              "chapter_number": "number",
+              "previous_chapters": "array"
+            }
+          },
+          {
+            "step": 6,
+            "action": "Chapter Storage",
+            "operations": [
+              {
+                "table": "chapters",
+                "action": "INSERT new chapter"
+              },
+              {
+                "table": "stories",
+                "action": "UPDATE word_count, chapter_count, total_tokens"
+              },
+              {
+                "table": "profiles",
+                "action": "UPDATE tokens_remaining"
+              }
+            ]
+          },
+          {
+            "step": 7,
+            "action": "Response with Metrics",
+            "data": {
+              "chapter": "Chapter object",
+              "tokensUsed": "number",
+              "tokensSaved": "number",
+              "fromCache": "boolean",
+              "remainingTokens": "number"
+            }
+          }
+        ]
+      },
+
+      "analytics_dashboard": {
+        "name": "Analytics Dashboard Workflow",
+        "description": "Real-time analytics and performance metrics",
+        "components": {
+          "frontend": {
+            "component": "UnifiedAnalyticsDashboard",
+            "file": "components/UnifiedAnalyticsDashboard.tsx",
+            "data_fetching": "Promise.allSettled() parallel calls"
+          },
+          "backend": {
+            "endpoints": [
+              "/api/cache/analytics",
+              "/api/dashboard",
+              "/api/ai-usage/track"
+            ]
+          }
+        },
+        "data_flow": [
+          {
+            "step": 1,
+            "action": "Parallel API Calls",
+            "endpoints": [
+              {
+                "url": "/api/cache/analytics",
+                "purpose": "Cache performance metrics"
+              },
+              {
+                "url": "/api/dashboard",
+                "purpose": "User profile and story data"
+              },
+              {
+                "url": "/api/ai-usage/track",
+                "purpose": "AI usage patterns"
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "action": "Data Aggregation",
+            "component": "UnifiedAnalyticsDashboard",
+            "processing": [
+              "Cache metrics calculation",
+              "Cost savings analysis",
+              "Usage pattern identification",
+              "Performance trend analysis"
+            ]
+          },
+          {
+            "step": 3,
+            "action": "Chart Rendering",
+            "libraries": ["Recharts", "Chart.js"],
+            "visualizations": [
+              "Token usage over time",
+              "Cache hit rates",
+              "Cost savings breakdown",
+              "Story generation metrics"
+            ]
+          }
+        ]
+      }
+    },
+
+    "api_endpoints": {
+      "/api/stories": {
+        "methods": {
+          "GET": {
+            "description": "Retrieve user stories with metadata",
+            "authentication": "required",
+            "parameters": {
+              "query": {
+                "limit": "number (optional, default: 50)",
+                "offset": "number (optional, default: 0)",
+                "genre": "string (optional)",
+                "status": "enum (optional)"
+              }
+            },
+            "response": {
+              "success": {
+                "status": 200,
+                "body": {
+                  "stories": "Array<Story & { chapters: Chapter[] }>",
+                  "total": "number",
+                  "hasMore": "boolean"
+                }
+              },
+              "error": {
+                "status": 401,
+                "body": {
+                  "error": "Authentication required",
+                  "code": "AUTH_REQUIRED"
+                }
+              }
+            }
+          },
+          "POST": {
+            "description": "Create new story foundation",
+            "authentication": "required",
+            "request_body": {
+              "title": "string (required, 3-100 chars)",
+              "genre": "string (required, from allowed list)",
+              "premise": "string (required, 10-500 chars)"
+            },
+            "response": {
+              "success": {
+                "status": 201,
+                "body": {
+                  "story": "Story object",
+                  "tokensUsed": "number",
+                  "tokensSaved": "number",
+                  "fromCache": "boolean",
+                  "cacheType": "string",
+                  "remainingTokens": "number",
+                  "message": "string"
+                }
+              },
+              "error": {
+                "status": 400,
+                "body": {
+                  "error": "Validation failed",
+                  "details": "array of error messages"
+                }
+              }
+            },
+            "rate_limiting": {
+              "free_tier": "5 requests per hour",
+              "premium_tier": "50 requests per hour"
+            }
+          }
+        }
+      },
+
+      "/api/stories/[id]/chapters": {
+        "methods": {
+          "POST": {
+            "description": "Generate new chapter for existing story",
+            "authentication": "required",
+            "path_parameters": {
+              "id": "string (story UUID)"
+            },
+            "request_body": {
+              "chapter_number": "number (required)",
+              "title": "string (optional)"
+            },
+            "response": {
+              "success": {
+                "status": 201,
+                "body": {
+                  "chapter": "Chapter object",
+                  "tokensUsed": "number",
+                  "tokensSaved": "number",
+                  "fromCache": "boolean",
+                  "cacheType": "string",
+                  "remainingTokens": "number"
+                }
+              },
+              "error": {
+                "status": 404,
+                "body": {
+                  "error": "Story not found or access denied"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "/api/cache/analytics": {
+        "methods": {
+          "GET": {
+            "description": "Cache performance analytics",
+            "authentication": "required",
+            "parameters": {
+              "query": {
+                "period": "string (optional: day|week|month)"
+              }
+            },
+            "response": {
+              "success": {
+                "status": 200,
+                "body": {
+                  "totalTokensSaved": "number",
+                  "cacheHitRateByType": "object",
+                  "topGenres": "array",
+                  "foundationReuseRate": "number",
+                  "costSavingsThisMonth": "number"
+                }
+              }
+            },
+            "caching": {
+              "strategy": "private",
+              "max_age": 30
+            }
+          }
+        }
+      },
+
+      "/api/dashboard": {
+        "methods": {
+          "GET": {
+            "description": "User dashboard data",
+            "authentication": "required",
+            "response": {
+              "success": {
+                "status": 200,
+                "body": {
+                  "profile": "UserProfile object",
+                  "tokenBalance": "number",
+                  "recentActivity": "array",
+                  "timestamp": "string"
+                }
+              }
+            },
+            "auto_profile_creation": true,
+            "caching": {
+              "strategy": "private",
+              "max_age": 30
+            }
+          }
+        }
+      },
+
+      "/api/ai/optimized": {
+        "methods": {
+          "POST": {
+            "description": "Optimized AI processing with cost management",
+            "authentication": "required",
+            "request_body": {
+              "operation": "string (required)",
+              "batch": "boolean (optional)",
+              "type": "string (required)",
+              "params": "object (required)",
+              "options": "object (optional)"
+            },
+            "response": {
+              "success": {
+                "status": 200,
+                "body": {
+                  "result": "any",
+                  "tokensUsed": "number",
+                  "costUsd": "number",
+                  "optimizationApplied": "boolean",
+                  "recommendations": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "data_models": {
+      "Story": {
+        "id": "uuid",
+        "user_id": "uuid",
+        "title": "string",
+        "genre": "string",
+        "premise": "string",
+        "type": "enum(story|novel|choice-book|ai-builder)",
+        "status": "enum(draft|creating|completed|published|archived)",
+        "foundation": "jsonb",
+        "total_tokens_used": "integer",
+        "total_cost_usd": "decimal",
+        "word_count": "integer",
+        "chapter_count": "integer",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+      },
+
+      "Chapter": {
+        "id": "uuid",
+        "story_id": "uuid",
+        "chapter_number": "integer",
+        "title": "string",
+        "content": "text",
+        "word_count": "integer",
+        "generation_cost_usd": "decimal",
+        "created_at": "timestamp"
+      },
+
+      "UserProfile": {
+        "id": "uuid",
+        "email": "string",
+        "subscription_tier": "enum(free|basic|premium)",
+        "tokens_remaining": "integer",
+        "tokens_used_total": "integer",
+        "tokens_saved_cache": "integer",
+        "stories_created": "integer",
+        "words_generated": "integer",
+        "is_creator": "boolean"
+      }
+    },
+
+    "caching_system": {
+      "foundation_cache": {
+        "description": "Story foundation caching system",
+        "cost_reduction": "80%",
+        "matching_strategies": [
+          "exact_genre_match",
+          "premise_similarity",
+          "template_reuse"
+        ],
+        "cache_key_format": "foundation:{genre}:{premise_hash}",
+        "ttl": "30 days"
+      },
+
+      "chapter_cache": {
+        "description": "Chapter content caching system",
+        "cost_reduction": "60%",
+        "matching_strategies": [
+          "context_fingerprint",
+          "chapter_dependency_chain"
+        ],
+        "cache_key_format": "chapter:{story_id}:{context_hash}:{chapter_num}",
+        "ttl": "7 days"
+      },
+
+      "response_cache": {
+        "description": "HTTP response caching",
+        "endpoints": [
+          "/api/dashboard",
+          "/api/cache/analytics"
+        ],
+        "strategy": "private",
+        "max_age": 30
+      }
+    },
+
+    "error_handling": {
+      "authentication_errors": {
+        "401": "Authentication required",
+        "403": "Access denied"
+      },
+      "validation_errors": {
+        "400": "Bad request / validation failed",
+        "422": "Unprocessable entity"
+      },
+      "resource_errors": {
+        "404": "Resource not found",
+        "409": "Conflict / resource already exists"
+      },
+      "server_errors": {
+        "500": "Internal server error",
+        "503": "Service unavailable",
+        "504": "Gateway timeout"
+      },
+      "ai_service_errors": {
+        "CLAUDE_API_ERROR": "External AI service error",
+        "CONTEXT_TOO_LARGE": "Content exceeds AI context limits",
+        "GENERATION_FAILED": "AI generation failed"
+      }
+    },
+
+    "rate_limiting": {
+      "by_subscription_tier": {
+        "free": {
+          "stories_per_hour": 5,
+          "chapters_per_hour": 20,
+          "api_calls_per_minute": 10
+        },
+        "basic": {
+          "stories_per_hour": 25,
+          "chapters_per_hour": 100,
+          "api_calls_per_minute": 30
+        },
+        "premium": {
+          "stories_per_hour": 50,
+          "chapters_per_hour": 200,
+          "api_calls_per_minute": 60
+        }
+      }
+    },
+
+    "security": {
+      "content_moderation": {
+        "enabled": true,
+        "checks": [
+          "inappropriate_content",
+          "prompt_injection",
+          "harmful_instructions"
+        ]
+      },
+      "input_validation": {
+        "sanitization": true,
+        "max_lengths_enforced": true,
+        "sql_injection_prevention": true
+      },
+      "cors": {
+        "enabled": true,
+        "allowed_origins": ["https://infinite-pages.com"],
+        "credentials": true
+      }
+    }
+  }
+}
