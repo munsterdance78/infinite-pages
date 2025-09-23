@@ -87,10 +87,24 @@ export default function LandingPage() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Button variant="ghost" className="hidden sm:inline-flex glass-nav-link">
+              <Button
+                variant="ghost"
+                className="hidden sm:inline-flex glass-nav-link"
+                onClick={() => {
+                  const pricingSection = document.getElementById('pricing-section');
+                  pricingSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Pricing
               </Button>
-              <Button variant="ghost" className="hidden sm:inline-flex glass-nav-link">
+              <Button
+                variant="ghost"
+                className="hidden sm:inline-flex glass-nav-link"
+                onClick={() => {
+                  const featuresSection = document.getElementById('features-section');
+                  featuresSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Features
               </Button>
               <Button
@@ -138,10 +152,20 @@ export default function LandingPage() {
                 <Rocket className="w-5 h-5 mr-2" />
                 Start Writing for Free
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
                 className="text-lg px-8 py-4"
+                onClick={() => {
+                  // Scroll to examples section or redirect to examples page
+                  const examplesSection = document.getElementById('examples-section');
+                  if (examplesSection) {
+                    examplesSection.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    // If no examples section, show a sample modal or redirect
+                    alert('Examples feature coming soon! Sign up to start creating your own stories.');
+                  }
+                }}
               >
                 <BookOpen className="w-5 h-5 mr-2" />
                 View Examples
@@ -167,7 +191,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section id="features-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Everything you need to write amazing stories</h2>
@@ -263,7 +287,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="pricing-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Simple, transparent pricing</h2>

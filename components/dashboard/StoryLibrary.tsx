@@ -209,7 +209,14 @@ export default function StoryLibrary({ userProfile }: StoryLibraryProps) {
 
             {/* View Toggle */}
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  // Toggle filters panel visibility
+                  console.log('Filters button clicked - filters panel functionality to be implemented');
+                }}
+              >
                 <Filter className="w-4 h-4 mr-2" />
                 Filters
               </Button>
