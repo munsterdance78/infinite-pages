@@ -307,9 +307,18 @@ export default function UnifiedDashboard() {
     } catch (error) {
       console.error('Error loading dashboard data:', error)
 
+      // Don't retry on permission errors - these won't resolve with retries
+      const errorMessage = error?.message || error?.toString() || ''
+      if (errorMessage.includes('permission denied') || errorMessage.includes('42501')) {
+        setError('Database permission error. Please run the SQL setup script in Supabase.')
+        setLoading(false)
+        return
+      }
+
       if (retryCount < 3) {
-        setRetryCount(prev => prev + 1)
-        setTimeout(() => loadDashboardData(), 2000 * (retryCount + 1))
+        const newRetryCount = retryCount + 1
+        setRetryCount(newRetryCount)
+        setTimeout(() => loadDashboardData(), 2000 * newRetryCount)
       } else {
         setError('Failed to load dashboard data. Please refresh the page.')
         setLoading(false)
