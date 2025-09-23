@@ -143,8 +143,8 @@ export default function UnifiedAnalyticsDashboard({
         aiUsage: {
           totalTokensUsed: userProfile.tokens_used_total || 0,
           totalCostUSD: 0,
-          operationBreakdown: {},
-          modelBreakdown: {},
+          operationBreakdown: [],
+          modelBreakdown: [],
           dailyUsage: [],
           monthlySavings: 0,
           efficiency: 0
@@ -520,7 +520,7 @@ export default function UnifiedAnalyticsDashboard({
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {(analyticsData.aiUsage as any).operationBreakdown?.map((op: any, index: number) => (
+                {Array.isArray((analyticsData.aiUsage as any).operationBreakdown) ? (analyticsData.aiUsage as any).operationBreakdown.map((op: any, index: number) => (
                   <div key={index} className="flex justify-between items-center">
                     <span className="text-sm">{op.operation_type}</span>
                     <div className="flex items-center gap-2">
@@ -528,7 +528,9 @@ export default function UnifiedAnalyticsDashboard({
                       <Badge variant="outline">{formatCost(op.total_cost)}</Badge>
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <div className="text-sm text-gray-500 py-4">No operation data available</div>
+                )}
               </div>
             </CardContent>
           </Card>

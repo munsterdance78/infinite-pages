@@ -76,7 +76,7 @@ export default function StoryLibrary({ userProfile }: StoryLibraryProps) {
         .from('stories')
         .select(`
           *,
-          profiles:creator_id (
+          profiles:user_id (
             full_name,
             display_name
           )

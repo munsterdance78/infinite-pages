@@ -48,6 +48,7 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
     }
   }, [])
 
+
   return (
     <div className={cn('glass-story-creator-wrapper', className)}>
       {/* Header with glassmorphism */}
@@ -170,6 +171,7 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
         </div>
       </div>
 
+
       {/* Quick actions panel */}
       <div className="mt-4 flex flex-wrap gap-3">
         <button
@@ -198,17 +200,30 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
         </button>
       </div>
 
-      {/* Story Templates Modal */}
-      <Dialog open={showTemplatesModal} onOpenChange={setShowTemplatesModal}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              📚 Story Templates
-            </DialogTitle>
-            <DialogDescription>
+      {/* Story Templates Modal - Simple HTML Modal */}
+      {showTemplatesModal && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+          onClick={() => setShowTemplatesModal(false)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-2xl max-w-4xl max-h-[80vh] overflow-y-auto m-4 p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                📚 Story Templates
+              </h2>
+              <button
+                onClick={() => setShowTemplatesModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <p className="text-gray-600 mb-4">
               Choose from pre-built story structures to jumpstart your creativity.
-            </DialogDescription>
-          </DialogHeader>
+            </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card className="cursor-pointer hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -253,12 +268,13 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
               </CardContent>
             </Card>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </div>
+      )}
 
       {/* Character Builder Modal */}
       <Dialog open={showCharacterBuilderModal} onOpenChange={setShowCharacterBuilderModal}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto z-[9999] fixed bg-white shadow-2xl border">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               🎭 Character Builder
@@ -303,7 +319,7 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
 
       {/* World Generator Modal */}
       <Dialog open={showWorldGeneratorModal} onOpenChange={setShowWorldGeneratorModal}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto z-[9999] fixed bg-white shadow-2xl border">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               🌍 World Generator
@@ -352,7 +368,7 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
 
       {/* Quick Start Modal */}
       <Dialog open={showQuickStartModal} onOpenChange={setShowQuickStartModal}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl z-[9999] fixed bg-white shadow-2xl border">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               ⚡ Quick Start
