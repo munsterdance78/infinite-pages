@@ -53,7 +53,7 @@ interface UnifiedUserProfile {
   id: string;
   email: string;
   full_name?: string;
-  subscription_tier: 'free' | 'basic' | 'premium' | 'pro';
+  subscription_tier: 'basic' | 'premium';
   subscription_status?: string;
 
   // Token system (from original dashboard)
@@ -435,7 +435,7 @@ export default function UnifiedDashboard() {
   // Filter sidebar items based on user permissions
   const visibleSidebarItems = sidebarItems.filter(item => {
     if (item.showForCreators && !user?.is_creator) return false
-    if (item.requiresPremium && user?.subscription_tier === 'free') return false
+    if (item.requiresPremium && user?.subscription_tier === 'basic') return false
     return true
   })
 

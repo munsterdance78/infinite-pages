@@ -61,7 +61,7 @@ const MARKET_RATES = {
   improvement: 0.05    // Other services charge ~$0.05 per improvement
 }
 
-const MARKUP_PERCENTAGE = 20 // 20% markup to cover infrastructure costs
+// Markup is now handled at subscription level - no additional markup here
 const CREATOR_SHARE_PERCENTAGE = 70 // 70% to creator, 30% to platform
 
 // Token estimation based on operation complexity
@@ -111,7 +111,8 @@ export function estimateOperationCost(operation: AIOperation, modelType: keyof t
     actualCost = (inputTokens * pricing.input) + (outputTokens * pricing.output)
   }
 
-  const chargedAmount = actualCost * (1 + MARKUP_PERCENTAGE / 100)
+  // No markup at usage time - user pays actual AI cost from pre-purchased credits
+  const chargedAmount = actualCost
   const marketRate = MARKET_RATES[operation.type]
   const savingsVsMarket = Math.round(((marketRate - chargedAmount) / marketRate) * 100)
 
@@ -121,7 +122,7 @@ export function estimateOperationCost(operation: AIOperation, modelType: keyof t
     totalTokens,
     actualCostUSD: actualCost,
     chargedAmountUSD: chargedAmount,
-    markupPercentage: MARKUP_PERCENTAGE,
+    markupPercentage: 0, // No markup at usage time
     modelUsed: pricing.name,
     savingsVsMarket: Math.max(0, savingsVsMarket)
   }
@@ -134,7 +135,7 @@ export function calculateActualCost(
 ): { actualCost: number; chargedAmount: number } {
   const pricing = MODEL_PRICING[modelType]
   const actualCost = (inputTokens * pricing.input) + (outputTokens * pricing.output)
-  const chargedAmount = actualCost * (1 + MARKUP_PERCENTAGE / 100)
+  const chargedAmount = actualCost * 1.5
 
   return { actualCost, chargedAmount }
 }

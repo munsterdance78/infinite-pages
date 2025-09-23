@@ -100,7 +100,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
       {children}
       {React.createElement(ReactQueryDevtools as any, {
         initialIsOpen: false,
-        position: "bottom-right",
+        position: 'bottom-right',
         toggleButtonProps: {
           style: {
             marginLeft: '5px',

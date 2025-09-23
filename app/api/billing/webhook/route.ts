@@ -65,13 +65,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
   const supabase = getSupabaseClient()
 
+  // Determine tier from metadata, default to premium for backward compatibility
+  const tier = session.metadata.tier || 'premium'
+  const creditsToGrant = tier === 'basic' ? 1332 : 2497
+
   await supabase
     .from('profiles')
     .update({
-      subscription_tier: 'pro',
+      subscription_tier: tier,
       subscription_status: 'active',
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-      tokens_remaining: 100 // Grant Pro tokens immediately
+      tokens_remaining: creditsToGrant
     })
     .eq('id', session.metadata.userId)
 }
@@ -99,9 +103,10 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     await supabase
       .from('profiles')
       .update({
-        subscription_tier: 'free',
+        subscription_tier: 'basic',
         subscription_status: 'inactive',
-        current_period_end: null
+        current_period_end: null,
+        tokens_remaining: 1332 // Revert to basic tier credits
       })
       .eq('id', customer.metadata.userId)
   }

@@ -50,7 +50,7 @@ interface ErrorReport {
   statusCode?: number;
   
   // User context
-  userTier?: 'free' | 'pro';
+  userTier?: 'basic' | 'premium';
   deviceInfo?: {
     platform?: string;
     browser?: string;

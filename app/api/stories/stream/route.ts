@@ -2,7 +2,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { claudeStreamingService } from '@/lib/claude'
-import { TOKEN_COSTS } from '@/lib/constants'
+import { ESTIMATED_CREDIT_COSTS } from '@/lib/constants'
 
 export async function POST(request: NextRequest) {
   const cookieStore = cookies()
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    if (!profile || profile.tokens_remaining < TOKEN_COSTS.STORY_FOUNDATION) {
+    if (!profile || profile.tokens_remaining < ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION) {
       return new Response('Insufficient tokens', { status: 400 })
     }
 
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
               await supabase
                 .from('profiles')
                 .update({
-                  tokens_remaining: profile.tokens_remaining - TOKEN_COSTS.STORY_FOUNDATION,
+                  tokens_remaining: profile.tokens_remaining - ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION,
                   tokens_used_total: (profile.tokens_used_total || 0) + tokensUsed
                 })
                 .eq('id', user.id)

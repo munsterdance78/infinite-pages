@@ -2,18 +2,18 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/middleware'
 import { isAuthSuccess } from '@/lib/auth/utils'
 import {
-  TOKEN_COSTS,
+  CREDIT_SYSTEM,
+  ESTIMATED_CREDIT_COSTS,
   CONTENT_LIMITS,
   ALLOWED_GENRES,
   GENERATION_TYPES,
-  SUBSCRIPTION_TIERS,
   MODERATION_PATTERNS,
   INJECTION_PATTERNS,
   ERROR_MESSAGES,
   SUCCESS_MESSAGES,
-  getSubscriptionLimits,
-  type SubscriptionTier
+  getSubscriptionLimits
 } from '@/lib/constants'
+import { SUBSCRIPTION_TIERS, type SubscriptionTier } from '@/lib/subscription-config'
 import { claudeService } from '@/lib/claude'
 import { subscriptionAwareRateLimit, logRateLimitViolation } from '@/lib/rateLimit'
 import { infinitePagesCache } from '@/lib/claude/infinitePagesCache'
@@ -216,11 +216,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User profile not found' }, { status: 404 })
     }
 
-    // Enforce Premium-only story creation
-    if (profile.subscription_tier !== 'premium') {
+    // Check subscription tier limits for story creation
+    const tierConfig = SUBSCRIPTION_TIERS[profile.subscription_tier as SubscriptionTier]
+    const limits = tierConfig?.features
+    if (limits && typeof limits.stories_limit === 'number' && profile.stories_created >= limits.stories_limit) {
       return NextResponse.json({
-        error: 'Premium subscription required for story creation',
-        upgrade_required: true,
+        error: `Monthly story limit reached (${limits.stories_limit} for ${profile.subscription_tier} tier)`,
+        upgrade_required: profile.subscription_tier === 'basic',
         current_tier: profile.subscription_tier,
         feature: 'story_creation'
       }, { status: 403 })
@@ -257,7 +259,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { title, genre, premise } = validation.sanitizedData
-    const limits = getSubscriptionLimits(profile.subscription_tier)
+    const tierLimits = SUBSCRIPTION_TIERS[profile.subscription_tier as SubscriptionTier]?.features
 
     // Check story limits based on subscription
     const monthStart = new Date()
@@ -277,26 +279,26 @@ export async function POST(request: NextRequest) {
 
     const monthlyCount = monthlyStories?.length || 0
 
-    if (monthlyCount >= limits.MONTHLY_STORIES) {
+    if (tierLimits && typeof tierLimits.stories_limit === 'number' && monthlyCount >= tierLimits.stories_limit) {
       return NextResponse.json({ 
         error: ERROR_MESSAGES.MONTHLY_LIMIT_REACHED,
         details: [
           `You have created ${monthlyCount} stories this month. ` +
-          (profile.subscription_tier === SUBSCRIPTION_TIERS.FREE 
-            ? 'Upgrade to Pro for more stories.' 
+          (profile.subscription_tier === 'basic'
+            ? 'Upgrade to Premium for more stories.'
             : 'Contact support if you need a higher limit.')
         ]
       }, { status: 400 })
     }
 
     // Check token balance using constants
-    const requiredTokens = TOKEN_COSTS.STORY_FOUNDATION
-    if (profile.tokens_remaining < requiredTokens) {
+    const estimatedCredits = ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION
+    if (profile.tokens_remaining < estimatedCredits) {
       return NextResponse.json({ 
         error: ERROR_MESSAGES.INSUFFICIENT_TOKENS,
         details: [
-          `${requiredTokens} tokens required for story foundation. ` +
-          `You have ${profile.tokens_remaining} tokens remaining.`
+          `${estimatedCredits} credits required for story foundation. ` +
+          `You have ${profile.tokens_remaining} credits remaining.`
         ]
       }, { status: 400 })
     }
@@ -394,14 +396,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create story' }, { status: 500 })
     }
 
-    // Update user tokens and stats - account for cache savings
-    const actualTokensUsed = fromCache ? Math.max(0, requiredTokens - tokensSaved) : requiredTokens
-    const actualCost = fromCache ? Math.max(0, costUSD - (tokensSaved * 0.000015)) : costUSD
+    // Update user credits based on actual AI cost (no additional markup)
+    const actualCreditsUsed = CREDIT_SYSTEM.convertCostToCredits(costUSD)
 
     const { error: updateError } = await supabase
       .from('profiles')
       .update({
-        tokens_remaining: profile.tokens_remaining - actualTokensUsed,
+        tokens_remaining: profile.tokens_remaining - actualCreditsUsed,
         tokens_used_total: (profile.tokens_used_total || 0) + (inputTokens + outputTokens),
         stories_created: profile.stories_created + 1,
         words_generated: (profile.words_generated || 0) + wordCount
@@ -433,11 +434,11 @@ export async function POST(request: NextRequest) {
     // Create successful response with rate limit headers and cache info
     const response = NextResponse.json({
       story,
-      tokensUsed: actualTokensUsed,
+      tokensUsed: actualCreditsUsed,
       tokensSaved: tokensSaved,
       fromCache: fromCache,
       cacheType: cacheType,
-      remainingTokens: profile.tokens_remaining - actualTokensUsed,
+      remainingTokens: profile.tokens_remaining - actualCreditsUsed,
       message: fromCache
         ? `${SUCCESS_MESSAGES.STORY_CREATED} (${tokensSaved} tokens saved from cache)`
         : SUCCESS_MESSAGES.STORY_CREATED

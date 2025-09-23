@@ -23,10 +23,10 @@ const GlassCreatorEarningsWrapper: React.FC<GlassCreatorEarningsWrapperProps> = 
   const [showInsights, setShowInsights] = useState(false)
 
   const tips = [
-    "🎨 High-quality covers increase discovery by 70%",
-    "📚 Stories over 1,000 words earn 40% more on average",
-    "⏰ Publishing consistently builds reader loyalty",
-    "💎 Premium stories can earn 3x more per reader"
+    '🎨 High-quality covers increase discovery by 70%',
+    '📚 Stories over 1,000 words earn 40% more on average',
+    '⏰ Publishing consistently builds reader loyalty',
+    '💎 Premium stories can earn 3x more per reader'
   ]
 
   // Monitor refresh state without interfering with original component

@@ -1,16 +1,25 @@
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- System logs table for maintenance tracking
+CREATE TABLE system_logs (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  log_type TEXT NOT NULL,
+  message TEXT NOT NULL,
+  metadata JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Profiles table for user data
 CREATE TABLE profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT NOT NULL,
   full_name TEXT,
-  subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'pro')),
+  subscription_tier TEXT DEFAULT 'basic' CHECK (subscription_tier IN ('basic', 'premium')),
   subscription_status TEXT DEFAULT 'inactive',
   stripe_customer_id TEXT,
   current_period_end TIMESTAMPTZ,
-  tokens_remaining INTEGER DEFAULT 10,
+  tokens_remaining INTEGER DEFAULT 1332, -- Basic tier monthly allocation
   tokens_used_total INTEGER DEFAULT 0,
   last_token_grant TIMESTAMPTZ DEFAULT NOW(),
   stories_created INTEGER DEFAULT 0,
@@ -95,13 +104,31 @@ CREATE INDEX idx_chapters_number ON chapters(story_id, chapter_number);
 CREATE INDEX idx_generation_logs_user_id ON generation_logs(user_id);
 CREATE INDEX idx_generation_logs_created_at ON generation_logs(created_at DESC);
 CREATE INDEX idx_exports_user_id ON exports(user_id);
+CREATE INDEX idx_credit_transactions_user_id ON credit_transactions(user_id);
+CREATE INDEX idx_credit_transactions_created_at ON credit_transactions(created_at DESC);
+CREATE INDEX idx_credit_transactions_type ON credit_transactions(transaction_type);
+CREATE INDEX idx_system_logs_type ON system_logs(log_type);
+CREATE INDEX idx_system_logs_created_at ON system_logs(created_at DESC);
+
+-- Credit transactions table for tracking all credit movements
+CREATE TABLE credit_transactions (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  amount INTEGER NOT NULL, -- Positive for credits added, negative for credits deducted
+  transaction_type TEXT NOT NULL CHECK (transaction_type IN ('monthly_distribution', 'credit_reversion', 'subscription_grant', 'usage_deduction', 'admin_adjustment')),
+  description TEXT NOT NULL,
+  metadata JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- RLS Policies
+ALTER TABLE system_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE chapters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE generation_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE credit_transactions ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
 CREATE POLICY "Users can view own profile" ON profiles
@@ -139,6 +166,20 @@ CREATE POLICY "Users can delete own chapters" ON chapters
 -- Generation logs policies
 CREATE POLICY "Users can view own logs" ON generation_logs
   FOR SELECT USING (auth.uid() = user_id);
+
+-- System logs policies (admin only)
+CREATE POLICY "Admin can view system logs" ON system_logs
+  FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND email LIKE '%@admin.%'));
+
+-- Credit transactions policies
+CREATE POLICY "Users can view own credit transactions" ON credit_transactions
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Admin can view all credit transactions" ON credit_transactions
+  FOR SELECT USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND email LIKE '%@admin.%'));
+
+CREATE POLICY "Admin can insert credit transactions" ON credit_transactions
+  FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND email LIKE '%@admin.%'));
 
 CREATE POLICY "Users can create own logs" ON generation_logs
   FOR INSERT WITH CHECK (auth.uid() = user_id);
@@ -195,12 +236,42 @@ BEGIN
   UPDATE profiles
   SET
     tokens_remaining = CASE
-      WHEN subscription_tier = 'free' THEN LEAST(tokens_remaining + 10, 50)
-      WHEN subscription_tier = 'pro' THEN LEAST(tokens_remaining + 100, 200)
+      WHEN subscription_tier = 'basic' THEN
+        CASE
+          WHEN tokens_remaining + 1332 > 3996 THEN 3996  -- Enforce 3-month limit
+          ELSE tokens_remaining + 1332
+        END
+      WHEN subscription_tier = 'premium' THEN tokens_remaining + 2497  -- Unlimited accumulation
     END,
     last_token_grant = NOW()
   WHERE
     last_token_grant < DATE_TRUNC('month', NOW())
     OR last_token_grant IS NULL;
+END;
+$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Function to handle credit reversion for basic tier users
+CREATE OR REPLACE FUNCTION revert_excess_credits()
+RETURNS void AS $
+BEGIN
+  -- Revert excess credits for basic tier users only
+  UPDATE profiles
+  SET
+    tokens_remaining = CASE
+      WHEN subscription_tier = 'basic' AND tokens_remaining > 3996 THEN 3996
+      ELSE tokens_remaining
+    END
+  WHERE
+    subscription_tier = 'basic' AND tokens_remaining > 3996;
+
+  -- Log credit reversions for transparency
+  INSERT INTO generation_logs (user_id, operation_type, cost_usd, notes)
+  SELECT
+    id,
+    'credit_reversion',
+    (tokens_remaining - 3996) * 0.001, -- Convert excess credits to USD
+    'Basic tier credit limit exceeded - excess reverted to platform'
+  FROM profiles
+  WHERE subscription_tier = 'basic' AND tokens_remaining > 3996;
 END;
 $ LANGUAGE plpgsql SECURITY DEFINER;

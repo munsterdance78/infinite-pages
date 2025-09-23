@@ -24,6 +24,24 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const { tier, billing_period } = await request.json()
+
+    // Validate tier
+    if (!tier || !['basic', 'premium'].includes(tier)) {
+      return NextResponse.json(
+        { error: 'Valid subscription tier required (basic or premium)' },
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Validate billing period
+    if (!billing_period || !['monthly', 'yearly'].includes(billing_period)) {
+      return NextResponse.json(
+        { error: 'Valid billing period required (monthly or yearly)' },
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     // Get or create Stripe customer
     const { data: profile } = await supabase
       .from('profiles')
@@ -46,6 +64,22 @@ export async function POST(request: NextRequest) {
         .eq('id', user.id)
     }
 
+    // Determine price ID based on tier and billing period
+    const priceId = billing_period === 'monthly'
+      ? (tier === 'basic'
+         ? process.env.STRIPE_BASIC_MONTHLY_PRICE_ID
+         : process.env.STRIPE_PREMIUM_MONTHLY_PRICE_ID)
+      : (tier === 'basic'
+         ? process.env.STRIPE_BASIC_YEARLY_PRICE_ID
+         : process.env.STRIPE_PREMIUM_YEARLY_PRICE_ID)
+
+    if (!priceId) {
+      return NextResponse.json(
+        { error: 'Stripe configuration error - price ID not found' },
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -53,13 +87,17 @@ export async function POST(request: NextRequest) {
       payment_method_types: ['card'],
       line_items: [
         {
-          price: process.env.STRIPE_PRO_PRICE_ID!,
+          price: priceId,
           quantity: 1
         }
       ],
-      success_url: `${SITE_URL}/dashboard?upgraded=true`,
+      success_url: `${SITE_URL}/dashboard?upgraded=true&tier=${tier}`,
       cancel_url: `${SITE_URL}/dashboard`,
-      metadata: { userId: user.id }
+      metadata: {
+        userId: user.id,
+        tier: tier,
+        billing_period: billing_period
+      }
     })
 
     return NextResponse.json(

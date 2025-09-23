@@ -6,11 +6,11 @@ CREATE TABLE profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT NOT NULL,
   full_name TEXT,
-  subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'pro')),
+  subscription_tier TEXT DEFAULT 'basic' CHECK (subscription_tier IN ('basic', 'premium')),
   subscription_status TEXT DEFAULT 'inactive',
   stripe_customer_id TEXT,
   current_period_end TIMESTAMPTZ,
-  tokens_remaining INTEGER DEFAULT 10,
+  tokens_remaining INTEGER DEFAULT 1332,
   tokens_used_total INTEGER DEFAULT 0,
   last_token_grant TIMESTAMPTZ DEFAULT NOW(),
   stories_created INTEGER DEFAULT 0,
@@ -197,9 +197,13 @@ RETURNS void AS $
 BEGIN
   UPDATE profiles 
   SET 
-    tokens_remaining = CASE 
-      WHEN subscription_tier = 'free' THEN LEAST(tokens_remaining + 10, 50)
-      WHEN subscription_tier = 'pro' THEN LEAST(tokens_remaining + 100, 200)
+    tokens_remaining = CASE
+      WHEN subscription_tier = 'basic' THEN
+        CASE
+          WHEN tokens_remaining + 1332 > 3996 THEN 3996
+          ELSE tokens_remaining + 1332
+        END
+      WHEN subscription_tier = 'premium' THEN tokens_remaining + 2497
     END,
     last_token_grant = NOW()
   WHERE 

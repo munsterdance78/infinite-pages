@@ -24,7 +24,7 @@ export interface CreatorProfile {
   id: string
   isCreator: boolean
   creatorTier: CreatorTier['tier'] | null
-  subscriptionTier: 'free' | 'pro' | 'premium'
+  subscriptionTier: 'basic' | 'premium'
   totalEarningsAllTime: number
   pendingPayoutUsd: number
   joinedDate: string

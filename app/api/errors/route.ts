@@ -52,7 +52,7 @@ interface ErrorReport {
   statusCode?: number;
   
   // User context
-  userTier?: 'free' | 'pro';
+  userTier?: 'basic' | 'premium';
   deviceInfo?: {
     platform?: string;
     browser?: string;
@@ -152,7 +152,7 @@ function calculatePriorityScore(error: ErrorReport): number {
   score += severityMultipliers[error.severity]
   
   // User tier multiplier (pro users get higher priority)
-  if (error.userTier === 'pro') score *= 1.5
+  if (error.userTier === 'premium') score *= 1.5
   
   // API endpoint criticality
   if (error.apiEndpoint?.includes('/api/stories')) score += 20
@@ -208,7 +208,7 @@ function validateErrorReport(data: any): { isValid: boolean; errors: string[]; s
     operation: data.operation ? sanitizeString(data.operation) : undefined,
     apiEndpoint: data.apiEndpoint ? sanitizeString(data.apiEndpoint) : undefined,
     statusCode: typeof data.statusCode === 'number' ? data.statusCode : undefined,
-    userTier: data.userTier === 'pro' ? 'pro' : 'free',
+    userTier: data.userTier === 'premium' ? 'premium' : 'basic',
     deviceInfo: data.deviceInfo && typeof data.deviceInfo === 'object' ? {
       platform: data.deviceInfo.platform ? sanitizeString(data.deviceInfo.platform) : undefined,
       browser: data.deviceInfo.browser ? sanitizeString(data.deviceInfo.browser) : undefined,
@@ -420,7 +420,7 @@ export async function POST(request: NextRequest) {
             .eq('id', user.id)
             .single()
           
-          errorReport.userTier = profile?.subscription_tier || 'free'
+          errorReport.userTier = profile?.subscription_tier || 'basic'
         }
       } catch (authError) {
         // Continue without user context if auth fails

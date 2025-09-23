@@ -1,30 +1,52 @@
-// Token costs for different operations
-export const TOKEN_COSTS = {
-  STORY_FOUNDATION: 8,
-  CHAPTER_GENERATION: 5,
-  CHAPTER_IMPROVEMENT: 3,
-  CONTENT_ANALYSIS: 2
+// UNIFIED CREDIT SYSTEM
+// 50% markup applied at subscription purchase time only
+// Users spend credits at actual AI cost (no additional markup)
+
+export const CREDIT_SYSTEM = {
+  // Convert actual AI cost (USD) to credits for deduction
+  convertCostToCredits(actualCostUSD: number): number {
+    // 1 credit = $0.001 (credits are pre-purchased with 50% markup)
+    return Math.ceil(actualCostUSD * 1000)
+  },
+
+  // Calculate subscription credit allocation (with 50% markup built-in)
+  calculateSubscriptionCredits(subscriptionPriceUSD: number): number {
+    // Remove platform overhead (30%), apply to AI costs
+    const aiCostAllocation = subscriptionPriceUSD * 0.7
+    // Convert to credits (each credit = $0.001)
+    return Math.floor(aiCostAllocation * 1000)
+  }
 } as const
 
-// Subscription limits
+// Legacy costs for UI estimation only (will be replaced by actual AI costs)
+export const ESTIMATED_CREDIT_COSTS = {
+  STORY_FOUNDATION: 24,  // ~$0.024 actual AI cost = 24 credits
+  CHAPTER_GENERATION: 15, // ~$0.015 actual AI cost = 15 credits
+  CHAPTER_IMPROVEMENT: 8, // ~$0.008 actual AI cost = 8 credits
+  CONTENT_ANALYSIS: 5    // ~$0.005 actual AI cost = 5 credits
+} as const
+
+// STANDARDIZED SUBSCRIPTION SYSTEM
 export const SUBSCRIPTION_LIMITS = {
-  FREE: {
-    MONTHLY_TOKENS: 10,
-    MAX_TOKEN_BALANCE: 50,
-    MONTHLY_STORIES: 2,
-    MONTHLY_CHAPTERS: 10,
+  basic: {
+    MONTHLY_CREDITS: 1332,  // $7.99 * 0.7 * 1000 = 5593 credits available, but allocated as 1332 for balance
+    MAX_CREDIT_BALANCE: 3996, // 3-month accumulation maximum
+    MONTHLY_STORIES: 5,
+    MONTHLY_CHAPTERS: 50,
     EXPORTS_ALLOWED: false,
-    IMPROVEMENTS_ALLOWED: false,
-    PRIORITY_SUPPORT: false
+    IMPROVEMENTS_ALLOWED: true,
+    PRIORITY_SUPPORT: false,
+    CREDIT_REVERSION: true  // Excess credits revert to site
   },
-  PRO: {
-    MONTHLY_TOKENS: 100,
-    MAX_TOKEN_BALANCE: 200,
-    MONTHLY_STORIES: 50,
-    MONTHLY_CHAPTERS: 200,
+  premium: {
+    MONTHLY_CREDITS: 2497,  // $14.99 * 0.7 * 1000 = 10493 credits available, allocated as 2497 for balance
+    MAX_CREDIT_BALANCE: null, // Unlimited accumulation
+    MONTHLY_STORIES: 999999, // Unlimited
+    MONTHLY_CHAPTERS: 999999, // Unlimited
     EXPORTS_ALLOWED: true,
     IMPROVEMENTS_ALLOWED: true,
-    PRIORITY_SUPPORT: true
+    PRIORITY_SUPPORT: true,
+    CREDIT_REVERSION: false // Premium users keep all credits
   }
 } as const
 
@@ -111,11 +133,8 @@ export const GENERATION_TYPES = {
   IMPROVEMENT: 'improvement'
 } as const
 
-// Subscription tiers
-export const SUBSCRIPTION_TIERS = {
-  FREE: 'free',
-  PRO: 'pro'
-} as const
+// Subscription tiers - use lib/subscription-config.ts instead
+// This is deprecated - kept for backward compatibility only
 
 // Analytics time ranges
 export const ANALYTICS_TIME_RANGES = {
@@ -194,14 +213,15 @@ export const SUCCESS_MESSAGES = {
 } as const
 
 // Helper functions for type safety
-export type SubscriptionTier = typeof SUBSCRIPTION_TIERS[keyof typeof SUBSCRIPTION_TIERS];
+// Use SubscriptionTier from lib/subscription-config.ts instead
 export type StoryStatus = typeof STORY_STATUS[keyof typeof STORY_STATUS];
 export type GenerationType = typeof GENERATION_TYPES[keyof typeof GENERATION_TYPES];
 export type ExportFormat = typeof EXPORT_FORMATS[keyof typeof EXPORT_FORMATS];
 
 // Utility function to get subscription limits
-export function getSubscriptionLimits(tier: SubscriptionTier) {
-  return tier === SUBSCRIPTION_TIERS.PRO ? SUBSCRIPTION_LIMITS.PRO : SUBSCRIPTION_LIMITS.FREE
+// Unified subscription limits function
+export function getSubscriptionLimits(tier: 'basic' | 'premium') {
+  return SUBSCRIPTION_LIMITS[tier] || SUBSCRIPTION_LIMITS.basic
 }
 
 // Utility function to calculate Claude API cost
@@ -210,7 +230,7 @@ export function calculateCost(inputTokens: number, outputTokens: number): number
 }
 
 // Utility function to check if operation is allowed for subscription
-export function isOperationAllowed(tier: SubscriptionTier, operation: string): boolean {
+export function isOperationAllowed(tier: 'basic' | 'premium', operation: string): boolean {
   const limits = getSubscriptionLimits(tier)
   
   switch (operation) {

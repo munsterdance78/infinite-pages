@@ -1,3 +1,7 @@
+// FIX CLIENT SUPABASE CONFIGURATION
+// This fixes the "No API key found" error by ensuring proper client setup
+// Replace your current lib/supabase/client.ts with this content
+
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import type { Database } from './types'
 

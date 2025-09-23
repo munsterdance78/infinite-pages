@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Plus } from 'lucide-react'
 import type { SubscriptionTier } from '@/lib/subscription-config'
 import type { UnifiedStory, CreationMode, CreationProgress, FormData } from './types'
-import { TOKEN_COSTS, ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/lib/constants'
+import { ESTIMATED_CREDIT_COSTS, ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/lib/constants'
 
 // Lazy load heavy components
 const StoryCreationForm = lazy(() => import('./StoryCreationForm'))
@@ -269,11 +269,11 @@ const OptimizedUnifiedStoryCreator = React.memo(function OptimizedUnifiedStoryCr
 
   const getRequiredTokens = useCallback((mode: CreationMode): number => {
     switch (mode) {
-      case 'story': return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
-      case 'novel': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 3)
-      case 'choice-book': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 2)
-      case 'ai-builder': return TOKEN_COSTS.CHAPTER_GENERATION
-      default: return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
+      case 'story': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
+      case 'novel': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + (ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION * 3)
+      case 'choice-book': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + (ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION * 2)
+      case 'ai-builder': return ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
+      default: return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
     }
   }, [])
 

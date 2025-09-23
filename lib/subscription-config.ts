@@ -1,44 +1,49 @@
-// Enhanced Subscription Configuration - No Free Tier
-// All users must have a paid subscription to access the platform
+// Standardized Subscription Configuration
+// Two-tier system: Basic and Premium
 
 export const SUBSCRIPTION_TIERS = {
   basic: {
     name: 'Basic',
-    price_monthly: 9.99,
-    price_yearly: 99.99,
-    credits_per_month: 500,
+    price_monthly: 7.99,
+    price_yearly: 79.99,
+    credits_per_month: 1332, // $7.99 * 0.7 * 1000 / 1.5 = 3730 credits available for AI costs (50% markup included in subscription)
+    max_credit_balance: 3996, // 3-month accumulation limit
     features: {
-      stories_limit: 10,
-      cover_generations: 3,
+      stories_limit: 5,
+      cover_generations: 2,
       download_access: false,
-      ai_operations: ['foundation', 'character', 'chapter', 'improvement'],
+      ai_operations: ['foundation', 'character', 'chapter'],
       cover_styles: ['minimalist', 'artistic'],
       priority_support: false,
-      early_access: false
+      early_access: false,
+      creator_tools: false,
+      credit_reversion: true // Excess credits revert to site
     },
-    stripe_price_id_monthly: 'price_basic_monthly',
-    stripe_price_id_yearly: 'price_basic_yearly'
+    stripe_price_id_monthly: process.env.STRIPE_BASIC_MONTHLY_PRICE_ID || 'price_basic_monthly',
+    stripe_price_id_yearly: process.env.STRIPE_BASIC_YEARLY_PRICE_ID || 'price_basic_yearly'
   },
   premium: {
     name: 'Premium',
-    price_monthly: 19.99,
-    price_yearly: 199.99,
-    credits_per_month: 1200,
+    price_monthly: 14.99,
+    price_yearly: 149.99,
+    credits_per_month: 2497, // $14.99 * 0.7 * 1000 / 1.5 = 6993 credits available for AI costs (50% markup included)
+    max_credit_balance: null, // Unlimited accumulation
     features: {
       stories_limit: 'unlimited',
       cover_generations: 10,
       download_access: true,
-      download_limit: 3,
-      download_cost_credits: 250,
+      download_limit: 5,
+      download_cost_credits: 100,
       ai_operations: ['foundation', 'character', 'chapter', 'improvement', 'advanced'],
       cover_styles: ['realistic', 'artistic', 'fantasy', 'minimalist', 'vintage'],
       priority_support: true,
       early_access: true,
       creator_tools: true,
-      analytics_dashboard: true
+      analytics_dashboard: true,
+      credit_reversion: false // Premium users keep all unused credits
     },
-    stripe_price_id_monthly: 'price_premium_monthly',
-    stripe_price_id_yearly: 'price_premium_yearly'
+    stripe_price_id_monthly: process.env.STRIPE_PREMIUM_MONTHLY_PRICE_ID || 'price_premium_monthly',
+    stripe_price_id_yearly: process.env.STRIPE_PREMIUM_YEARLY_PRICE_ID || 'price_premium_yearly'
   }
 } as const
 

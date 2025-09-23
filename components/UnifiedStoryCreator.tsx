@@ -47,7 +47,7 @@ import {
   CheckCircle
 } from 'lucide-react'
 import {
-  TOKEN_COSTS,
+  ESTIMATED_CREDIT_COSTS,
   ALLOWED_GENRES,
   EXPORT_FORMATS,
   STORY_STATUS,
@@ -363,11 +363,11 @@ export default function UnifiedStoryCreator({
 
   const getRequiredTokens = (mode: CreationMode): number => {
     switch (mode) {
-      case 'story': return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
-      case 'novel': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 3)
-      case 'choice-book': return TOKEN_COSTS.STORY_FOUNDATION + (TOKEN_COSTS.CHAPTER_GENERATION * 2)
-      case 'ai-builder': return TOKEN_COSTS.CHAPTER_GENERATION
-      default: return TOKEN_COSTS.STORY_FOUNDATION + TOKEN_COSTS.CHAPTER_GENERATION
+      case 'story': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
+      case 'novel': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + (ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION * 3)
+      case 'choice-book': return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + (ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION * 2)
+      case 'ai-builder': return ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
+      default: return ESTIMATED_CREDIT_COSTS.STORY_FOUNDATION + ESTIMATED_CREDIT_COSTS.CHAPTER_GENERATION
     }
   }
 
@@ -634,7 +634,7 @@ export default function UnifiedStoryCreator({
   }
 
   if (showUpgradePrompt) {
-    return <PremiumUpgradePrompt {...{userProfile, onClose: () => setShowUpgradePrompt(false)} as any} />
+    return <PremiumUpgradePrompt {...{ userProfile, onClose: () => setShowUpgradePrompt(false) } as any} />
   }
 
   return (

@@ -28,7 +28,12 @@
       "Bash(ANALYZE=true npm run build)",
       "Bash(set ANALYZE=true)",
       "Bash(npx eslint:*)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(npx vercel:*)",
+      "Bash(start test-background.html)",
+      "Bash(npm run typecheck:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
