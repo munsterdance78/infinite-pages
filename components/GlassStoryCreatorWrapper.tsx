@@ -2,6 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface GlassStoryCreatorWrapperProps {
   children: React.ReactNode
@@ -21,6 +26,12 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
   const [isGenerating, setIsGenerating] = useState(false)
   const [wizardStep, setWizardStep] = useState(1)
   const [showHelp, setShowHelp] = useState(false)
+
+  // Modal states for creation tools
+  const [showTemplatesModal, setShowTemplatesModal] = useState(false)
+  const [showCharacterBuilderModal, setShowCharacterBuilderModal] = useState(false)
+  const [showWorldGeneratorModal, setShowWorldGeneratorModal] = useState(false)
+  const [showQuickStartModal, setShowQuickStartModal] = useState(false)
 
   // Monitor generation state without interfering with original component
   useEffect(() => {
@@ -161,19 +172,228 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
 
       {/* Quick actions panel */}
       <div className="mt-4 flex flex-wrap gap-3">
-        <button className="glass-btn-secondary text-sm px-4 py-2">
+        <button
+          onClick={() => setShowTemplatesModal(true)}
+          className="glass-btn-secondary text-sm px-4 py-2 hover:scale-105 transition-transform"
+        >
           📚 Story Templates
         </button>
-        <button className="glass-btn-secondary text-sm px-4 py-2">
+        <button
+          onClick={() => setShowCharacterBuilderModal(true)}
+          className="glass-btn-secondary text-sm px-4 py-2 hover:scale-105 transition-transform"
+        >
           🎭 Character Builder
         </button>
-        <button className="glass-btn-secondary text-sm px-4 py-2">
+        <button
+          onClick={() => setShowWorldGeneratorModal(true)}
+          className="glass-btn-secondary text-sm px-4 py-2 hover:scale-105 transition-transform"
+        >
           🌍 World Generator
         </button>
-        <button className="glass-btn-secondary text-sm px-4 py-2">
+        <button
+          onClick={() => setShowQuickStartModal(true)}
+          className="glass-btn-secondary text-sm px-4 py-2 hover:scale-105 transition-transform"
+        >
           ⚡ Quick Start
         </button>
       </div>
+
+      {/* Story Templates Modal */}
+      <Dialog open={showTemplatesModal} onOpenChange={setShowTemplatesModal}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              📚 Story Templates
+            </DialogTitle>
+            <DialogDescription>
+              Choose from pre-built story structures to jumpstart your creativity.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg">Adventure Quest</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">Hero's journey with challenges, allies, and final confrontation.</p>
+                <Button size="sm" onClick={() => {
+                  console.log('Adventure Quest template selected');
+                  setShowTemplatesModal(false);
+                }}>
+                  Use Template
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg">Mystery Thriller</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">Investigation with clues, red herrings, and revelation.</p>
+                <Button size="sm" onClick={() => {
+                  console.log('Mystery Thriller template selected');
+                  setShowTemplatesModal(false);
+                }}>
+                  Use Template
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg">Romance Drama</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-4">Love story with obstacles, misunderstandings, and resolution.</p>
+                <Button size="sm" onClick={() => {
+                  console.log('Romance Drama template selected');
+                  setShowTemplatesModal(false);
+                }}>
+                  Use Template
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Character Builder Modal */}
+      <Dialog open={showCharacterBuilderModal} onOpenChange={setShowCharacterBuilderModal}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              🎭 Character Builder
+            </DialogTitle>
+            <DialogDescription>
+              Create detailed characters with personalities, backgrounds, and motivations.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Character Name</label>
+                <Input placeholder="Enter character name..." />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Role</label>
+                <Input placeholder="Protagonist, Antagonist, Supporting..." />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Background</label>
+              <Textarea placeholder="Character's history, upbringing, key life events..." rows={3} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Personality Traits</label>
+              <Textarea placeholder="Personality, quirks, strengths, weaknesses..." rows={3} />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowCharacterBuilderModal(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                console.log('Character created');
+                setShowCharacterBuilderModal(false);
+              }}>
+                Create Character
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* World Generator Modal */}
+      <Dialog open={showWorldGeneratorModal} onOpenChange={setShowWorldGeneratorModal}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              🌍 World Generator
+            </DialogTitle>
+            <DialogDescription>
+              Build immersive worlds with locations, cultures, and histories.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">World Name</label>
+              <Input placeholder="Enter world/setting name..." />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Genre/Style</label>
+                <Input placeholder="Fantasy, Sci-fi, Modern, Historical..." />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Time Period</label>
+                <Input placeholder="Medieval, Future, Present day..." />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">World Description</label>
+              <Textarea placeholder="Geography, climate, major locations, political systems..." rows={4} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Cultures & Societies</label>
+              <Textarea placeholder="Different groups, their customs, conflicts, relationships..." rows={3} />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setShowWorldGeneratorModal(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                console.log('World created');
+                setShowWorldGeneratorModal(false);
+              }}>
+                Generate World
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Quick Start Modal */}
+      <Dialog open={showQuickStartModal} onOpenChange={setShowQuickStartModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              ⚡ Quick Start
+            </DialogTitle>
+            <DialogDescription>
+              Get started quickly with guided prompts and instant story creation.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 gap-4">
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
+                console.log('Random idea generator');
+                setShowQuickStartModal(false);
+              }}>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2">🎲 Random Idea Generator</h3>
+                  <p className="text-sm text-gray-600">Get a completely random story concept to spark creativity.</p>
+                </CardContent>
+              </Card>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
+                console.log('One-minute story');
+                setShowQuickStartModal(false);
+              }}>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2">⏱️ One-Minute Story</h3>
+                  <p className="text-sm text-gray-600">Create a complete short story in under a minute.</p>
+                </CardContent>
+              </Card>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
+                console.log('Prompt builder');
+                setShowQuickStartModal(false);
+              }}>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2">🔨 Prompt Builder</h3>
+                  <p className="text-sm text-gray-600">Build custom prompts step-by-step with guided assistance.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
