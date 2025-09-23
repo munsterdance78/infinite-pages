@@ -33,7 +33,8 @@
       "Bash(start test-background.html)",
       "Bash(npm run typecheck:*)",
       "Bash(cat:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run test:ci:*)"
     ],
     "deny": [],
     "ask": []
