@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 import {
   Crown,
@@ -518,6 +518,9 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
               <Crown className="w-5 h-5 text-purple-600" />
               Upgrade to Pro
             </DialogTitle>
+            <DialogDescription>
+              Unlock unlimited story creation and premium features.
+            </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-6">

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Progress } from '@/components/ui/progress'
@@ -696,6 +696,9 @@ export default function UnifiedStoryCreator({
               {getModeIcon(mode)}
               Create New {mode.charAt(0).toUpperCase() + mode.slice(1)}
             </DialogTitle>
+            <DialogDescription>
+              {getModeDescription(mode)}
+            </DialogDescription>
           </DialogHeader>
 
           {progress.isGenerating ? (

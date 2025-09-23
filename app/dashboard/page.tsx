@@ -86,7 +86,7 @@ interface SidebarItem {
 }
 
 // Dashboard overview component
-function DashboardOverview({ userProfile }: { userProfile: UnifiedUserProfile }) {
+function DashboardOverview({ userProfile, onNavigate }: { userProfile: UnifiedUserProfile, onNavigate: (tab: string) => void }) {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -184,21 +184,33 @@ function DashboardOverview({ userProfile }: { userProfile: UnifiedUserProfile })
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+          <Button
+            className="glass-action-card h-auto p-4 flex flex-col gap-2"
+            variant="outline"
+            onClick={() => onNavigate('create')}
+          >
             <Wand2 className="h-6 w-6 glass-icon-glow" />
             <span className="text-white glass-text-shadow">Create New Story</span>
             <span className="text-xs text-white/70 glass-text-shadow-subtle">
               Start with AI assistance
             </span>
           </Button>
-          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+          <Button
+            className="glass-action-card h-auto p-4 flex flex-col gap-2"
+            variant="outline"
+            onClick={() => onNavigate('library')}
+          >
             <BookOpen className="h-6 w-6 glass-icon-glow" />
             <span className="text-white glass-text-shadow">Browse Library</span>
             <span className="text-xs text-white/70 glass-text-shadow-subtle">
               View your stories
             </span>
           </Button>
-          <Button className="glass-action-card h-auto p-4 flex flex-col gap-2" variant="outline">
+          <Button
+            className="glass-action-card h-auto p-4 flex flex-col gap-2"
+            variant="outline"
+            onClick={() => onNavigate('analytics')}
+          >
             <BarChart className="h-6 w-6 glass-icon-glow" />
             <span className="text-white glass-text-shadow">View Analytics</span>
             <span className="text-xs text-white/70 glass-text-shadow-subtle">
@@ -376,7 +388,7 @@ export default function UnifiedDashboard() {
 
     switch (activeTab) {
       case 'home':
-        return <DashboardOverview userProfile={user as any} />
+        return <DashboardOverview userProfile={user as any} onNavigate={setActiveTab} />
       case 'library':
         return (
           <ErrorBoundary>

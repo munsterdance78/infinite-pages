@@ -5,7 +5,7 @@ import type { Database } from '@/lib/supabase/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog'
 import {
   Edit,
   Trash2,
@@ -306,6 +306,9 @@ export default function StoryCard({
               <AlertTriangle className="w-5 h-5 text-red-500" />
               Delete Story
             </DialogTitle>
+            <DialogDescription>
+              This action cannot be undone and will permanently remove this story.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-gray-600">
@@ -348,6 +351,9 @@ export default function StoryCard({
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>{story.title}</DialogTitle>
+            <DialogDescription>
+              Detailed information and statistics for this story.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-6">
             {/* Basic info */}
