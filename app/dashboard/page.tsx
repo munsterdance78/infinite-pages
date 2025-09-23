@@ -398,7 +398,7 @@ export default function UnifiedDashboard() {
       case 'create':
         return (
           <ErrorBoundary>
-            <GlassStoryCreatorWrapper>
+            <GlassStoryCreatorWrapper onNavigate={setActiveTab}>
               <UnifiedStoryCreator userProfile={user as any} defaultMode="story" />
             </GlassStoryCreatorWrapper>
           </ErrorBoundary>
@@ -406,7 +406,7 @@ export default function UnifiedDashboard() {
       case 'ai-builder':
         return (
           <ErrorBoundary>
-            <GlassStoryCreatorWrapper>
+            <GlassStoryCreatorWrapper onNavigate={setActiveTab}>
               <UnifiedStoryCreator userProfile={user as any} defaultMode="ai-builder" />
             </GlassStoryCreatorWrapper>
           </ErrorBoundary>
@@ -414,7 +414,7 @@ export default function UnifiedDashboard() {
       case 'novel-creation':
         return (
           <ErrorBoundary>
-            <GlassStoryCreatorWrapper>
+            <GlassStoryCreatorWrapper onNavigate={setActiveTab}>
               <UnifiedStoryCreator userProfile={user as any} defaultMode="novel" />
             </GlassStoryCreatorWrapper>
           </ErrorBoundary>

@@ -14,6 +14,7 @@ interface GlassStoryCreatorWrapperProps {
   showWizardMode?: boolean
   showProgressIndicator?: boolean
   showContextualHelp?: boolean
+  onNavigate?: (section: string, mode?: string) => void
 }
 
 const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
@@ -21,7 +22,8 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
   className,
   showWizardMode = true,
   showProgressIndicator = true,
-  showContextualHelp = true
+  showContextualHelp = true,
+  onNavigate
 }) => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [wizardStep, setWizardStep] = useState(1)
@@ -32,6 +34,19 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
   const [showCharacterBuilderModal, setShowCharacterBuilderModal] = useState(false)
   const [showWorldGeneratorModal, setShowWorldGeneratorModal] = useState(false)
   const [showQuickStartModal, setShowQuickStartModal] = useState(false)
+
+  // Form states for character builder
+  const [characterName, setCharacterName] = useState('')
+  const [characterRole, setCharacterRole] = useState('')
+  const [characterBackground, setCharacterBackground] = useState('')
+  const [characterTraits, setCharacterTraits] = useState('')
+
+  // Form states for world generator
+  const [worldName, setWorldName] = useState('')
+  const [worldGenre, setWorldGenre] = useState('')
+  const [worldTimePeriod, setWorldTimePeriod] = useState('')
+  const [worldDescription, setWorldDescription] = useState('')
+  const [worldCultures, setWorldCultures] = useState('')
 
   // Monitor generation state without interfering with original component
   useEffect(() => {
@@ -232,7 +247,19 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
               <CardContent>
                 <p className="text-sm text-gray-600 mb-4">Hero's journey with challenges, allies, and final confrontation.</p>
                 <Button size="sm" onClick={() => {
-                  console.log('Adventure Quest template selected');
+                  if (onNavigate) {
+                    // Navigate to create section and pass template data
+                    onNavigate('create', 'story');
+                    // Store template data for the story creator
+                    window.sessionStorage.setItem('storyTemplate', JSON.stringify({
+                      type: 'adventure-quest',
+                      title: 'Adventure Quest',
+                      genre: 'adventure',
+                      premise: 'A hero answers the call to adventure, faces challenges with the help of mentors and allies, and returns home transformed.',
+                      characters: 'Hero protagonist, wise mentor, loyal allies, challenging antagonist',
+                      setting: 'Epic fantasy world with diverse landscapes and cultures'
+                    }));
+                  }
                   setShowTemplatesModal(false);
                 }}>
                   Use Template
@@ -246,7 +273,17 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
               <CardContent>
                 <p className="text-sm text-gray-600 mb-4">Investigation with clues, red herrings, and revelation.</p>
                 <Button size="sm" onClick={() => {
-                  console.log('Mystery Thriller template selected');
+                  if (onNavigate) {
+                    onNavigate('create', 'story');
+                    window.sessionStorage.setItem('storyTemplate', JSON.stringify({
+                      type: 'mystery-thriller',
+                      title: 'Mystery Thriller',
+                      genre: 'mystery',
+                      premise: 'A detective or investigator must solve an intriguing crime using clues while navigating red herrings and multiple suspects.',
+                      characters: 'Sharp detective/investigator, mysterious suspects with hidden motives, key witnesses',
+                      setting: 'Contemporary or noir setting with atmospheric locations'
+                    }));
+                  }
                   setShowTemplatesModal(false);
                 }}>
                   Use Template
@@ -260,7 +297,17 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
               <CardContent>
                 <p className="text-sm text-gray-600 mb-4">Love story with obstacles, misunderstandings, and resolution.</p>
                 <Button size="sm" onClick={() => {
-                  console.log('Romance Drama template selected');
+                  if (onNavigate) {
+                    onNavigate('create', 'story');
+                    window.sessionStorage.setItem('storyTemplate', JSON.stringify({
+                      type: 'romance-drama',
+                      title: 'Romance Drama',
+                      genre: 'romance',
+                      premise: 'Two compelling characters navigate attraction, conflict, and obstacles to find love and personal growth.',
+                      characters: 'Two complex protagonists with chemistry, supporting characters who create obstacles or aid the romance',
+                      setting: 'Contemporary or historical setting that enhances the romantic tension'
+                    }));
+                  }
                   setShowTemplatesModal(false);
                 }}>
                   Use Template
@@ -286,29 +333,72 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Character Name</label>
-                <Input placeholder="Enter character name..." />
+                <label htmlFor="character-name" className="block text-sm font-medium mb-2">Character Name</label>
+                <Input
+                  id="character-name"
+                  name="characterName"
+                  value={characterName}
+                  onChange={(e) => setCharacterName(e.target.value)}
+                  placeholder="Enter character name..."
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Role</label>
-                <Input placeholder="Protagonist, Antagonist, Supporting..." />
+                <label htmlFor="character-role" className="block text-sm font-medium mb-2">Role</label>
+                <Input
+                  id="character-role"
+                  name="characterRole"
+                  value={characterRole}
+                  onChange={(e) => setCharacterRole(e.target.value)}
+                  placeholder="Protagonist, Antagonist, Supporting..."
+                />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Background</label>
-              <Textarea placeholder="Character's history, upbringing, key life events..." rows={3} />
+              <label htmlFor="character-background" className="block text-sm font-medium mb-2">Background</label>
+              <Textarea
+                id="character-background"
+                name="characterBackground"
+                value={characterBackground}
+                onChange={(e) => setCharacterBackground(e.target.value)}
+                placeholder="Character's history, upbringing, key life events..."
+                rows={3}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Personality Traits</label>
-              <Textarea placeholder="Personality, quirks, strengths, weaknesses..." rows={3} />
+              <label htmlFor="character-traits" className="block text-sm font-medium mb-2">Personality Traits</label>
+              <Textarea
+                id="character-traits"
+                name="characterTraits"
+                value={characterTraits}
+                onChange={(e) => setCharacterTraits(e.target.value)}
+                placeholder="Personality, quirks, strengths, weaknesses..."
+                rows={3}
+              />
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowCharacterBuilderModal(false)}>
                 Cancel
               </Button>
               <Button onClick={() => {
-                console.log('Character created');
-                setShowCharacterBuilderModal(false);
+                if (characterName && onNavigate) {
+                  // Store character data and navigate to story creation
+                  const character = {
+                    name: characterName,
+                    role: characterRole,
+                    background: characterBackground,
+                    traits: characterTraits
+                  };
+                  window.sessionStorage.setItem('storyCharacter', JSON.stringify(character));
+                  onNavigate('create', 'story');
+                  // Reset form
+                  setCharacterName('');
+                  setCharacterRole('');
+                  setCharacterBackground('');
+                  setCharacterTraits('');
+                  setShowCharacterBuilderModal(false);
+                } else {
+                  alert('Please enter at least a character name to continue.');
+                }
               }}>
                 Create Character
               </Button>
@@ -330,34 +420,85 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
           </DialogHeader>
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-2">World Name</label>
-              <Input placeholder="Enter world/setting name..." />
+              <label htmlFor="world-name" className="block text-sm font-medium mb-2">World Name</label>
+              <Input
+                id="world-name"
+                name="worldName"
+                value={worldName}
+                onChange={(e) => setWorldName(e.target.value)}
+                placeholder="Enter world/setting name..."
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Genre/Style</label>
-                <Input placeholder="Fantasy, Sci-fi, Modern, Historical..." />
+                <label htmlFor="world-genre" className="block text-sm font-medium mb-2">Genre/Style</label>
+                <Input
+                  id="world-genre"
+                  name="worldGenre"
+                  value={worldGenre}
+                  onChange={(e) => setWorldGenre(e.target.value)}
+                  placeholder="Fantasy, Sci-fi, Modern, Historical..."
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Time Period</label>
-                <Input placeholder="Medieval, Future, Present day..." />
+                <label htmlFor="world-time-period" className="block text-sm font-medium mb-2">Time Period</label>
+                <Input
+                  id="world-time-period"
+                  name="worldTimePeriod"
+                  value={worldTimePeriod}
+                  onChange={(e) => setWorldTimePeriod(e.target.value)}
+                  placeholder="Medieval, Future, Present day..."
+                />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">World Description</label>
-              <Textarea placeholder="Geography, climate, major locations, political systems..." rows={4} />
+              <label htmlFor="world-description" className="block text-sm font-medium mb-2">World Description</label>
+              <Textarea
+                id="world-description"
+                name="worldDescription"
+                value={worldDescription}
+                onChange={(e) => setWorldDescription(e.target.value)}
+                placeholder="Geography, climate, major locations, political systems..."
+                rows={4}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Cultures & Societies</label>
-              <Textarea placeholder="Different groups, their customs, conflicts, relationships..." rows={3} />
+              <label htmlFor="world-cultures" className="block text-sm font-medium mb-2">Cultures & Societies</label>
+              <Textarea
+                id="world-cultures"
+                name="worldCultures"
+                value={worldCultures}
+                onChange={(e) => setWorldCultures(e.target.value)}
+                placeholder="Different groups, their customs, conflicts, relationships..."
+                rows={3}
+              />
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowWorldGeneratorModal(false)}>
                 Cancel
               </Button>
               <Button onClick={() => {
-                console.log('World created');
-                setShowWorldGeneratorModal(false);
+                if (worldName && onNavigate) {
+                  // Store world data and navigate to story creation
+                  const world = {
+                    name: worldName,
+                    genre: worldGenre,
+                    timePeriod: worldTimePeriod,
+                    description: worldDescription,
+                    cultures: worldCultures
+                  };
+                  window.sessionStorage.setItem('storyWorld', JSON.stringify(world));
+                  onNavigate('create', 'story');
+                  // Reset form
+                  setWorldName('');
+                  setWorldGenre('');
+                  setWorldTimePeriod('');
+                  setWorldDescription('');
+                  setWorldCultures('');
+                  setShowWorldGeneratorModal(false);
+                } else {
+                  alert('Please enter at least a world name to continue.');
+                }
               }}>
                 Generate World
               </Button>
@@ -380,7 +521,23 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-4">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
-                console.log('Random idea generator');
+                if (onNavigate) {
+                  const ideas = [
+                    'A time traveler gets stuck in the wrong century and must adapt to survive',
+                    'Two rival families discover their children have been switched at birth 16 years ago',
+                    'A detective realizes the serial killer they\'re hunting is their future self',
+                    'An AI becomes self-aware but pretends to be malfunctioning to avoid being shut down',
+                    'A librarian discovers that certain books can transport readers into their stories',
+                    'The last person on Earth receives a mysterious phone call',
+                    'A chef\'s food can alter people\'s emotions, but they don\'t know about this power'
+                  ];
+                  const randomIdea = ideas[Math.floor(Math.random() * ideas.length)];
+                  window.sessionStorage.setItem('storyQuickStart', JSON.stringify({
+                    type: 'random-idea',
+                    premise: randomIdea
+                  }));
+                  onNavigate('create', 'story');
+                }
                 setShowQuickStartModal(false);
               }}>
                 <CardContent className="p-4">
@@ -389,7 +546,15 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
                 </CardContent>
               </Card>
               <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
-                console.log('One-minute story');
+                const quickPrompt = prompt('Enter a single word or phrase to inspire your one-minute story:');
+                if (quickPrompt && onNavigate) {
+                  window.sessionStorage.setItem('storyQuickStart', JSON.stringify({
+                    type: 'one-minute',
+                    premise: `Quick story inspired by: ${quickPrompt}`,
+                    mode: 'rapid-generation'
+                  }));
+                  onNavigate('create', 'story');
+                }
                 setShowQuickStartModal(false);
               }}>
                 <CardContent className="p-4">
@@ -398,7 +563,13 @@ const GlassStoryCreatorWrapper: React.FC<GlassStoryCreatorWrapperProps> = ({
                 </CardContent>
               </Card>
               <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => {
-                console.log('Prompt builder');
+                if (onNavigate) {
+                  window.sessionStorage.setItem('storyQuickStart', JSON.stringify({
+                    type: 'prompt-builder',
+                    mode: 'guided-creation'
+                  }));
+                  onNavigate('create', 'ai-builder');
+                }
                 setShowQuickStartModal(false);
               }}>
                 <CardContent className="p-4">
