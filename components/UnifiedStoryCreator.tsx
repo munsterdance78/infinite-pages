@@ -312,36 +312,53 @@ export default function UnifiedStoryCreator({
       })
 
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('User not authenticated')
 
-      // Check token limits based on mode
-      const requiredTokens = getRequiredTokens(mode)
-      if (userProfile.tokens_remaining < requiredTokens) {
-        setShowUpgradePrompt(true)
-        return
+      // Allow guest story creation
+      if (user) {
+        // Authenticated user - check token limits
+        const requiredTokens = getRequiredTokens(mode)
+        if (userProfile.tokens_remaining < requiredTokens) {
+          setShowUpgradePrompt(true)
+          return
+        }
+
+        const storyData: Partial<UnifiedStory> = {
+          user_id: user.id,
+          title: formData.title,
+          genre: formData.genre,
+          premise: formData.premise,
+          type: mode,
+          status: 'creating' as any,
+          ...getModeSpecificData()
+        }
+
+        const { data: newStory, error } = await supabase
+          .from('stories')
+          .insert([storyData])
+          .select()
+          .single()
+
+        if (error) throw error
+
+        setCurrentStory(newStory)
+        await generateStoryContent(newStory.id)
+        await loadStories()
+      } else {
+        // Guest user - create story without database storage
+        const guestStoryId = `guest-story-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        const guestStory = {
+          id: guestStoryId,
+          title: formData.title,
+          genre: formData.genre,
+          premise: formData.premise,
+          type: mode,
+          status: 'creating' as any,
+          isGuest: true
+        }
+
+        setCurrentStory(guestStory as any)
+        await generateStoryContent(guestStoryId)
       }
-
-      const storyData: Partial<UnifiedStory> = {
-        user_id: user.id,
-        title: formData.title,
-        genre: formData.genre,
-        premise: formData.premise,
-        type: mode,
-        status: 'creating' as any,
-        ...getModeSpecificData()
-      }
-
-      const { data: newStory, error } = await supabase
-        .from('stories')
-        .insert([storyData])
-        .select()
-        .single()
-
-      if (error) throw error
-
-      setCurrentStory(newStory)
-      await generateStoryContent(newStory.id)
-      await loadStories()
 
     } catch (error) {
       console.error('Error creating story:', error)
@@ -406,7 +423,12 @@ export default function UnifiedStoryCreator({
   const generateStoryContent = async (storyId: string) => {
     try {
       const endpoint = getGenerationEndpoint(mode)
-      const payload = {
+      // Use simplified payload for guest API
+      const payload = storyId.startsWith('guest-') ? {
+        title: formData.title,
+        genre: formData.genre,
+        premise: formData.premise
+      } : {
         storyId,
         ...formData,
         mode
@@ -431,11 +453,13 @@ export default function UnifiedStoryCreator({
         isGenerating: false
       }))
 
-      // Update story status
-      await supabase
-        .from('stories')
-        .update({ status: 'completed' })
-        .eq('id', storyId)
+      // Update story status (only for authenticated users)
+      if (!storyId.startsWith('guest-')) {
+        await supabase
+          .from('stories')
+          .update({ status: 'completed' })
+          .eq('id', storyId)
+      }
 
     } catch (error) {
       console.error('Error generating content:', error)
@@ -444,12 +468,13 @@ export default function UnifiedStoryCreator({
   }
 
   const getGenerationEndpoint = (mode: CreationMode): string => {
+    // Use guest endpoints for unauthenticated users
     switch (mode) {
-      case 'story': return '/api/stories'
-      case 'novel': return '/api/stories/novel'
-      case 'choice-book': return '/api/stories/choice-books'
-      case 'ai-builder': return '/api/stories/ai-assisted'
-      default: return '/api/stories'
+      case 'story': return '/api/stories/guest'
+      case 'novel': return '/api/stories/guest' // Novel creation via guest API
+      case 'choice-book': return '/api/stories/guest' // Choice books via guest API
+      case 'ai-builder': return '/api/stories/guest' // AI builder via guest API
+      default: return '/api/stories/guest'
     }
   }
 
