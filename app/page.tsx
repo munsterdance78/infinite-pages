@@ -1,13 +1,5 @@
 'use client'
 
-// Add this to the top of any page component
-console.log('Environment Debug:', {
-  NODE_ENV: process.env.NODE_ENV,
-  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'PRESENT' : 'MISSING',
-  allNextPublic: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_'))
-})
-
 import React, { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -30,6 +22,7 @@ import {
   Wand2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import V2TestingLink from '@/components/V2TestingLink'
 
 export default function LandingPage() {
   const [user, setUser] = useState<any>(null)
@@ -49,9 +42,6 @@ export default function LandingPage() {
     setLoading(true)
     try {
       const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`
-      console.log('Redirect URL:', redirectUrl)
-      console.log('Environment URL:', process.env.NEXT_PUBLIC_SITE_URL)
-      console.log('Window origin:', window.location.origin)
 
       await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -157,14 +147,8 @@ export default function LandingPage() {
                 variant="outline"
                 className="text-lg px-8 py-4"
                 onClick={() => {
-                  // Scroll to examples section or redirect to examples page
-                  const examplesSection = document.getElementById('examples-section');
-                  if (examplesSection) {
-                    examplesSection.scrollIntoView({ behavior: 'smooth' });
-                  } else {
-                    // If no examples section, show a sample modal or redirect
-                    alert('Examples feature coming soon! Sign up to start creating your own stories.');
-                  }
+                  // Redirect to V2 testing interface as examples
+                  window.open('/v2-testing', '_blank');
                 }}
               >
                 <BookOpen className="w-5 h-5 mr-2" />
@@ -187,6 +171,13 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* V2.0 Testing Dashboard Link */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto">
+          <V2TestingLink variant="banner" />
         </div>
       </section>
 
