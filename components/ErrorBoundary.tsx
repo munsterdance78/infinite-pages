@@ -5,15 +5,16 @@ import React, { Component } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { 
-  AlertTriangle, 
-  RefreshCw, 
-  Home, 
-  Bug, 
+import {
+  AlertTriangle,
+  RefreshCw,
+  Home,
+  Bug,
   ExternalLink,
   Copy,
   CheckCircle
 } from 'lucide-react'
+import { errorMonitor } from '@/lib/error-monitoring'
 
 interface Props {
   children: ReactNode;
@@ -70,33 +71,16 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
-    // In a real application, you would send this to an error monitoring service
-    const errorData = {
-      message: error.message,
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
-      url: typeof window !== 'undefined' ? window.location.href : 'SSR',
-      eventId: this.state.eventId,
-      level: this.props.level || 'component',
-      context: this.props.level === 'page' ? 'root_layout' : 'component'
-    }
-
-    // Send to monitoring service in production
-    if (process.env.NODE_ENV === 'production') {
-      try {
-        fetch('/api/errors', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(errorData)
-        }).catch(console.error)
-      } catch (reportingError) {
-        console.error('Failed to report error:', reportingError)
+    // Use our built-in error monitoring system
+    errorMonitor.captureException(error, {
+      component: 'ErrorBoundary',
+      operation: 'component_render',
+      customData: {
+        componentStack: errorInfo.componentStack,
+        errorBoundaryLevel: this.props.level || 'component',
+        eventId: this.state.eventId
       }
-    }
-
-    console.error('Error logged:', errorData)
+    })
   }
 
   private handleRetry = () => {

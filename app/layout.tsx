@@ -4,6 +4,7 @@ import './globals.css'
 import '../styles/glassmorphism.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import ErrorFallback from '@/components/ErrorFallback'
+import '@/lib/error-monitoring' // Initialize error monitoring
 
 const inter = Inter({ subsets: ['latin'] })
 

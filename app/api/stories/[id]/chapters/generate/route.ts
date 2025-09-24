@@ -7,8 +7,9 @@ import { claudeCache } from '@/lib/claude/cache'
 import { analyticsService } from '@/lib/claude/analytics'
 import { rateLimiter } from '@/lib/rateLimit'
 import { CREDIT_SYSTEM, ESTIMATED_CREDIT_COSTS } from '@/lib/constants'
+import { withErrorMonitoring, reportAIError, reportDatabaseError, reportAuthError } from '@/lib/server-error-monitoring'
 
-export async function POST(
+async function postHandler(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -142,11 +143,24 @@ export async function POST(
         }
 
         // Use enhanced generation with fact context
-        const generationResult = await claudeService.generateWithFactContext({
-          storyId: params.id,
-          chapterGoals: enhancedChapterGoals,
-          factHierarchy
-        })
+        let generationResult
+        try {
+          generationResult = await claudeService.generateWithFactContext({
+            storyId: params.id,
+            chapterGoals: enhancedChapterGoals,
+            factHierarchy
+          })
+        } catch (aiError) {
+          await reportAIError(aiError as Error, {
+            operation: 'chapter_generation_with_fact_context',
+            model: 'claude-3-haiku',
+            userId: profile?.id,
+            apiEndpoint: '/api/stories/[id]/chapters/generate',
+            responseTime: Date.now() - startTime,
+            request
+          })
+          throw aiError
+        }
 
         // Update user credits
         const generationCreditsUsed = Math.ceil(generationResult.cost * 1000)
@@ -397,3 +411,9 @@ export async function GET(
     )
   }
 }
+
+// Export wrapped with error monitoring
+export const POST = withErrorMonitoring(postHandler, {
+  operation: 'chapter_generation',
+  apiEndpoint: '/api/stories/[id]/chapters/generate'
+})

@@ -56,7 +56,8 @@
       "Bash(pkill:*)",
       "Bash(rm:*)",
       "Bash(git tag:*)",
-      "Bash(npx @sentry/wizard:*)"
+      "Bash(npx @sentry/wizard:*)",
+      "WebFetch(domain:sentry.io)"
     ],
     "deny": [],
     "ask": []
