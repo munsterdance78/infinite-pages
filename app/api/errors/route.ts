@@ -5,6 +5,7 @@ import { isAuthSuccess } from '@/lib/auth/utils'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { ERROR_MESSAGES } from '@/lib/constants'
+import * as Sentry from '@sentry/nextjs'
 
 // Error severity levels
 type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -451,7 +452,50 @@ export async function POST(request: NextRequest) {
     if (errorReport.severity === 'critical') {
       await sendErrorAlert(errorReport)
     }
-    
+
+    // Send to Sentry for enhanced monitoring
+    Sentry.withScope((scope) => {
+      // Set severity level for Sentry
+      const sentryLevel = {
+        'low': 'info',
+        'medium': 'warning',
+        'high': 'error',
+        'critical': 'fatal'
+      }[errorReport.severity] as 'info' | 'warning' | 'error' | 'fatal'
+
+      scope.setLevel(sentryLevel)
+      scope.setTag('category', errorReport.category)
+      scope.setTag('source', errorReport.source)
+      scope.setTag('component', errorReport.component || 'unknown')
+      scope.setTag('operation', errorReport.operation || 'unknown')
+      scope.setTag('userTier', errorReport.userTier || 'unknown')
+
+      // Set user context
+      if (errorReport.userId) {
+        scope.setUser({ id: errorReport.userId })
+      }
+
+      // Set extra context
+      scope.setContext('error_details', {
+        url: errorReport.url,
+        userAgent: errorReport.userAgent,
+        apiEndpoint: errorReport.apiEndpoint,
+        statusCode: errorReport.statusCode,
+        responseTime: errorReport.responseTime,
+        fingerprint: errorReport.fingerprint,
+        customData: errorReport.customData
+      })
+
+      // Capture the error
+      if (errorReport.stack) {
+        const error = new Error(errorReport.message)
+        error.stack = errorReport.stack
+        Sentry.captureException(error)
+      } else {
+        Sentry.captureMessage(errorReport.message, sentryLevel)
+      }
+    })
+
     // Log structured error for monitoring
     console.error('Error report processed:', {
       id: errorId,

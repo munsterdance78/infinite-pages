@@ -55,7 +55,8 @@
       "Read(//c/**)",
       "Bash(pkill:*)",
       "Bash(rm:*)",
-      "Bash(git tag:*)"
+      "Bash(git tag:*)",
+      "Bash(npx @sentry/wizard:*)"
     ],
     "deny": [],
     "ask": []
