@@ -42,8 +42,8 @@ export default function TransparentStoryGenerator({
   const handleGeneration = async () => {
     try {
       const result = await executeGeneration(async () => {
-        // This would be your actual story generation API call
-        const response = await fetch('/api/stories', {
+        // Use guest API for unauthenticated story creation
+        const response = await fetch('/api/stories/guest', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, genre, premise })

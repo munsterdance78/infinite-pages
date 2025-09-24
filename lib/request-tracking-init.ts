@@ -48,9 +48,6 @@ class RequestTrackingManager {
       // Set up error alerting
       this.setupErrorAlerting()
 
-      // Initialize health checks
-      this.startHealthChecks()
-
       // Wrap all existing fetch calls automatically
       this.wrapGlobalFetch()
 

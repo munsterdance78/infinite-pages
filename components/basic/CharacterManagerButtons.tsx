@@ -70,7 +70,14 @@ export default function CharacterManagerButtons({
     setIsGenerating(true)
 
     try {
-      const response = await fetch(`/api/stories/${storyId || 'demo'}/characters/generate`, {
+      // Use guest API for unauthenticated character generation
+      const isGuestMode = !storyId || storyId === 'demo'
+      const guestStoryId = isGuestMode ? 'guest-demo-story' : storyId
+      const endpoint = isGuestMode
+        ? `/api/stories/guest/${guestStoryId}/characters/generate`
+        : `/api/stories/${storyId}/characters/generate`
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
