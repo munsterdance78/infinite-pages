@@ -20,18 +20,24 @@ const STORY_BIBLE_COMPLIANCE_PROMPT = `You are a story consistency expert. Analy
 
 // Enhanced Claude service with better error handling and features
 export class ClaudeService {
-  private anthropic: Anthropic
+  private anthropic: Anthropic | null = null
   private defaultModel: string
 
   constructor() {
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is required')
-    }
-
-    this.anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY
-    })
     this.defaultModel = CLAUDE_PRICING.MODEL
+  }
+
+  private getAnthropic(): Anthropic {
+    if (!this.getAnthropic()) {
+      if (!process.env.ANTHROPIC_API_KEY) {
+        throw new Error('ANTHROPIC_API_KEY environment variable is required')
+      }
+
+      this.getAnthropic() = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY
+      })
+    }
+    return this.getAnthropic()
   }
 
   /**
@@ -103,7 +109,7 @@ export class ClaudeService {
     
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        const response = await this.anthropic.messages.create({
+        const response = await this.getAnthropic().messages.create({
           model,
           max_tokens: maxTokens,
           temperature,

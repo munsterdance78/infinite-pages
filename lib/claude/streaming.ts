@@ -20,18 +20,24 @@ export interface StreamResponse {
 }
 
 export class ClaudeStreamingService {
-  private anthropic: Anthropic
+  private anthropic: Anthropic | null = null
   private defaultModel: string
 
   constructor() {
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is required')
-    }
-
-    this.anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY
-    })
     this.defaultModel = CLAUDE_PRICING.MODEL
+  }
+
+  private getAnthropic(): Anthropic {
+    if (!this.getAnthropic()) {
+      if (!process.env.ANTHROPIC_API_KEY) {
+        throw new Error('ANTHROPIC_API_KEY environment variable is required')
+      }
+
+      this.getAnthropic() = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY
+      })
+    }
+    return this.getAnthropic()
   }
 
   /**
@@ -69,7 +75,7 @@ export class ClaudeStreamingService {
     ]
 
     try {
-      const stream = await this.anthropic.messages.create({
+      const stream = await this.getAnthropic().messages.create({
         model,
         max_tokens: maxTokens,
         temperature,
