@@ -54,7 +54,8 @@
       "Bash(for endpoint in \"/api/stories/test-v2/chapters/generate\" \"/api/stories/test-v2/facts/extract\" \"/api/stories/test-v2/facts/optimize\" \"/api/stories/test-v2/analyze\" \"/api/stories/test-v2/universe/setup\")",
       "Read(//c/**)",
       "Bash(pkill:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git tag:*)"
     ],
     "deny": [],
     "ask": []
