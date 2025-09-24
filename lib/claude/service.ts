@@ -11,6 +11,12 @@ import { claudeCache } from './cache'
 import { analyticsService } from './analytics'
 import { promptTemplateManager } from './prompts'
 import { contextOptimizer, type OptimizedContext } from './context-optimizer'
+import { SFSLProcessor } from './sfsl-schema'
+
+// Constants for new fact-based features
+const FACT_EXTRACTION_SYSTEM_PROMPT = `You are a professional story analyst specializing in extracting structured facts from narrative content. Your task is to identify and organize story elements into precise, compressed facts while maintaining all essential information.`
+
+const STORY_BIBLE_COMPLIANCE_PROMPT = `You are a story consistency expert. Analyze the provided content against the established story facts and identify any inconsistencies, plot holes, or character voice deviations.`
 
 // Enhanced Claude service with better error handling and features
 export class ClaudeService {
@@ -689,6 +695,171 @@ Provide honest, constructive feedback that will help improve the writing quality
       },
       models: this.getAvailableModels()
     }
+  }
+
+  // NEW: Fact extraction using existing infrastructure
+  async extractAndCompressFacts({
+    content,
+    storyContext,
+    factType = 'chapter'
+  }: {
+    content: string
+    storyContext: any
+    factType: 'universe' | 'series' | 'book' | 'chapter'
+  }) {
+    // Use existing generateContent() infrastructure
+    const response = await this.generateContent({
+      prompt: this.buildFactExtractionPrompt(content, storyContext, factType),
+      systemPrompt: FACT_EXTRACTION_SYSTEM_PROMPT,
+      operation: 'fact_extraction',
+      useCache: true,
+      trackAnalytics: true,
+      userId: storyContext.userId
+    })
+
+    // Process using new SFSL system
+    const sfslProcessor = new SFSLProcessor()
+    const facts = this.parseExtractedFacts(response.content)
+    const compressed = sfslProcessor.compressFacts(facts)
+
+    return {
+      facts,
+      compressed,
+      compressionRatio: content.length / compressed.length,
+      cost: response.cost,
+      usage: response.usage
+    }
+  }
+
+  // NEW: Generate with fact-based context
+  async generateWithFactContext({
+    storyId,
+    chapterGoals,
+    factHierarchy
+  }: {
+    storyId: string
+    chapterGoals: any
+    factHierarchy: any
+  }) {
+    // Use existing generateChapter with enhanced context
+    const optimizedContext = contextOptimizer.selectRelevantFactContext(
+      chapterGoals,
+      factHierarchy
+    )
+
+    return this.generateChapter({
+      storyContext: optimizedContext,
+      chapterNumber: chapterGoals.number,
+      useOptimizedContext: true,
+      targetWordCount: chapterGoals.targetWordCount || 2000,
+      previousChapters: [],
+      chapterPlan: chapterGoals
+    })
+  }
+
+  // NEW: Story bible compliance checking
+  async analyzeStoryConsistency(storyId: string, newContent: string) {
+    const storyFacts = await this.getStoredFacts(storyId)
+
+    return this.generateContent({
+      prompt: this.buildConsistencyAnalysisPrompt(newContent, storyFacts),
+      systemPrompt: STORY_BIBLE_COMPLIANCE_PROMPT,
+      operation: 'story_consistency_analysis',
+      useCache: true
+    })
+  }
+
+  // NEW: Enhanced content improvement with fact awareness
+  async enhanceWithFactContext(content: string, storyFacts: any, feedback: string) {
+    return this.improveContent({
+      content,
+      feedback: `${feedback}\n\nStory Context: ${JSON.stringify(storyFacts)}`,
+      improvementType: 'fact_aware_enhancement' as any
+    })
+  }
+
+  // Helper methods for new functionality
+  private buildFactExtractionPrompt(content: string, storyContext: any, factType: string): string {
+    return `Extract structured facts from this ${factType} content:
+
+CONTENT:
+${content}
+
+STORY CONTEXT:
+${JSON.stringify(storyContext)}
+
+Extract facts in these categories:
+- Characters: names, traits, goals, relationships, voice patterns
+- World: settings, rules, limitations, unique aspects
+- Plot: threads, stakes, progression, consequences
+- Timeline: events, impacts, character effects
+
+Return as structured JSON with precise, compressed facts.`
+  }
+
+  private parseExtractedFacts(content: string): any {
+    try {
+      return JSON.parse(content)
+    } catch (e) {
+      // Fallback parsing for non-JSON responses
+      return {
+        characters: this.extractCharacterFacts(content),
+        world: this.extractWorldFacts(content),
+        plot: this.extractPlotFacts(content),
+        timeline: this.extractTimelineFacts(content)
+      }
+    }
+  }
+
+  private buildConsistencyAnalysisPrompt(newContent: string, storyFacts: any): string {
+    return `Analyze this new content for consistency with established story facts:
+
+NEW CONTENT:
+${newContent}
+
+ESTABLISHED STORY FACTS:
+${JSON.stringify(storyFacts)}
+
+Check for:
+1. Character voice consistency
+2. World-building rule violations
+3. Timeline inconsistencies
+4. Plot contradictions
+5. Relationship/motivation conflicts
+
+Return detailed analysis with specific issues and suggestions.`
+  }
+
+  private async getStoredFacts(storyId: string): Promise<any> {
+    // This would typically fetch from database
+    // For now, return empty structure
+    return {
+      characters: {},
+      world: {},
+      plot: {},
+      timeline: {}
+    }
+  }
+
+  private extractCharacterFacts(content: string): any {
+    // Simple extraction logic - could be enhanced
+    const names = content.match(/([A-Z][a-z]+)/g) || []
+    return { names: Array.from(new Set(names)) }
+  }
+
+  private extractWorldFacts(content: string): any {
+    const locations = content.match(/(?:in|at|near)\s+([A-Z][a-z\s]+)/g) || []
+    return { locations }
+  }
+
+  private extractPlotFacts(content: string): any {
+    const events = content.split(/[.!?]+/).filter(s => s.length > 20).slice(0, 3)
+    return { key_events: events }
+  }
+
+  private extractTimelineFacts(content: string): any {
+    const timeMarkers = content.match(/(?:after|before|during|when)\s+([^.]+)/gi) || []
+    return { markers: timeMarkers }
   }
 }
 

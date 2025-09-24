@@ -140,7 +140,7 @@ export default function LandingPage() {
                 className="text-lg px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <Rocket className="w-5 h-5 mr-2" />
-                Start Writing for Free
+                Get Started Free
               </Button>
               <Button
                 size="lg"
@@ -167,7 +167,7 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-600" />
-                <span>Start in 30 seconds</span>
+                <span>Quick signup process</span>
               </div>
             </div>
           </div>
@@ -419,7 +419,7 @@ export default function LandingPage() {
             className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4"
           >
             <Sparkles className="w-5 h-5 mr-2" />
-            Start Writing Today - Free
+            Create Account - Free Trial
           </Button>
         </div>
       </section>

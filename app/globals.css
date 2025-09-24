@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Component styles */
+@import '../styles/components/story-library.css';
+@import '../styles/enhancement-sliders.css';
+
 @layer base {
   :root {
     --background: 0 0% 100%;

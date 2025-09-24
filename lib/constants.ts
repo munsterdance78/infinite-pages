@@ -23,7 +23,9 @@ export const ESTIMATED_CREDIT_COSTS = {
   STORY_FOUNDATION: 24,  // ~$0.024 actual AI cost = 24 credits
   CHAPTER_GENERATION: 15, // ~$0.015 actual AI cost = 15 credits
   CHAPTER_IMPROVEMENT: 8, // ~$0.008 actual AI cost = 8 credits
-  CONTENT_ANALYSIS: 5    // ~$0.005 actual AI cost = 5 credits
+  CONTENT_ANALYSIS: 5,    // ~$0.005 actual AI cost = 5 credits
+  FACT_EXTRACTION: 12,    // ~$0.012 actual AI cost = 12 credits
+  STORY_ANALYSIS: 8       // ~$0.008 actual AI cost = 8 credits
 } as const
 
 // STANDARDIZED SUBSCRIPTION SYSTEM

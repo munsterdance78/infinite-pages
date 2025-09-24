@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 // Original dashboard components (comprehensive features)
 import UnifiedStoryCreator from '@/components/UnifiedStoryCreator'
 import UnifiedAnalyticsDashboard from '@/components/UnifiedAnalyticsDashboard'
+import { EnhancedAnalyticsDashboard } from '@/components/v2'
 import SubscriptionManager from '@/components/SubscriptionManager'
 import CreatorEarningsHub from '@/components/CreatorEarningsHub'
 
@@ -320,7 +321,7 @@ export default function UnifiedDashboard() {
       console.error('Error loading dashboard data:', error)
 
       // Don't retry on permission errors - these won't resolve with retries
-      const errorMessage = error?.message || error?.toString() || ''
+      const errorMessage = (error as any)?.message || (error as Error)?.toString() || ''
       if (errorMessage.includes('permission denied') || errorMessage.includes('42501')) {
         setError('Database permission error. Please run the SQL setup script in Supabase.')
         setLoading(false)
@@ -420,6 +421,11 @@ export default function UnifiedDashboard() {
           </ErrorBoundary>
         )
       case 'analytics':
+        return (
+          <ErrorBoundary>
+            <EnhancedAnalyticsDashboard />
+          </ErrorBoundary>
+        )
       case 'cache-analytics':
         return (
           <ErrorBoundary>
@@ -459,7 +465,7 @@ export default function UnifiedDashboard() {
           </Card>
         )
       default:
-        return <DashboardOverview userProfile={user as any} />
+        return <DashboardOverview userProfile={user as any} onNavigate={setActiveTab} />
     }
   }
 

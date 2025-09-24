@@ -291,8 +291,18 @@ export async function rateLimit(
   headers: Record<string, string>;
 }> {
   const config = RATE_LIMIT_CONFIGS[operation]
+
+  // Handle missing config gracefully
+  if (!config) {
+    console.warn(`Rate limit config not found for operation: ${operation}`)
+    return {
+      success: true,
+      headers: {}
+    }
+  }
+
   const identifier = getClientIdentifier(request, userId)
-  
+
   const result = rateLimiter.check(
     identifier,
     operation,

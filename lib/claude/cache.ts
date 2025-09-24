@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { createHash } from 'crypto'
 import { calculateCost } from '@/lib/constants'
 
 export interface CacheEntry {
@@ -31,6 +31,8 @@ export class ClaudeCache {
   private maxSize: number
   private defaultTTL: number
 
+  // Performance optimization features for intelligent caching
+
   constructor(options: CacheOptions = {}) {
     this.maxSize = options.maxSize || 1000
     this.defaultTTL = options.ttl || 3600 // 1 hour default
@@ -58,8 +60,7 @@ export class ClaudeCache {
       operation: options.operation || 'general'
     }
 
-    const hash = crypto
-      .createHash('sha256')
+    const hash = createHash('sha256')
       .update(JSON.stringify(keyData))
       .digest('hex')
 
@@ -302,6 +303,175 @@ export class ClaudeCache {
     })
 
     return this.get(key)
+  }
+
+  // NEW: Hierarchical fact caching
+  async cacheHierarchicalFacts(
+    storyId: string,
+    facts: any,
+    level: 'universe' | 'series' | 'book' | 'chapter'
+  ): Promise<void> {
+    const ttlMap = {
+      universe: 30 * 24 * 60 * 60,  // 30 days
+      series: 14 * 24 * 60 * 60,    // 14 days
+      book: 7 * 24 * 60 * 60,       // 7 days
+      chapter: 24 * 60 * 60         // 1 day
+    }
+
+    const key = `facts:${level}:${storyId}`
+
+    // Use existing cache infrastructure
+    this.set(
+      key,
+      JSON.stringify(facts),
+      { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
+      'fact-cache',
+      {
+        ttl: ttlMap[level],
+        operation: `fact_cache_${level}`,
+        userId: facts.userId || undefined
+      }
+    )
+  }
+
+  // NEW: Get optimized fact context
+  async getOptimizedFactContext(storyId: string): Promise<{
+    universe: any | null,
+    series: any | null,
+    book: any | null,
+    chapter: any | null
+  }> {
+    const levels = ['universe', 'series', 'book', 'chapter'] as const
+    const factPromises = levels.map(level => this.get(`facts:${level}:${storyId}`))
+    const cachedFacts = await Promise.all(factPromises)
+
+    return levels.reduce((acc, level, index) => {
+      const cachedFact = cachedFacts[index]
+      try {
+        acc[level] = cachedFact ? JSON.parse(cachedFact.content) : null
+      } catch (error) {
+        console.warn(`Failed to parse cached facts for ${level}:${storyId}:`, error)
+        acc[level] = null
+      }
+      return acc
+    }, {} as { universe: any | null, series: any | null, book: any | null, chapter: any | null })
+  }
+
+  // NEW: Get specific level facts
+  async getFactsByLevel(
+    storyId: string,
+    level: 'universe' | 'series' | 'book' | 'chapter'
+  ): Promise<any | null> {
+    const key = `facts:${level}:${storyId}`
+    const cachedEntry = this.get(key)
+
+    if (!cachedEntry) return null
+
+    try {
+      return JSON.parse(cachedEntry.content)
+    } catch (error) {
+      console.warn(`Failed to parse cached facts for ${level}:${storyId}:`, error)
+      this.delete(key) // Remove corrupted cache entry
+      return null
+    }
+  }
+
+  // NEW: Invalidate facts cache for story
+  invalidateStoryFacts(storyId: string): number {
+    const levels = ['universe', 'series', 'book', 'chapter']
+    let invalidated = 0
+
+    levels.forEach(level => {
+      const key = `facts:${level}:${storyId}`
+      if (this.delete(key)) {
+        invalidated++
+      }
+    })
+
+    return invalidated
+  }
+
+  // NEW: Get fact cache statistics
+  getFactCacheStats(): {
+    totalFactEntries: number
+    factEntriesByLevel: Record<string, number>
+    totalFactCacheSize: number
+    oldestFactEntry: { level: string, age: number } | null
+  } {
+    const now = Date.now()
+    let totalFactEntries = 0
+    let totalFactCacheSize = 0
+    const factEntriesByLevel: Record<string, number> = {
+      universe: 0,
+      series: 0,
+      book: 0,
+      chapter: 0
+    }
+    let oldestFactEntry: { level: string, age: number } | null = null
+    let oldestTime = now
+
+    Array.from(this.cache.entries()).forEach(([key, entry]) => {
+      if (key.startsWith('facts:')) {
+        totalFactEntries++
+        totalFactCacheSize += entry.content.length
+
+        const level = key.split(':')[1]
+        if (level && factEntriesByLevel.hasOwnProperty(level)) {
+          factEntriesByLevel[level]++
+        }
+
+        const age = now - entry.timestamp
+        if (entry.timestamp < oldestTime) {
+          oldestTime = entry.timestamp
+          oldestFactEntry = { level: level || 'unknown', age: Math.floor(age / 1000) }
+        }
+      }
+    })
+
+    return {
+      totalFactEntries,
+      factEntriesByLevel,
+      totalFactCacheSize,
+      oldestFactEntry
+    }
+  }
+
+  // NEW: Cleanup only fact cache entries
+  cleanupFactCache(): number {
+    const now = Date.now()
+    let cleaned = 0
+
+    Array.from(this.cache.entries()).forEach(([key, entry]) => {
+      if (key.startsWith('facts:') && now > entry.expiresAt) {
+        this.delete(key)
+        cleaned++
+      }
+    })
+
+    return cleaned
+  }
+
+  // NEW: Pre-warm fact cache for story
+  async preWarmFactCache(
+    storyId: string,
+    factsHierarchy: {
+      universe?: any,
+      series?: any,
+      book?: any,
+      chapter?: any
+    }
+  ): Promise<void> {
+    const promises: Promise<void>[] = []
+
+    Object.entries(factsHierarchy).forEach(([level, facts]) => {
+      if (facts && ['universe', 'series', 'book', 'chapter'].includes(level)) {
+        promises.push(
+          this.cacheHierarchicalFacts(storyId, facts, level as any)
+        )
+      }
+    })
+
+    await Promise.all(promises)
   }
 }
 

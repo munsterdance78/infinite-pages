@@ -450,9 +450,7 @@ export async function middleware(req: NextRequest) {
   // Add CORS headers for API routes if needed
   if (pathname.startsWith('/api/')) {
     // Only allow specific origins in production
-    const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? [process.env.NEXT_PUBLIC_SITE_URL || '']
-      : ['http://localhost:3000']
+    const allowedOrigins = [process.env.NEXT_PUBLIC_SITE_URL || 'https://www.infinite-pages.com']
 
     const origin = req.headers.get('origin')
     if (origin && allowedOrigins.includes(origin)) {

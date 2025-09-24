@@ -655,8 +655,788 @@ export class ClaudeAnalyticsService {
 
     return JSON.stringify(this.events, null, 2)
   }
+
+  // NEW: Track fact extraction with existing infrastructure
+  async trackFactExtraction(metrics: {
+    userId: string
+    storyId: string
+    factType: string
+    compressionRatio: number
+    extractionTime: number
+    cost: number
+    creditsUsed: number
+    originalLength: number
+    compressedLength: number
+    issuesFound?: number
+    error?: string
+  }): Promise<void> {
+    // Use existing trackOperation method
+    await this.trackOperation({
+      userId: metrics.userId,
+      operation: 'fact_extraction',
+      model: 'sfsl_processor',
+      inputTokens: Math.ceil(metrics.originalLength / 4), // Approximate tokens from length
+      outputTokens: Math.ceil(metrics.compressedLength / 4),
+      cost: metrics.cost,
+      responseTime: metrics.extractionTime,
+      success: !metrics.error,
+      cached: false,
+      error: metrics.error,
+      metadata: {
+        factExtraction: {
+          storyId: metrics.storyId,
+          factType: metrics.factType,
+          compressionRatio: metrics.compressionRatio,
+          originalLength: metrics.originalLength,
+          compressedLength: metrics.compressedLength,
+          creditsUsed: metrics.creditsUsed,
+          issuesFound: metrics.issuesFound || 0
+        }
+      }
+    })
+  }
+
+  // NEW: Track story analysis with existing infrastructure
+  async trackStoryAnalysis(metrics: {
+    userId: string
+    storyId: string
+    analysisType: string
+    analysisTime: number
+    cost: number
+    creditsUsed: number
+    contentLength: number
+    issuesFound: number
+    overallScore: number
+    error?: string
+  }): Promise<void> {
+    await this.trackOperation({
+      userId: metrics.userId,
+      operation: 'story_analysis',
+      model: 'sfsl_analyzer',
+      inputTokens: Math.ceil(metrics.contentLength / 4),
+      outputTokens: 100, // Approximate analysis output
+      cost: metrics.cost,
+      responseTime: metrics.analysisTime,
+      success: !metrics.error,
+      cached: false,
+      error: metrics.error,
+      metadata: {
+        storyAnalysis: {
+          storyId: metrics.storyId,
+          analysisType: metrics.analysisType,
+          contentLength: metrics.contentLength,
+          issuesFound: metrics.issuesFound,
+          overallScore: metrics.overallScore,
+          creditsUsed: metrics.creditsUsed
+        }
+      }
+    })
+  }
+
+  // NEW: Get V2.0 specific analytics
+  async getV2Analytics(userId?: string, timeRange?: { start: Date; end: Date }): Promise<{
+    baseAnalytics: ClaudeAnalytics
+    factExtraction: {
+      totalExtractions: number
+      averageCompressionRatio: number
+      totalTokensSaved: number
+      totalCostSavings: number
+      extractionsByType: Record<string, number>
+      averageExtractionTime: number
+      errorRate: number
+    }
+    storyAnalysis: {
+      totalAnalyses: number
+      averageScore: number
+      issueDetectionRate: number
+      analysesByType: Record<string, number>
+      averageAnalysisTime: number
+      conflictResolutionRate: number
+    }
+    sfslEfficiency: {
+      averageCompressionRatio: number
+      totalCompressionSavings: number
+      compressionTrends: Array<{ date: string; ratio: number }>
+      topPerformingStories: Array<{ storyId: string; compressionRatio: number }>
+    }
+  }> {
+    const baseAnalytics = await this.getAnalytics(timeRange)
+
+    // Filter events for this user if specified
+    let events = this.events.filter(e =>
+      e.timestamp >= (timeRange?.start || new Date(0)) &&
+      e.timestamp <= (timeRange?.end || new Date())
+    )
+
+    if (userId) {
+      events = events.filter(e => e.userId === userId)
+    }
+
+    // Filter fact extraction events
+    const factExtractions = events.filter(e =>
+      e.operation === 'fact_extraction' && e.metadata?.factExtraction
+    )
+
+    // Filter story analysis events
+    const storyAnalyses = events.filter(e =>
+      e.operation === 'story_analysis' && e.metadata?.storyAnalysis
+    )
+
+    // Calculate fact extraction analytics
+    const factExtraction = this.calculateFactExtractionAnalytics(factExtractions)
+
+    // Calculate story analysis analytics
+    const storyAnalysis = this.calculateStoryAnalysisAnalytics(storyAnalyses)
+
+    // Calculate SFSL efficiency metrics
+    const sfslEfficiency = this.calculateSFSLEfficiencyMetrics([...factExtractions, ...storyAnalyses])
+
+    return {
+      baseAnalytics,
+      factExtraction,
+      storyAnalysis,
+      sfslEfficiency
+    }
+  }
+
+  // Helper method to calculate fact extraction analytics
+  private calculateFactExtractionAnalytics(events: AnalyticsEvent[]) {
+    if (events.length === 0) {
+      return {
+        totalExtractions: 0,
+        averageCompressionRatio: 0,
+        totalTokensSaved: 0,
+        totalCostSavings: 0,
+        extractionsByType: {},
+        averageExtractionTime: 0,
+        errorRate: 0
+      }
+    }
+
+    const totalExtractions = events.length
+    const successfulExtractions = events.filter(e => e.success)
+    const errorRate = (totalExtractions - successfulExtractions.length) / totalExtractions
+
+    const compressionRatios = events
+      .filter(e => e.metadata?.factExtraction?.compressionRatio)
+      .map(e => e.metadata!.factExtraction!.compressionRatio)
+
+    const averageCompressionRatio = compressionRatios.length > 0
+      ? compressionRatios.reduce((sum, ratio) => sum + ratio, 0) / compressionRatios.length
+      : 0
+
+    const totalTokensSaved = events.reduce((sum, e) => {
+      const metadata = e.metadata?.factExtraction
+      if (metadata) {
+        const originalTokens = Math.ceil(metadata.originalLength / 4)
+        const compressedTokens = Math.ceil(metadata.compressedLength / 4)
+        return sum + (originalTokens - compressedTokens)
+      }
+      return sum
+    }, 0)
+
+    const totalCostSavings = totalTokensSaved * 0.000003 // Approximate cost per token
+
+    const extractionsByType: Record<string, number> = {}
+    events.forEach(e => {
+      const factType = e.metadata?.factExtraction?.factType || 'unknown'
+      extractionsByType[factType] = (extractionsByType[factType] || 0) + 1
+    })
+
+    const averageExtractionTime = events.reduce((sum, e) => sum + e.responseTime, 0) / totalExtractions
+
+    return {
+      totalExtractions,
+      averageCompressionRatio,
+      totalTokensSaved,
+      totalCostSavings,
+      extractionsByType,
+      averageExtractionTime,
+      errorRate
+    }
+  }
+
+  // Helper method to calculate story analysis analytics
+  private calculateStoryAnalysisAnalytics(events: AnalyticsEvent[]) {
+    if (events.length === 0) {
+      return {
+        totalAnalyses: 0,
+        averageScore: 0,
+        issueDetectionRate: 0,
+        analysesByType: {},
+        averageAnalysisTime: 0,
+        conflictResolutionRate: 0
+      }
+    }
+
+    const totalAnalyses = events.length
+
+    const scores = events
+      .filter(e => e.metadata?.storyAnalysis?.overallScore !== undefined)
+      .map(e => e.metadata!.storyAnalysis!.overallScore)
+    const averageScore = scores.length > 0
+      ? scores.reduce((sum, score) => sum + score, 0) / scores.length
+      : 0
+
+    const analysesWithIssues = events.filter(e =>
+      e.metadata?.storyAnalysis?.issuesFound && e.metadata.storyAnalysis.issuesFound > 0
+    )
+    const issueDetectionRate = analysesWithIssues.length / totalAnalyses
+
+    const analysesByType: Record<string, number> = {}
+    events.forEach(e => {
+      const analysisType = e.metadata?.storyAnalysis?.analysisType || 'unknown'
+      analysesByType[analysisType] = (analysesByType[analysisType] || 0) + 1
+    })
+
+    const averageAnalysisTime = events.reduce((sum, e) => sum + e.responseTime, 0) / totalAnalyses
+
+    // Conflict resolution rate would need to be tracked separately
+    const conflictResolutionRate = 0.75 // Placeholder - would come from story_bible_conflicts table
+
+    return {
+      totalAnalyses,
+      averageScore,
+      issueDetectionRate,
+      analysesByType,
+      averageAnalysisTime,
+      conflictResolutionRate
+    }
+  }
+
+  // Helper method to calculate SFSL efficiency metrics
+  private calculateSFSLEfficiencyMetrics(events: AnalyticsEvent[]) {
+    const compressionEvents = events.filter(e =>
+      e.metadata?.factExtraction?.compressionRatio !== undefined
+    )
+
+    if (compressionEvents.length === 0) {
+      return {
+        averageCompressionRatio: 1.0,
+        totalCompressionSavings: 0,
+        compressionTrends: [],
+        topPerformingStories: []
+      }
+    }
+
+    const compressionRatios = compressionEvents.map(e => e.metadata!.factExtraction!.compressionRatio)
+    const averageCompressionRatio = compressionRatios.reduce((sum, ratio) => sum + ratio, 0) / compressionRatios.length
+
+    const totalCompressionSavings = compressionEvents.reduce((sum, e) => {
+      const metadata = e.metadata!.factExtraction!
+      const originalSize = metadata.originalLength
+      const compressedSize = metadata.compressedLength
+      return sum + (originalSize - compressedSize)
+    }, 0)
+
+    // Calculate daily compression trends
+    const trendMap = new Map<string, { totalRatio: number; count: number }>()
+    compressionEvents.forEach(e => {
+      const date = e.timestamp.toISOString().slice(0, 10)
+      const ratio = e.metadata!.factExtraction!.compressionRatio
+
+      if (!trendMap.has(date)) {
+        trendMap.set(date, { totalRatio: 0, count: 0 })
+      }
+      const dayData = trendMap.get(date)!
+      dayData.totalRatio += ratio
+      dayData.count++
+    })
+
+    const compressionTrends = Array.from(trendMap.entries())
+      .map(([date, data]) => ({
+        date,
+        ratio: data.totalRatio / data.count
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date))
+
+    // Calculate top performing stories
+    const storyMap = new Map<string, { totalRatio: number; count: number }>()
+    compressionEvents.forEach(e => {
+      const storyId = e.metadata!.factExtraction!.storyId
+      const ratio = e.metadata!.factExtraction!.compressionRatio
+
+      if (!storyMap.has(storyId)) {
+        storyMap.set(storyId, { totalRatio: 0, count: 0 })
+      }
+      const storyData = storyMap.get(storyId)!
+      storyData.totalRatio += ratio
+      storyData.count++
+    })
+
+    const topPerformingStories = Array.from(storyMap.entries())
+      .map(([storyId, data]) => ({
+        storyId,
+        compressionRatio: data.totalRatio / data.count
+      }))
+      .sort((a, b) => a.compressionRatio - b.compressionRatio) // Lower is better for compression
+      .slice(0, 10)
+
+    return {
+      averageCompressionRatio,
+      totalCompressionSavings,
+      compressionTrends,
+      topPerformingStories
+    }
+  }
 }
 
-// Export singleton instance
+// V2.0 Performance Monitoring Class
+export class V2PerformanceMonitor {
+  private performanceMetrics = new Map<string, any>()
+  private workflowMetrics = new Map<string, any>()
+  private compressionMetrics: Array<{ timestamp: number; original: number; compressed: number; ratio: number }> = []
+  private cacheMetrics = new Map<string, { hits: number; misses: number; totalRequests: number }>()
+
+  /**
+   * Track fact extraction performance time
+   */
+  trackFactExtractionTime(storyId: string, duration: number, options?: {
+    factType?: string
+    hierarchicalLevel?: string
+    factsExtracted?: number
+    inputSize?: number
+  }): void {
+    const timestamp = Date.now()
+    const key = `fact_extraction_${storyId}`
+
+    if (!this.performanceMetrics.has(key)) {
+      this.performanceMetrics.set(key, {
+        storyId,
+        totalExtractions: 0,
+        totalDuration: 0,
+        averageDuration: 0,
+        extractionHistory: [],
+        performanceTrends: []
+      })
+    }
+
+    const metrics = this.performanceMetrics.get(key)
+    metrics.totalExtractions++
+    metrics.totalDuration += duration
+    metrics.averageDuration = metrics.totalDuration / metrics.totalExtractions
+
+    // Record individual extraction
+    const extractionRecord = {
+      timestamp,
+      duration,
+      factType: options?.factType || 'unknown',
+      hierarchicalLevel: options?.hierarchicalLevel || 'chapter',
+      factsExtracted: options?.factsExtracted || 0,
+      inputSize: options?.inputSize || 0,
+      efficiency: options?.inputSize ? (options.factsExtracted || 0) / options.inputSize : 0
+    }
+
+    metrics.extractionHistory.push(extractionRecord)
+
+    // Keep only last 100 extractions for performance
+    if (metrics.extractionHistory.length > 100) {
+      metrics.extractionHistory.shift()
+    }
+
+    // Update performance trends (hourly buckets)
+    const hourBucket = Math.floor(timestamp / (1000 * 60 * 60)) * (1000 * 60 * 60)
+    const existingTrend = metrics.performanceTrends.find((t: any) => t.hourBucket === hourBucket)
+
+    if (existingTrend) {
+      existingTrend.totalExtractions++
+      existingTrend.totalDuration += duration
+      existingTrend.averageDuration = existingTrend.totalDuration / existingTrend.totalExtractions
+    } else {
+      metrics.performanceTrends.push({
+        hourBucket,
+        totalExtractions: 1,
+        totalDuration: duration,
+        averageDuration: duration
+      })
+    }
+
+    // Keep only last 24 hours of trends
+    const cutoff = Date.now() - (24 * 60 * 60 * 1000)
+    metrics.performanceTrends = metrics.performanceTrends.filter((t: any) => t.hourBucket >= cutoff)
+
+    console.log(`📊 Fact extraction tracked: ${storyId}, ${duration}ms, ${options?.factsExtracted || 0} facts`)
+  }
+
+  /**
+   * Track compression ratio performance
+   */
+  trackCompressionRatio(original: number, compressed: number, options?: {
+    storyId?: string
+    factType?: string
+    algorithm?: string
+  }): void {
+    const ratio = original > 0 ? compressed / original : 0
+    const compressionSavings = Math.max(0, original - compressed)
+    const timestamp = Date.now()
+
+    // Record compression metrics
+    const compressionRecord = {
+      timestamp,
+      original,
+      compressed,
+      ratio,
+      compressionSavings,
+      compressionPercentage: original > 0 ? (compressionSavings / original) * 100 : 0,
+      storyId: options?.storyId || 'unknown',
+      factType: options?.factType || 'general',
+      algorithm: options?.algorithm || 'sfsl'
+    }
+
+    this.compressionMetrics.push(compressionRecord)
+
+    // Keep only last 1000 compression records
+    if (this.compressionMetrics.length > 1000) {
+      this.compressionMetrics.shift()
+    }
+
+    // Track analytics event for permanent storage
+    analyticsService.trackEvent({
+      type: 'compression_ratio',
+      userId: 'system',
+      storyId: options?.storyId || 'unknown',
+      operation: 'fact_compression',
+      metadata: {
+        factExtraction: {
+          storyId: options?.storyId || 'unknown',
+          factType: options?.factType || 'general',
+          originalSize: original,
+          compressedSize: compressed,
+          compressionRatio: ratio,
+          compressionSavings,
+          algorithm: options?.algorithm || 'sfsl'
+        }
+      },
+      timestamp
+    })
+
+    console.log(`🗜️ Compression tracked: ${original} → ${compressed} (${(ratio * 100).toFixed(1)}% ratio, ${compressionSavings} saved)`)
+  }
+
+  /**
+   * Track cache hit rates by hierarchical level
+   */
+  trackCacheHitRates(level: string, hit: boolean = true, options?: {
+    storyId?: string
+    operation?: string
+    cacheKey?: string
+  }): void {
+    const key = `cache_${level}`
+
+    if (!this.cacheMetrics.has(key)) {
+      this.cacheMetrics.set(key, {
+        hits: 0,
+        misses: 0,
+        totalRequests: 0
+      })
+    }
+
+    const metrics = this.cacheMetrics.get(key)!
+    metrics.totalRequests++
+
+    if (hit) {
+      metrics.hits++
+    } else {
+      metrics.misses++
+    }
+
+    const hitRate = (metrics.hits / metrics.totalRequests) * 100
+    const missRate = (metrics.misses / metrics.totalRequests) * 100
+
+    // Track analytics event
+    analyticsService.trackEvent({
+      type: 'cache_performance',
+      userId: 'system',
+      storyId: options?.storyId || 'unknown',
+      operation: options?.operation || 'cache_access',
+      metadata: {
+        cacheMetrics: {
+          level,
+          hit,
+          hitRate,
+          missRate,
+          totalRequests: metrics.totalRequests,
+          cacheKey: options?.cacheKey
+        }
+      },
+      timestamp: Date.now()
+    })
+
+    console.log(`🎯 Cache ${hit ? 'HIT' : 'MISS'} for ${level}: ${hitRate.toFixed(1)}% hit rate (${metrics.totalRequests} total)`)
+  }
+
+  /**
+   * Track user workflow completion
+   */
+  trackUserWorkflowCompletion(workflowType: string, success: boolean, options?: {
+    userId?: string
+    storyId?: string
+    duration?: number
+    steps?: string[]
+    errorType?: string
+    metadata?: any
+  }): void {
+    const timestamp = Date.now()
+    const key = `workflow_${workflowType}`
+
+    if (!this.workflowMetrics.has(key)) {
+      this.workflowMetrics.set(key, {
+        workflowType,
+        totalAttempts: 0,
+        successfulCompletions: 0,
+        failedAttempts: 0,
+        averageDuration: 0,
+        totalDuration: 0,
+        successRate: 0,
+        recentAttempts: []
+      })
+    }
+
+    const metrics = this.workflowMetrics.get(key)
+    metrics.totalAttempts++
+
+    const attemptRecord = {
+      timestamp,
+      success,
+      duration: options?.duration || 0,
+      userId: options?.userId || 'anonymous',
+      storyId: options?.storyId || 'unknown',
+      steps: options?.steps || [],
+      errorType: options?.errorType,
+      metadata: options?.metadata || {}
+    }
+
+    if (success) {
+      metrics.successfulCompletions++
+      if (options?.duration) {
+        metrics.totalDuration += options.duration
+        metrics.averageDuration = metrics.totalDuration / metrics.successfulCompletions
+      }
+    } else {
+      metrics.failedAttempts++
+    }
+
+    metrics.successRate = (metrics.successfulCompletions / metrics.totalAttempts) * 100
+    metrics.recentAttempts.push(attemptRecord)
+
+    // Keep only last 50 attempts for performance
+    if (metrics.recentAttempts.length > 50) {
+      metrics.recentAttempts.shift()
+    }
+
+    // Track analytics event
+    analyticsService.trackEvent({
+      type: 'workflow_completion',
+      userId: options?.userId || 'anonymous',
+      storyId: options?.storyId || 'unknown',
+      operation: `workflow_${workflowType}`,
+      metadata: {
+        workflowMetrics: {
+          workflowType,
+          success,
+          duration: options?.duration,
+          steps: options?.steps,
+          errorType: options?.errorType,
+          successRate: metrics.successRate,
+          totalAttempts: metrics.totalAttempts,
+          ...options?.metadata
+        }
+      },
+      timestamp
+    })
+
+    const statusEmoji = success ? '✅' : '❌'
+    const durationText = options?.duration ? ` in ${options.duration}ms` : ''
+    console.log(`${statusEmoji} Workflow ${workflowType} ${success ? 'completed' : 'failed'}${durationText} (${metrics.successRate.toFixed(1)}% success rate)`)
+  }
+
+  /**
+   * Get fact extraction performance metrics
+   */
+  getFactExtractionMetrics(storyId?: string): any {
+    if (storyId) {
+      return this.performanceMetrics.get(`fact_extraction_${storyId}`) || null
+    }
+
+    // Return aggregated metrics across all stories
+    const allMetrics = Array.from(this.performanceMetrics.values())
+      .filter(m => m.storyId)
+
+    const totalExtractions = allMetrics.reduce((sum, m) => sum + m.totalExtractions, 0)
+    const totalDuration = allMetrics.reduce((sum, m) => sum + m.totalDuration, 0)
+
+    return {
+      totalExtractions,
+      totalDuration,
+      averageDuration: totalExtractions > 0 ? totalDuration / totalExtractions : 0,
+      storiesProcessed: allMetrics.length,
+      performanceTrends: this.aggregatePerformanceTrends(allMetrics)
+    }
+  }
+
+  /**
+   * Get compression performance metrics
+   */
+  getCompressionMetrics(timeRange?: { start: number; end: number }): any {
+    let metrics = [...this.compressionMetrics]
+
+    if (timeRange) {
+      metrics = metrics.filter(m =>
+        m.timestamp >= timeRange.start && m.timestamp <= timeRange.end
+      )
+    }
+
+    if (metrics.length === 0) {
+      return {
+        averageCompressionRatio: 0,
+        totalCompressionSavings: 0,
+        compressionCount: 0,
+        bestCompression: null,
+        worstCompression: null
+      }
+    }
+
+    const totalSavings = metrics.reduce((sum, m) => sum + m.compressionSavings, 0)
+    const averageRatio = metrics.reduce((sum, m) => sum + m.ratio, 0) / metrics.length
+
+    const sortedByRatio = [...metrics].sort((a, b) => a.ratio - b.ratio)
+
+    return {
+      averageCompressionRatio: averageRatio,
+      totalCompressionSavings: totalSavings,
+      compressionCount: metrics.length,
+      bestCompression: sortedByRatio[0], // Lowest ratio (best compression)
+      worstCompression: sortedByRatio[sortedByRatio.length - 1],
+      recentMetrics: metrics.slice(-10) // Last 10 compressions
+    }
+  }
+
+  /**
+   * Get cache performance metrics
+   */
+  getCacheMetrics(level?: string): any {
+    if (level) {
+      const metrics = this.cacheMetrics.get(`cache_${level}`)
+      if (!metrics) return null
+
+      return {
+        level,
+        hitRate: (metrics.hits / metrics.totalRequests) * 100,
+        missRate: (metrics.misses / metrics.totalRequests) * 100,
+        totalHits: metrics.hits,
+        totalMisses: metrics.misses,
+        totalRequests: metrics.totalRequests
+      }
+    }
+
+    // Return aggregated cache metrics
+    const allMetrics = Array.from(this.cacheMetrics.entries())
+    const aggregated = allMetrics.reduce((acc, [key, metrics]) => {
+      acc.totalHits += metrics.hits
+      acc.totalMisses += metrics.misses
+      acc.totalRequests += metrics.totalRequests
+      return acc
+    }, { totalHits: 0, totalMisses: 0, totalRequests: 0 })
+
+    const levelMetrics = Object.fromEntries(
+      allMetrics.map(([key, metrics]) => [
+        key.replace('cache_', ''),
+        {
+          hitRate: (metrics.hits / metrics.totalRequests) * 100,
+          missRate: (metrics.misses / metrics.totalRequests) * 100,
+          totalRequests: metrics.totalRequests
+        }
+      ])
+    )
+
+    return {
+      overall: {
+        hitRate: aggregated.totalRequests > 0 ? (aggregated.totalHits / aggregated.totalRequests) * 100 : 0,
+        missRate: aggregated.totalRequests > 0 ? (aggregated.totalMisses / aggregated.totalRequests) * 100 : 0,
+        totalRequests: aggregated.totalRequests
+      },
+      byLevel: levelMetrics
+    }
+  }
+
+  /**
+   * Get workflow performance metrics
+   */
+  getWorkflowMetrics(workflowType?: string): any {
+    if (workflowType) {
+      return this.workflowMetrics.get(`workflow_${workflowType}`) || null
+    }
+
+    // Return all workflow metrics
+    const allWorkflows = Object.fromEntries(
+      Array.from(this.workflowMetrics.entries()).map(([key, metrics]) => [
+        key.replace('workflow_', ''),
+        metrics
+      ])
+    )
+
+    return allWorkflows
+  }
+
+  /**
+   * Get comprehensive V2.0 performance dashboard
+   */
+  getV2PerformanceDashboard(): any {
+    return {
+      factExtraction: this.getFactExtractionMetrics(),
+      compression: this.getCompressionMetrics(),
+      cache: this.getCacheMetrics(),
+      workflows: this.getWorkflowMetrics(),
+      systemHealth: {
+        totalTrackedStories: this.performanceMetrics.size,
+        totalCompressions: this.compressionMetrics.length,
+        totalCacheLevels: this.cacheMetrics.size,
+        totalWorkflowTypes: this.workflowMetrics.size,
+        lastUpdated: Date.now()
+      }
+    }
+  }
+
+  /**
+   * Clear performance metrics (for testing or reset)
+   */
+  clearMetrics(): void {
+    this.performanceMetrics.clear()
+    this.workflowMetrics.clear()
+    this.compressionMetrics.length = 0
+    this.cacheMetrics.clear()
+    console.log('🧹 V2 Performance metrics cleared')
+  }
+
+  /**
+   * Private helper to aggregate performance trends
+   */
+  private aggregatePerformanceTrends(allMetrics: any[]): any[] {
+    const trendMap = new Map<number, { totalExtractions: number; totalDuration: number }>()
+
+    allMetrics.forEach(metrics => {
+      metrics.performanceTrends.forEach((trend: any) => {
+        if (!trendMap.has(trend.hourBucket)) {
+          trendMap.set(trend.hourBucket, { totalExtractions: 0, totalDuration: 0 })
+        }
+        const aggregated = trendMap.get(trend.hourBucket)!
+        aggregated.totalExtractions += trend.totalExtractions
+        aggregated.totalDuration += trend.totalDuration
+      })
+    })
+
+    return Array.from(trendMap.entries())
+      .map(([hourBucket, data]) => ({
+        hourBucket,
+        totalExtractions: data.totalExtractions,
+        totalDuration: data.totalDuration,
+        averageDuration: data.totalExtractions > 0 ? data.totalDuration / data.totalExtractions : 0
+      }))
+      .sort((a, b) => a.hourBucket - b.hourBucket)
+  }
+}
+
+// Export singleton instances
 export const analyticsService = new ClaudeAnalyticsService()
+export const v2PerformanceMonitor = new V2PerformanceMonitor()
 

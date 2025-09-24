@@ -12,7 +12,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 })
 
 // Environment variable validation
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://extracted-project-7kf26y4tj-munsterdance78s-projects.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.infinite-pages.com'
 
 // Handle Stripe Connect onboarding refresh (when user needs to restart onboarding)
 export async function GET(request: NextRequest) {

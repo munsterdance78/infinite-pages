@@ -563,6 +563,343 @@ Provide honest, constructive feedback that will help improve the writing quality
         rating: 4.9
       }
     })
+
+    // SFSL Story Fact Extraction Template
+    this.registerTemplate({
+      id: 'story_fact_extraction_comprehensive',
+      name: 'Comprehensive Story Fact Extraction',
+      description: 'Extract story facts using SFSL format with compression and compliance analysis',
+      category: 'analysis',
+      template: `Extract story facts using SFSL format:
+
+CONTENT TO ANALYZE:
+{{content}}
+
+EXISTING CONTEXT:
+{{existingContext}}
+
+EXTRACTION TYPE: {{factType}}
+
+CHARACTER VOICE PATTERNS TO DETECT:
+{{voicePatterns}}
+
+Extract using Story Facts Shorthand Language (SFSL):
+
+**Characters (C:name|P:physical|E:emotional|R:relationships|G:goals|S:status|V:voice_pattern):**
+- Focus on voice consistency with established patterns
+- Track emotional arc progression
+- Note relationship changes
+
+**World Elements (W:element|R:rules|L:limitations|U:unique_aspects|F:frequency):**
+- Magic system consistency
+- Geographic/cultural accuracy
+- Rule adherence
+
+**Plot Threads (T:thread|S:status|K:stakes|N:next|C:connections|Q:quality):**
+- Active vs dormant threads
+- Escalation tracking
+- Connection mapping
+
+**Timeline (@ch{num}:{event}→{consequence}|I:impact|A:affected):**
+- Chronological accuracy
+- Consequence tracking
+- Character involvement
+
+Return JSON:
+{
+  "extractedFacts": {
+    "characters": ["SFSL format strings"],
+    "world": ["SFSL format strings"],
+    "plot": ["SFSL format strings"],
+    "timeline": ["SFSL format strings"]
+  },
+  "compressionStats": {
+    "originalTokens": number,
+    "compressedTokens": number,
+    "compressionRatio": number
+  },
+  "storyBibleCompliance": {
+    "overallScore": number,
+    "violations": ["list of violations"],
+    "recommendations": ["improvement suggestions"]
+  }
+}`,
+      variables: [
+        {
+          name: 'content',
+          type: 'string',
+          required: true,
+          description: 'Content to extract facts from'
+        },
+        {
+          name: 'existingContext',
+          type: 'string',
+          required: false,
+          description: 'Previous story facts for context',
+          defaultValue: ''
+        },
+        {
+          name: 'factType',
+          type: 'string',
+          required: true,
+          description: 'Type of fact extraction',
+          options: ['universe', 'series', 'book', 'chapter']
+        },
+        {
+          name: 'voicePatterns',
+          type: 'string',
+          required: false,
+          description: 'Known character voice patterns',
+          defaultValue: ''
+        }
+      ],
+      metadata: {
+        author: 'SFSL System',
+        tags: ['sfsl', 'fact-extraction', 'compression', 'analysis'],
+        rating: 5.0
+      }
+    })
+
+    // Character Voice Analysis Template
+    this.registerTemplate({
+      id: 'character_voice_consistency_analysis',
+      name: 'Character Voice Consistency Analysis',
+      description: 'Analyze character voice consistency against established patterns',
+      category: 'analysis',
+      template: `Analyze character voice consistency:
+
+CONTENT WITH DIALOGUE:
+{{content}}
+
+ESTABLISHED VOICE PATTERNS:
+{{establishedPatterns}}
+
+CHARACTER FOCUS: {{characterName}}
+
+Analyze voice consistency and return JSON:
+{
+  "characterName": "{{characterName}}",
+  "voiceConsistencyScore": number_out_of_100,
+  "establishedPatterns": {
+    "speechStyle": "pattern description",
+    "interruptionStyle": "pattern description",
+    "thematicLanguage": "recurring themes/metaphors"
+  },
+  "detectedPatterns": {
+    "speechStyle": "observed in content",
+    "interruptionStyle": "observed in content",
+    "thematicLanguage": "observed themes"
+  },
+  "consistencyIssues": ["specific inconsistencies found"],
+  "recommendations": ["suggestions for improvement"],
+  "exampleDialogue": ["authentic dialogue examples"],
+  "voiceFingerprint": {
+    "sentenceLength": "average word count",
+    "vocabularyLevel": "formal/casual/mixed",
+    "emotionalRange": "pattern of emotional expression",
+    "interruptionFrequency": "how often they cut off/are cut off"
+  }
+}`,
+      variables: [
+        {
+          name: 'content',
+          type: 'string',
+          required: true,
+          description: 'Content with character dialogue to analyze'
+        },
+        {
+          name: 'establishedPatterns',
+          type: 'string',
+          required: true,
+          description: 'Known voice patterns for this character'
+        },
+        {
+          name: 'characterName',
+          type: 'string',
+          required: true,
+          description: 'Name of character to analyze'
+        }
+      ],
+      metadata: {
+        author: 'SFSL System',
+        tags: ['character', 'voice', 'consistency', 'dialogue', 'analysis'],
+        rating: 4.8
+      }
+    })
+
+    // Story Bible Compliance Template
+    this.registerTemplate({
+      id: 'story_bible_compliance_check',
+      name: 'Story Bible Compliance Check',
+      description: 'Check content against established story bible for consistency violations',
+      category: 'analysis',
+      template: `Analyze content for story bible compliance:
+
+NEW CONTENT:
+{{newContent}}
+
+ESTABLISHED STORY FACTS:
+{{storyFacts}}
+
+CHARACTER VOICE PATTERNS:
+{{voicePatterns}}
+
+WORLD BUILDING RULES:
+{{worldRules}}
+
+Perform comprehensive compliance analysis and return JSON:
+{
+  "overallComplianceScore": number_out_of_100,
+  "analysisDetails": {
+    "characterVoiceCompliance": number_out_of_100,
+    "worldBuildingCompliance": number_out_of_100,
+    "timelineCompliance": number_out_of_100,
+    "plotConsistency": number_out_of_100
+  },
+  "violations": [
+    {
+      "type": "character_voice|world_building|timeline|plot",
+      "severity": "critical|major|minor",
+      "description": "detailed description of violation",
+      "location": "where in content the violation occurs",
+      "establishedRule": "what story bible rule was violated",
+      "suggestion": "how to fix the violation"
+    }
+  ],
+  "strengths": ["aspects that maintain good consistency"],
+  "recommendations": [
+    {
+      "priority": "high|medium|low",
+      "category": "voice|world|plot|timeline",
+      "suggestion": "specific improvement suggestion",
+      "impact": "why this improvement matters"
+    }
+  ],
+  "consistencyTrends": {
+    "improvingAreas": ["areas showing better consistency"],
+    "decliningAreas": ["areas needing attention"],
+    "stableAreas": ["consistently well-maintained aspects"]
+  }
+}`,
+      variables: [
+        {
+          name: 'newContent',
+          type: 'string',
+          required: true,
+          description: 'New content to check for compliance'
+        },
+        {
+          name: 'storyFacts',
+          type: 'string',
+          required: true,
+          description: 'Established story facts and rules'
+        },
+        {
+          name: 'voicePatterns',
+          type: 'string',
+          required: false,
+          description: 'Character voice patterns to validate against',
+          defaultValue: ''
+        },
+        {
+          name: 'worldRules',
+          type: 'string',
+          required: false,
+          description: 'World building rules and limitations',
+          defaultValue: ''
+        }
+      ],
+      metadata: {
+        author: 'SFSL System',
+        tags: ['compliance', 'story-bible', 'consistency', 'validation'],
+        rating: 4.9
+      }
+    })
+
+    // SFSL Compression Optimization Template
+    this.registerTemplate({
+      id: 'sfsl_compression_optimization',
+      name: 'SFSL Compression Optimization',
+      description: 'Optimize story content compression using SFSL techniques',
+      category: 'analysis',
+      template: `Optimize content compression using SFSL:
+
+CONTENT TO COMPRESS:
+{{content}}
+
+COMPRESSION TARGET: {{compressionTarget}}%
+
+PRIORITY ELEMENTS:
+{{priorityElements}}
+
+Compress using SFSL while maintaining story integrity:
+
+**Compression Strategy:**
+1. Identify redundant information
+2. Extract core story facts
+3. Compress using SFSL format
+4. Validate information preservation
+
+Return JSON:
+{
+  "originalStats": {
+    "characterCount": number,
+    "wordCount": number,
+    "estimatedTokens": number
+  },
+  "compressedContent": {
+    "sfslFormat": "compressed content in SFSL",
+    "characterCount": number,
+    "estimatedTokens": number
+  },
+  "compressionResults": {
+    "compressionRatio": number,
+    "spaceSaved": number,
+    "tokensSaved": number,
+    "estimatedCostSavings": number
+  },
+  "qualityMetrics": {
+    "informationRetention": number_out_of_100,
+    "readabilityScore": number_out_of_100,
+    "usabilityScore": number_out_of_100
+  },
+  "optimizationTechniques": ["techniques used for compression"],
+  "preservedElements": ["critical elements maintained"],
+  "compressionBreakdown": {
+    "charactersCompressed": number,
+    "worldElementsCompressed": number,
+    "plotThreadsCompressed": number,
+    "timelineEventsCompressed": number
+  }
+}`,
+      variables: [
+        {
+          name: 'content',
+          type: 'string',
+          required: true,
+          description: 'Content to compress using SFSL'
+        },
+        {
+          name: 'compressionTarget',
+          type: 'number',
+          required: false,
+          description: 'Target compression percentage',
+          defaultValue: 80
+        },
+        {
+          name: 'priorityElements',
+          type: 'string',
+          required: false,
+          description: 'Elements to prioritize during compression',
+          defaultValue: 'characters,plot,world'
+        }
+      ],
+      metadata: {
+        author: 'SFSL System',
+        tags: ['compression', 'optimization', 'sfsl', 'efficiency'],
+        rating: 4.7
+      }
+    })
   }
 
   /**

@@ -51,6 +51,13 @@ interface TokenUsageAnalysis {
   cost_savings_usd: number;
 }
 
+interface ExtractedFacts {
+  characters: any;
+  world: any;
+  plot: any;
+  timeline: any;
+}
+
 export class ContextOptimizer {
   /**
    * Convert prose setting to facts (target: 200 tokens -> 20 tokens)
@@ -320,6 +327,84 @@ export class ContextOptimizer {
     }
 
     return foundation.premise?.slice(0, 50) || 'character vs obstacle'
+  }
+
+  // NEW: Fact-based context selection
+  selectRelevantFactContext(
+    chapterGoals: any,
+    factHierarchy: { universe: any, series: any, book: any, chapter: any }
+  ): OptimizedContext {
+    // Build on existing compression logic
+    return this.buildOptimizedContext(factHierarchy, chapterGoals)
+  }
+
+  // NEW: Extract facts instead of just compressing prose
+  extractStoryFacts(content: string, existingContext: any): ExtractedFacts {
+    // Use existing character extraction as foundation
+    const characters = this.extractCharacterEssentials(existingContext.characters || [], {})
+    const world = this.extractWorldElements(content)
+    const plot = this.extractPlotProgression(content)
+    return { characters, world, plot, timeline: this.extractTimelineEvents(content) }
+  }
+
+  private buildOptimizedContext(factHierarchy: any, chapterGoals: any): OptimizedContext {
+    // Leverage existing selectRelevantContext but with fact hierarchy
+    return this.selectRelevantContext(chapterGoals, factHierarchy)
+  }
+
+  private extractWorldElements(content: string): any {
+    const setting = this.compressSettingToFacts(content)
+    return {
+      locations: [setting.location],
+      conditions: [setting.current_condition],
+      atmosphere: setting.atmosphere,
+      features: setting.key_features
+    }
+  }
+
+  private extractPlotProgression(content: string): any {
+    const keyEvent = this.extractKeyEvent(content)
+    const consequences = this.extractConsequences({ content })
+
+    return {
+      current_thread: keyEvent,
+      advancement: consequences,
+      stakes: this.extractStakes(content)
+    }
+  }
+
+  private extractTimelineEvents(content: string): any {
+    // Extract timeline markers from content
+    const timeMarkers = content.match(/(?:chapter|ch\.?)\s*(\d+)|(?:after|before|during)\s+([^.]+)/gi) || []
+
+    return timeMarkers.map(marker => ({
+      event: marker.trim(),
+      impact: 'moderate',
+      affected_characters: this.extractCharacterNamesFromText(content)
+    }))
+  }
+
+  private extractStakes(content: string): string {
+    const stakeWords = ['at stake', 'risk', 'danger', 'consequence', 'lose', 'gain', 'win', 'fail']
+    const sentences = content.split(/[.!?]+/)
+
+    const stakeSentence = sentences.find(sentence =>
+      stakeWords.some(word => sentence.toLowerCase().includes(word))
+    )
+
+    return stakeSentence?.trim().slice(0, 100) || 'character development'
+  }
+
+  private extractCharacterNamesFromText(content: string): string[] {
+    // Simple name extraction - look for capitalized words that appear multiple times
+    const words = content.split(/\s+/)
+    const capitalized = words.filter(word => /^[A-Z][a-z]+$/.test(word))
+    const wordCounts = capitalized.reduce((acc: any, word) => {
+      acc[word] = (acc[word] || 0) + 1
+      return acc
+    }, {})
+
+    return Object.keys(wordCounts).filter(word => wordCounts[word] > 1).slice(0, 5)
   }
 }
 
