@@ -28,16 +28,16 @@ export class ClaudeService {
   }
 
   private getAnthropic(): Anthropic {
-    if (!this.getAnthropic()) {
+    if (!this.anthropic) {
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new Error('ANTHROPIC_API_KEY environment variable is required')
       }
 
-      this.getAnthropic() = new Anthropic({
+      this.anthropic = new Anthropic({
         apiKey: process.env.ANTHROPIC_API_KEY
       })
     }
-    return this.getAnthropic()
+    return this.anthropic
   }
 
   /**
