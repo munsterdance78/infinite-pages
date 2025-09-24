@@ -196,6 +196,15 @@ function getRouteRateLimit(pathname: string): { operation: string; requiresAuth:
     return ROUTE_RATE_LIMITS[pathname as keyof typeof ROUTE_RATE_LIMITS]
   }
 
+  // Check for guest routes first (most specific)
+  if (pathname.match(/^\/api\/stories\/guest$/)) {
+    return ROUTE_RATE_LIMITS['/api/stories/guest']
+  }
+
+  if (pathname.match(/^\/api\/stories\/guest\/[^\/]+\/characters\/generate$/)) {
+    return ROUTE_RATE_LIMITS['/api/stories/guest/[id]/characters/generate']
+  }
+
   // Check for V2.0 specific patterns first (more specific)
   if (pathname.match(/^\/api\/stories\/[^\/]+\/facts\/extract$/)) {
     return ROUTE_RATE_LIMITS['/api/stories/[id]/facts/extract']
