@@ -22,7 +22,6 @@ import {
   Wand2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import V2TestingLink from '@/components/V2TestingLink'
 
 export default function LandingPage() {
   const [user, setUser] = useState<any>(null)
@@ -174,10 +173,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* V2.0 Testing Dashboard Link */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto">
-          <V2TestingLink variant="banner" />
+      {/* Request Tracking Available */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-green-50 to-blue-50">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-green-200">
+            <h3 className="text-lg font-semibold text-green-800 mb-2">🔍 System Monitoring Active</h3>
+            <p className="text-green-700 text-sm">
+              Advanced request tracking and error monitoring is now live. All API calls are automatically monitored for optimal performance.
+            </p>
+          </div>
         </div>
       </section>
 
