@@ -196,6 +196,70 @@ export const RATE_LIMIT_CONFIGS = {
     windowMs: 15 * 60 * 1000, // 15 minutes
     skipSuccessfulRequests: true,
     skipFailedRequests: false
+  },
+
+  // Health check - very permissive
+  HEALTH_CHECK: {
+    limit: 100,
+    windowMs: 60 * 1000, // 1 minute
+    skipSuccessfulRequests: false,
+    skipFailedRequests: false
+  },
+
+  // V2.0 Fact extraction - moderate limits
+  FACT_EXTRACTION: {
+    limit: 10,
+    windowMs: 60 * 1000, // 1 minute
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
+  },
+
+  // V2.0 Fact optimization - moderate limits
+  FACT_OPTIMIZATION: {
+    limit: 15,
+    windowMs: 60 * 1000, // 1 minute
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
+  },
+
+  // V2.0 Story analysis - moderate limits
+  STORY_ANALYSIS: {
+    limit: 8,
+    windowMs: 60 * 1000, // 1 minute
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
+  },
+
+  // Dashboard access - moderate limits
+  DASHBOARD_ACCESS: {
+    limit: 30,
+    windowMs: 60 * 1000, // 1 minute
+    skipSuccessfulRequests: false,
+    skipFailedRequests: false
+  },
+
+  // Guest story creation - very limited
+  GUEST_STORY_CREATION: {
+    limit: 3,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
+  },
+
+  // Guest chapter generation - very limited
+  GUEST_CHAPTER_GENERATION: {
+    limit: 5,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
+  },
+
+  // Guest character generation - very limited
+  GUEST_CHARACTER_GENERATION: {
+    limit: 2,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    skipSuccessfulRequests: false,
+    skipFailedRequests: true
   }
 } as const
 
