@@ -16,12 +16,22 @@ interface QueryMetrics {
 }
 
 class QueryOptimizer {
-  private client: TypedSupabaseClient
+  private client: TypedSupabaseClient | null = null
   private queryCache = new Map<string, { data: any; timestamp: number; ttl: number }>()
   private metrics: QueryMetrics[] = []
 
   constructor() {
-    this.client = createClient() as unknown as TypedSupabaseClient
+    // Client will be initialized lazily when needed
+  }
+
+  private getClient(): TypedSupabaseClient {
+    if (!this.client) {
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        throw new Error('Missing Supabase environment variables')
+      }
+      this.client = createClient() as unknown as TypedSupabaseClient
+    }
+    return this.client
   }
 
   // Optimized story queries with proper JOINs
@@ -37,7 +47,7 @@ class QueryOptimizer {
 
     const startTime = performance.now()
 
-    let query = this.client
+    let query = this.getClient()
       .from('stories')
       .select(`
         id,
@@ -97,7 +107,7 @@ class QueryOptimizer {
 
     const startTime = performance.now()
 
-    const { data, error } = await (this.client
+    const { data, error } = await (this.getClient()
       .from('stories')
       .select(`
         id,
@@ -149,7 +159,7 @@ class QueryOptimizer {
     }
 
     // Use a single query with aggregations instead of multiple queries
-    const { data, error } = await (this.client
+    const { data, error } = await (this.getClient()
       .from('creator_earnings')
       .select(`
         id,
@@ -209,7 +219,7 @@ class QueryOptimizer {
         startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1).toISOString()
     }
 
-    const { data, error } = await (this.client
+    const { data, error } = await (this.getClient()
       .from('ai_usage_logs')
       .select(`
         operation_type,
@@ -253,7 +263,7 @@ class QueryOptimizer {
 
     const startTime = performance.now()
 
-    const { data, error } = await (this.client
+    const { data, error } = await (this.getClient()
       .from('stories')
       .select(`
         id,
