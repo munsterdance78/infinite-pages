@@ -4,7 +4,9 @@ import './globals.css'
 import '../styles/glassmorphism.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import ErrorFallback from '@/components/ErrorFallback'
+import RequestTrackingStatus from '@/components/RequestTrackingStatus'
 import '@/lib/error-monitoring' // Initialize error monitoring
+import '@/lib/request-tracking-init' // Initialize automatic request tracking
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -68,6 +70,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <main className="min-h-screen relative">
             {children}
           </main>
+
+          {/* Request tracking status - always visible in development/admin */}
+          {(process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_SHOW_MONITORING === 'true') && (
+            <RequestTrackingStatus />
+          )}
 
         </ErrorBoundary>
       </body>
