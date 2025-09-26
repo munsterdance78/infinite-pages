@@ -1,0 +1,128 @@
+========================================
+INFINITE PAGES - WEBSITES & ACCOUNTS TRACKER
+========================================
+Last Updated: 2025-01-26
+
+🔐 MASTER ACCOUNT: All services connected to the SAME GMAIL ACCOUNT
+📧 Gmail: [Your Gmail account manages all logins below]
+
+========================================
+PRIMARY WEBSITES
+========================================
+
+1. MAIN WEBSITE
+   URL: https://www.infinite-pages.com
+   Status: Live (Production)
+   Purpose: AI Story Creation Platform
+
+========================================
+DEVELOPMENT & HOSTING ACCOUNTS
+========================================
+
+1. GITHUB
+   URL: https://github.com
+   Account: munsterdance78 (via Gmail login)
+   Repository: https://github.com/munsterdance78/infinite-pages
+   Purpose: Code repository & version control
+
+2. VERCEL (Auto-Deploy)
+   URL: https://vercel.com
+   Account: Connected via Gmail → GitHub munsterdance78
+   Project: infinite-pages
+   Purpose: Hosting & automatic deployment from GitHub
+   Deploys from: main branch
+
+========================================
+CORE SERVICES (From Package.json)
+========================================
+
+1. ANTHROPIC (Claude AI)
+   URL: https://console.anthropic.com
+   Account: Via Gmail login
+   Purpose: AI story generation via Claude API
+   Package: @anthropic-ai/sdk v0.24.3
+
+2. SUPABASE (Database & Auth)
+   URL: https://supabase.com
+   Account: Via Gmail login
+   Purpose: Database, authentication, backend
+   Packages: @supabase/auth-helpers-nextjs, @supabase/supabase-js
+
+3. STRIPE (Payments)
+   URL: https://stripe.com/dashboard
+   Account: Via Gmail login
+   Purpose: Payment processing for premium features
+   Packages: @stripe/react-stripe-js, @stripe/stripe-js, stripe
+
+4. SENTRY (Error Monitoring) - CONFIGURED BUT COMMENTED OUT
+   URL: https://sentry.io
+   Account: Via Gmail login
+   Organization: infinite-pages (from .env)
+   Project: infinite-pages-v2 (from .env)
+   Purpose: Error tracking & monitoring
+   Status: Disabled (DSN commented out in .env)
+
+========================================
+DEVELOPMENT TOOLS & TESTING
+========================================
+
+1. PLAYWRIGHT
+   Purpose: Browser automation & testing
+   Package: @playwright/test v1.40.0
+
+2. TANSTACK QUERY
+   Purpose: Data fetching & caching
+   Package: @tanstack/react-query v5.89.0
+
+========================================
+MONITORING & DEBUG TOOLS
+========================================
+
+1. CLAUDE DEBUGGER (Local Tool)
+   Location: ./claude-debugger/
+   Purpose: Self-monitoring website debugger with safety shutdown
+   Features: Memory monitoring, automatic shutdown, API testing
+   Commands: npm run scan, npm run test-site, npm run status
+
+2. ORIGINAL DEBUGGER (Legacy)
+   Location: ./tools/debugger/
+   Purpose: Basic website debugging
+   Status: Replaced by claude-debugger
+
+========================================
+IMPORTANT NOTES
+========================================
+
+⚠️  CRITICAL ACCOUNTS TO MANAGE:
+- GitHub (munsterdance78) - Code repository
+- Vercel - Website hosting (auto-deploys from GitHub)
+- Anthropic - Claude API for story generation
+- Supabase - Database and user authentication
+- Stripe - Payment processing
+
+🔐 SECURITY REMINDERS:
+- ALL ACCOUNTS use the SAME GMAIL for easy management
+- API keys are stored in environment variables (not committed to GitHub)
+- Sentry is configured but disabled (enable for production monitoring)
+- All deployments happen automatically via Vercel when pushing to GitHub main branch
+
+📋 DEPLOYMENT WORKFLOW:
+1. Code changes → GitHub (munsterdance78/infinite-pages)
+2. GitHub main branch → Auto-triggers Vercel deployment
+3. Vercel → Deploys to https://www.infinite-pages.com
+
+🛡️ SAFETY MONITORING:
+- claude-debugger monitors website health with automatic shutdown
+- Memory limits: 400MB process, 300MB browser, 80% system
+- Auto-terminates if limits exceeded to prevent crashes
+
+========================================
+TODO - VERIFY THESE ACCOUNTS:
+========================================
+[ ] Confirm Anthropic console login
+[ ] Confirm Supabase project details
+[ ] Confirm Stripe dashboard access
+[ ] Enable Sentry monitoring (uncomment DSN in .env)
+[ ] Document any additional services/accounts discovered
+
+========================================
