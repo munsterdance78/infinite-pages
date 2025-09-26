@@ -311,8 +311,10 @@ class RequestTracker {
       const url = typeof input === 'string' ? input : input.url
       const requestId = (init as any)?.requestId
 
-      // CRITICAL FIX: Prevent infinite recursion by excluding our own tracking endpoints
-      if (url.includes('/api/request-tracking/')) {
+      // CRITICAL FIX: Prevent infinite recursion by excluding ONLY self-tracking calls from the interceptor
+      // Allow legitimate API endpoints to function normally, only block when called from within this interceptor
+      const isFromThisInterceptor = (init as any)?._fromRequestTracker;
+      if (url.includes('/api/request-tracking/') && isFromThisInterceptor) {
         return originalFetch(input, init)
       }
 
@@ -432,8 +434,9 @@ class RequestTracker {
       await fetch('/api/request-tracking/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestLog)
-      })
+        body: JSON.stringify(requestLog),
+        _fromRequestTracker: true  // Mark as internal call to prevent recursion
+      } as any)
     } catch (error) {
       console.error('Failed to send request log:', error)
     }
@@ -444,8 +447,9 @@ class RequestTracker {
       await fetch('/api/request-tracking/update', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId, updates })
-      })
+        body: JSON.stringify({ requestId, updates }),
+        _fromRequestTracker: true  // Mark as internal call to prevent recursion
+      } as any)
     } catch (error) {
       console.error('Failed to update request log:', error)
     }
