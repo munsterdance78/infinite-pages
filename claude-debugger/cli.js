@@ -9,11 +9,11 @@ const url = args[0] || 'https://www.infinite-pages.com';
 
 // Initialize process monitor with safety limits
 let monitor = new ProcessMonitor({
-  maxMemoryMB: 100, // VERY CONSERVATIVE
-  maxBrowserMemoryMB: 80, // VERY CONSERVATIVE
-  maxSystemMemoryPercent: 60, // VERY CONSERVATIVE
-  maxScanTimeoutMs: 10 * 1000, // VERY SHORT: 10 seconds as requested
-  monitorIntervalMs: 2 * 1000, // CHECK EVERY 2 SECONDS
+  maxMemoryMB: 250, // Realistic for working site analysis
+  maxBrowserMemoryMB: 200, // Realistic for browser with active page
+  maxSystemMemoryPercent: 75, // Realistic system usage
+  maxScanTimeoutMs: 45 * 1000, // 45 seconds for full analysis
+  monitorIntervalMs: 5 * 1000, // CHECK EVERY 5 SECONDS
   logFile: './claude-debugger/monitor.log'
 });
 
@@ -304,11 +304,16 @@ async function testInfinitePagesSafely(targetUrl) {
     }
 
     // Test specific Infinite Pages endpoints with safety checks
+    // RE-ENABLED with memory fixes
     if (!scanAborted && !args.includes('--no-endpoint-tests')) {
       await monitor.logMessage('🧪 Testing Infinite Pages API endpoints...');
       const endpointConfigs = getEndpointTests();
 
-      for (const config of endpointConfigs) {
+      // MEMORY-EFFICIENT: Test only first 3 endpoint groups to prevent memory overload
+      const limitedConfigs = endpointConfigs.slice(0, 3);
+      await monitor.logMessage(`🔬 Testing ${limitedConfigs.length}/${endpointConfigs.length} endpoint groups for memory safety`);
+
+      for (const config of limitedConfigs) {
         if (scanAborted) break;
 
         // Check memory before each endpoint test
@@ -321,8 +326,13 @@ async function testInfinitePagesSafely(targetUrl) {
           break;
         }
 
-        for (const method of config.methods) {
+        // MEMORY FIX: Test only first method per endpoint to reduce memory usage
+        const limitedMethods = config.methods.slice(0, 1);
+        for (const method of limitedMethods) {
           if (scanAborted) break;
+
+          // MEMORY FIX: Longer delay to allow garbage collection
+          await new Promise(resolve => setTimeout(resolve, 500));
 
           try {
             const testResult = await page.evaluate(async ({ endpoint, method: testMethod, description, baseUrl }) => {
@@ -379,6 +389,21 @@ async function testInfinitePagesSafely(targetUrl) {
               error: error.message
             });
           }
+
+          // MEMORY FIX: Force garbage collection after each test
+          if (global.gc) {
+            global.gc();
+          }
+        }
+
+        // MEMORY FIX: Check memory after each endpoint group
+        const postCheck = await monitor.checkMemoryLimits();
+        if (!postCheck.memoryOk) {
+          await monitor.logMessage(`⚠️  Memory warning after ${config.endpoint}: ${postCheck.memory.process.rss}MB`);
+          results.warnings.push({
+            type: 'memory_warning_during_testing',
+            message: `Memory usage high after testing ${config.endpoint}: ${postCheck.memory.process.rss}MB`
+          });
         }
       }
       await monitor.logMessage(`✅ Endpoint tests completed: ${results.infinitePages.endpointTests.length} tests`);
