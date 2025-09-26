@@ -311,6 +311,11 @@ class RequestTracker {
       const url = typeof input === 'string' ? input : input.url
       const requestId = (init as any)?.requestId
 
+      // CRITICAL FIX: Prevent infinite recursion by excluding our own tracking endpoints
+      if (url.includes('/api/request-tracking/')) {
+        return originalFetch(input, init)
+      }
+
       if (requestId && this.activeRequests.has(requestId)) {
         // Use our tracking method
         return this.trackApiCall(requestId, url, init)
