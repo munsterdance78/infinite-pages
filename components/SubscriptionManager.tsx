@@ -38,40 +38,38 @@ interface SubscriptionManagerProps {
 }
 
 const SUBSCRIPTION_PLANS = {
-  free: {
-    name: 'Free',
-    price: 0,
-    tokens: 10,
+  basic: {
+    name: 'Basic',
+    price: 7.99,
+    tokens: 1332,
     features: [
-      '10 Creative Tokens per month',
-      'Basic story generation',
-      '2 stories per month',
-      'Library access only',
+      '1,332 Credits per month',
+      'Foundation, character & chapter generation',
+      '5 stories per month',
+      '2 cover generations',
       'Community support',
-      'Basic analytics'
+      'Improvements allowed'
     ],
     limits: [
-      'No exports allowed',
-      'Limited to 2 stories per month',
-      'No premium AI models',
-      'No priority support'
+      'No export access',
+      'No priority support',
+      'Credit accumulation limited to 3 months'
     ],
-    color: 'gray',
+    color: 'blue',
     popular: false
   },
-  pro: {
-    name: 'Pro',
-    price: 19.99,
-    tokens: 100,
+  premium: {
+    name: 'Premium',
+    price: 14.99,
+    tokens: 2497,
     features: [
-      '100 Creative Tokens per month',
-      'Premium story generation',
-      '50 stories per month',
-      'All export formats (PDF, EPUB, DOCX, TXT)',
-      'Chapter improvement features',
-      'Priority support',
-      'Advanced analytics',
-      'Premium AI models'
+      '2,497 Credits per month',
+      'Advanced AI operations & improvements',
+      'Unlimited stories',
+      'All export formats (PDF, EPUB, DOCX)',
+      '10 cover generations',
+      'Priority support & analytics dashboard',
+      'Creator tools & early access'
     ],
     limits: [],
     color: 'purple',
@@ -525,7 +523,7 @@ export default function SubscriptionManager({ user, onSubscriptionChange }: Subs
           
           <div className="space-y-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">$19.99</div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">$14.99</div>
               <div className="text-gray-600">per month</div>
             </div>
 

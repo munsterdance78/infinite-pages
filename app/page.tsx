@@ -158,15 +158,15 @@ export default function LandingPage() {
             <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-600" />
-                <span>10 Free Tokens</span>
+                <span>7-Day Free Trial</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-600" />
-                <span>No Credit Card</span>
+                <span>No Setup Fees</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-600" />
-                <span>Quick signup process</span>
+                <span>Cancel Anytime</span>
               </div>
             </div>
           </div>
@@ -286,52 +286,52 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Simple, transparent pricing</h2>
-            <p className="text-xl text-gray-600">Start free, upgrade when you need more power</p>
+            <p className="text-xl text-gray-600">Choose the plan that fits your writing goals</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Free Plan */}
+            {/* Basic Plan */}
             <Card className="relative">
               <CardHeader className="text-center pb-8">
-                <CardTitle className="text-2xl">Free</CardTitle>
-                <div className="text-4xl font-bold">$0</div>
+                <CardTitle className="text-2xl">Basic</CardTitle>
+                <div className="text-4xl font-bold">$7.99</div>
                 <p className="text-gray-600">Perfect for getting started</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">10 Creative Tokens per month</span>
+                    <span className="text-sm">1,332 Credits per month</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">Basic story generation</span>
+                    <span className="text-sm">5 stories per month</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">2 stories per month</span>
+                    <span className="text-sm">Foundation, character & chapter generation</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">Library access only</span>
+                    <span className="text-sm">2 cover generations</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
                     <span className="text-sm">Community support</span>
                   </div>
                 </div>
-                <Button 
-                  className="w-full mt-6" 
+                <Button
+                  className="w-full mt-6"
                   variant="outline"
                   onClick={handleSignIn}
                   disabled={loading}
                 >
-                  Get Started Free
+                  Start Basic Plan
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Pro Plan */}
+            {/* Premium Plan */}
             <Card className="relative border-purple-200 shadow-lg">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-purple-600 text-white px-4 py-1">
@@ -340,19 +340,19 @@ export default function LandingPage() {
                 </Badge>
               </div>
               <CardHeader className="text-center pb-8">
-                <CardTitle className="text-2xl">Pro</CardTitle>
-                <div className="text-4xl font-bold">$19.99</div>
+                <CardTitle className="text-2xl">Premium</CardTitle>
+                <div className="text-4xl font-bold">$14.99</div>
                 <p className="text-gray-600">For serious writers</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">100 Creative Tokens per month</span>
+                    <span className="text-sm">2,497 Credits per month</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">50 stories per month</span>
+                    <span className="text-sm">Unlimited stories</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
@@ -360,20 +360,20 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">Chapter improvement features</span>
+                    <span className="text-sm">Advanced AI operations & improvements</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    <span className="text-sm">Priority support & analytics</span>
+                    <span className="text-sm">Priority support & analytics dashboard</span>
                   </div>
                 </div>
-                <Button 
+                <Button
                   className="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                   onClick={handleSignIn}
                   disabled={loading}
                 >
                   <Crown className="w-4 h-4 mr-2" />
-                  Start Pro Trial
+                  Start Premium Trial
                 </Button>
               </CardContent>
             </Card>
