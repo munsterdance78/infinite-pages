@@ -94,10 +94,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   const customer = await stripe.customers.retrieve(subscription.customer as string)
 
-  if ('metadata' in customer && customer.metadata.userId) {
+  if ('metadata' in customer && customer.metadata?.['userId']) {
     const supabase = createServiceRoleClient()
 
-    console.log(`[Webhook] Subscription updated for user ${customer.metadata.userId}, status: ${subscription.status}`)
+    console.log(`[Webhook] Subscription updated for user ${customer.metadata?.['userId']}, status: ${subscription.status}`)
 
     await supabase
       .from('profiles')
@@ -105,13 +105,13 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
         subscription_status: subscription.status,
         current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
       })
-      .eq('id', customer.metadata.userId)
+      .eq('id', customer.metadata?.['userId'])
 
     // Log the subscription event
     await supabase
       .from('subscription_logs')
       .insert({
-        user_id: customer.metadata.userId,
+        user_id: customer.metadata?.['userId'],
         event_type: 'subscription_updated',
         subscription_status: subscription.status,
         stripe_subscription_id: subscription.id
@@ -122,11 +122,11 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const customer = await stripe.customers.retrieve(subscription.customer as string)
 
-  if ('metadata' in customer && customer.metadata.userId) {
+  if ('metadata' in customer && customer.metadata?.['userId']) {
     const supabase = createServiceRoleClient()
     const basicLimits = SUBSCRIPTION_LIMITS.basic
 
-    console.log(`[Webhook] Subscription cancelled for user ${customer.metadata.userId}`)
+    console.log(`[Webhook] Subscription cancelled for user ${customer.metadata?.['userId']}`)
 
     await supabase
       .from('profiles')
@@ -137,13 +137,13 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
         tokens_remaining: basicLimits.MONTHLY_CREDITS, // Revert to basic tier credits
         stripe_subscription_id: null
       })
-      .eq('id', customer.metadata.userId)
+      .eq('id', customer.metadata?.['userId'])
 
     // Log the subscription event
     await supabase
       .from('subscription_logs')
       .insert({
-        user_id: customer.metadata.userId,
+        user_id: customer.metadata?.['userId'],
         event_type: 'subscription_cancelled',
         subscription_tier: 'basic',
         credits_granted: basicLimits.MONTHLY_CREDITS,
@@ -158,21 +158,21 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
   const customer = await stripe.customers.retrieve(subscription.customer as string)
 
-  if ('metadata' in customer && customer.metadata.userId) {
+  if ('metadata' in customer && customer.metadata?.['userId']) {
     const supabase = createServiceRoleClient()
 
     // Get current profile to determine tier
     const { data: profile } = await supabase
       .from('profiles')
       .select('subscription_tier')
-      .eq('id', customer.metadata.userId)
+      .eq('id', customer.metadata?.['userId'])
       .single()
 
     if (profile) {
       const tier = profile.subscription_tier as 'basic' | 'premium'
       const subscriptionLimits = SUBSCRIPTION_LIMITS[tier]
 
-      console.log(`[Webhook] Payment succeeded for user ${customer.metadata.userId}, refreshing ${subscriptionLimits.MONTHLY_CREDITS} credits`)
+      console.log(`[Webhook] Payment succeeded for user ${customer.metadata?.['userId']}, refreshing ${subscriptionLimits.MONTHLY_CREDITS} credits`)
 
       // Refresh monthly credits
       await supabase
@@ -181,13 +181,13 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
           tokens_remaining: subscriptionLimits.MONTHLY_CREDITS,
           current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
         })
-        .eq('id', customer.metadata.userId)
+        .eq('id', customer.metadata?.['userId'])
 
       // Log the payment event
       await supabase
         .from('subscription_logs')
         .insert({
-          user_id: customer.metadata.userId,
+          user_id: customer.metadata?.['userId'],
           event_type: 'payment_succeeded',
           subscription_tier: tier,
           credits_granted: subscriptionLimits.MONTHLY_CREDITS,
@@ -204,16 +204,16 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
   const customer = await stripe.customers.retrieve(subscription.customer as string)
 
-  if ('metadata' in customer && customer.metadata.userId) {
+  if ('metadata' in customer && customer.metadata?.['userId']) {
     const supabase = createServiceRoleClient()
 
-    console.log(`[Webhook] Payment failed for user ${customer.metadata.userId}`)
+    console.log(`[Webhook] Payment failed for user ${customer.metadata?.['userId']}`)
 
     // Log the payment failure
     await supabase
       .from('subscription_logs')
       .insert({
-        user_id: customer.metadata.userId,
+        user_id: customer.metadata?.['userId'],
         event_type: 'payment_failed',
         stripe_invoice_id: invoice.id,
         stripe_subscription_id: subscription.id
