@@ -14,7 +14,7 @@ async function requireAdminAuth(request: NextRequest) {
 
     // Check if user is admin (you can add proper admin checking here)
     // For now, we'll use a simple email check
-    const adminEmails = process.env.ADMIN_EMAILS?.split(',') || []
+    const adminEmails = process.env['ADMIN_EMAILS']?.split(',') || []
     if (!adminEmails.includes(user.email || '')) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }

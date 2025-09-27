@@ -59,7 +59,8 @@
       "Bash(npx @sentry/wizard:*)",
       "WebFetch(domain:sentry.io)",
       "Bash(mkdir:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
