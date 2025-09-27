@@ -85,8 +85,8 @@ export async function POST(request: NextRequest) {
           quantity: 1
         }
       ],
-      success_url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard?upgraded=true&tier=${tier}`,
-      cancel_url: `${env.NEXT_PUBLIC_SITE_URL}/dashboard`,
+      success_url: `${env.SITE_URL}/dashboard?upgraded=true&tier=${tier}`,
+      cancel_url: `${env.SITE_URL}/dashboard`,
       metadata: {
         userId: user.id,
         tier: tier,

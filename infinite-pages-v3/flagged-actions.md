@@ -1,7 +1,7 @@
 # 🚩 FLAGGED ACTIONS - SYSTEMATIC RESOLUTION PLAN
 
-**Scan Date:** 2025-09-27T03:28:48.031Z
-**Total Flags:** 394
+**Scan Date:** 2025-09-27T04:03:39.709Z
+**Total Flags:** 411
 
 ## 🔥 CRITICAL PRIORITY (2 flags)
 
@@ -10,7 +10,7 @@
 - **Category:** TRANSFER_REQUIRED
 - **Effort:** 2-4 hours
 - **Auto-fix:** Copy from components/UnifiedStoryCreator.tsx
-- **Flag ID:** `c8b5da78-ddf0-46c1-855b-e93d939d8ebd`
+- **Flag ID:** `86ec66c9-7c72-4ea0-a853-9a7750f8ea35`
 
 ### 2. CRITICAL: Found 9 story creators: GlassStoryCreatorWrapper.tsx, OptimizedUnifiedStoryCreator.tsx, StoryCreationForm.tsx, StoryList.tsx, StoryModeSelector.tsx, types.ts, StreamingStoryCreator.tsx, UnifiedStoryCreator.tsx, story-creator.tsx. Must consolidate to ONE.
 - **File:** `MULTIPLE_FILES`
@@ -18,7 +18,7 @@
 - **Effort:** 1-2 hours
 - **Auto-fix:** Keep UnifiedStoryCreator.tsx, delete others
 - **Dependencies:** `GlassStoryCreatorWrapper.tsx`, `OptimizedUnifiedStoryCreator.tsx`, `StoryCreationForm.tsx`, `StoryList.tsx`, `StoryModeSelector.tsx`, `types.ts`, `StreamingStoryCreator.tsx`, `UnifiedStoryCreator.tsx`, `story-creator.tsx`
-- **Flag ID:** `7f676fb6-645f-49e2-a2d2-99a55115d632`
+- **Flag ID:** `6f6d6ab5-ee44-451a-951e-0eafb0876097`
 
 ## 🔥 HIGH PRIORITY (3 flags)
 
@@ -28,2752 +28,2871 @@
 - **Effort:** 1-3 hours
 - **Auto-fix:** Keep most complete version
 - **Dependencies:** `CreatorEarningsErrorBoundary.tsx`, `CreatorEarningsHub.tsx`, `CreatorEarningsLoading.tsx`, `GlassCreatorEarningsWrapper.tsx`, `earnings-hub.tsx`
-- **Flag ID:** `16a7dc7b-68e8-4cd4-be2d-78f5d6f33b7f`
+- **Flag ID:** `7266d1fc-eae1-4c95-9c6a-2f2603bc0db7`
 
 ### 2. HIGH: Uses dangerouslySetInnerHTML. Verify content is sanitized.
 - **File:** `\components\ChoiceBookReader.tsx`
 - **Category:** SECURITY_CONCERN
 - **Effort:** 1-3 hours
 - **Auto-fix:** Ensure proper content sanitization
-- **Flag ID:** `e133bc55-2d9c-47bc-b3b7-66e205fa748d`
+- **Flag ID:** `4b353e8a-8e2d-46b7-b438-9956cc29ce75`
 
 ### 3. HIGH: Uses dangerouslySetInnerHTML. Verify content is sanitized.
 - **File:** `\infinite-pages-v3\src\components\common\secure-content-renderer.tsx`
 - **Category:** SECURITY_CONCERN
 - **Effort:** 1-3 hours
 - **Auto-fix:** Ensure proper content sanitization
-- **Flag ID:** `43a075d3-053e-4892-addd-504b753fb0b1`
+- **Flag ID:** `3bb9e59e-e717-4dc9-95e1-0068ab30d8a8`
 
-## 🔥 MEDIUM PRIORITY (203 flags)
+## 🔥 MEDIUM PRIORITY (211 flags)
 
 ### 1. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\admin\error-monitoring\page.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `f7cb55c3-254f-4dae-b897-56bde1169263`
+- **Flag ID:** `e7740614-6e24-4213-85be-bc75af81ae03`
 
 ### 2. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\admin\request-flow\page.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `fe68fc66-3f45-48bc-b682-79fa3571506e`
+- **Flag ID:** `e2f40503-cc17-4dc0-a628-d0ed6ca1c506`
 
 ### 3. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\admin\monthly-maintenance\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `2de84901-1e7d-4c09-b3a3-2017b2d84312`
+- **Flag ID:** `7174b7f9-f667-4c39-b326-6b6436a0fcea`
 
 ### 4. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\admin\process-payouts\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `92b183b9-c100-4c19-a90f-30cf3d1fd6cc`
+- **Flag ID:** `a2aef0d4-2c0f-4d3f-ba72-678fc6c01dda`
 
 ### 5. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\creator\earnings\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `0e4f489e-d3db-4e4c-8ab6-4e5f0065cad3`
+- **Flag ID:** `575a528e-c5c1-4899-91a7-dd00344a0d84`
 
 ### 6. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\creators\earnings\enhanced\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `44e3e7cb-bd3b-46d2-8b33-746b74db3405`
+- **Flag ID:** `414b26ab-d522-437c-afa6-96d2df1c3ab7`
 
 ### 7. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\creators\earnings\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `3e1996f4-72d8-4ec3-87b7-a6608c53d89d`
+- **Flag ID:** `f271006d-a9ab-4208-be08-b998a86ad38d`
 
 ### 8. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\creators\earnings\unified\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `0d7f8970-3f57-4daf-a8ea-fc29384c8fa9`
+- **Flag ID:** `f0dcd020-4e85-4808-a6cb-cd876491850c`
 
 ### 9. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\creators\stripe\status\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `b0c97614-36c2-4925-ba45-a578ce0e8300`
+- **Flag ID:** `ad0f3120-8e6c-4b72-ada3-3a62a062421f`
 
 ### 10. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\demo\story\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `9ac503b9-0e28-45fb-842f-64d7f7f945b1`
+- **Flag ID:** `cafc5944-1bf2-404f-a1d2-fefa730e0c66`
 
 ### 11. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\errors\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `a1aebbc8-8246-480a-995e-3f495e3ef0ad`
+- **Flag ID:** `fd9ba0c0-98f3-4fd2-a20f-c07a5657b723`
 
 ### 12. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\choice-books\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `140b798d-370c-4f87-bd09-2aec9f1c342e`
+- **Flag ID:** `9f3318ea-68e0-4b2c-b3f9-992e13865681`
 
 ### 13. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\guest\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4a02f687-2258-4d3c-9e01-8659c4501cda`
+- **Flag ID:** `5662acc3-f5b1-48da-a88f-19ec2aacbd61`
 
 ### 14. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\guest\[id]\characters\generate\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `7c4d3027-f12e-49a2-afe9-0e21827740fa`
+- **Flag ID:** `ad6a16a9-b56e-4e11-a943-0fd93424aa36`
 
 ### 15. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c8c37ef6-d42d-4626-9ca9-caca54eadc3f`
+- **Flag ID:** `730cd221-f70f-4d7d-90ba-3d3302846087`
 
 ### 16. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\stream\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `f7a8dbc7-7ab0-483f-958d-5f896d4a224d`
+- **Flag ID:** `1604929a-eb4e-4690-9d17-a995e9a68494`
 
 ### 17. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\analyze\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6bf9aa70-9d06-44dc-9e7f-ea1647ac1b65`
+- **Flag ID:** `2e591821-8dc9-456d-9c9d-cb030a02e411`
 
 ### 18. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\chapters\generate\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `f7cce6be-0017-44f1-8e0e-77e456df460a`
+- **Flag ID:** `eb888744-54dc-4a31-a25e-8fd94d51ee6b`
 
 ### 19. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\chapters\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `7d42c030-f171-4384-83f8-913556ee8ffd`
+- **Flag ID:** `8a7a6662-caec-469b-b19d-c45fabe86c81`
 
 ### 20. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\chapters\stream\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c5395b77-a93c-49a0-9c36-d959fb3b4d56`
+- **Flag ID:** `93b21473-3f6d-4b26-b111-0a699532667f`
 
 ### 21. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\characters\generate\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `2885e899-e68d-4a10-bd62-26b717782c7e`
+- **Flag ID:** `000c9737-04e5-455d-a80c-0d79b9477928`
 
 ### 22. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\cover\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `1cb4d37f-f1f9-426f-9412-0fedd8b97629`
+- **Flag ID:** `1ed8de90-f502-4043-8eaf-7d2665303db6`
 
 ### 23. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\export\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `dbd0b92d-8f83-4fd4-b1e0-6bfc3b9a3b11`
+- **Flag ID:** `6c3fa4b1-a4e1-48f7-95a5-3573e550fbb1`
 
 ### 24. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\facts\extract\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `5519d9ab-0e66-447e-93b4-734fedc12c2f`
+- **Flag ID:** `4f6dcd1e-95d2-4da1-8e1e-61c448d58691`
 
 ### 25. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\facts\optimize\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `95c622d9-cfd6-43fa-ab14-5745445068ef`
+- **Flag ID:** `fa21a1ca-0af4-417f-b554-dc5fd76e103e`
 
 ### 26. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\timeline\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `3f157755-1a48-4104-a478-98478d9e7a82`
+- **Flag ID:** `f491f79e-a7cc-47eb-b99d-99aaafafdeba`
 
 ### 27. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\stories\[id]\universe\setup\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c198c0bf-1171-49cc-bee7-f65fe771e68e`
+- **Flag ID:** `6a65cdf5-f4f1-4242-8a39-e583337f53df`
 
 ### 28. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\api\webhooks\stripe\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `e815289d-2e70-46ad-ae34-99ca680803a2`
+- **Flag ID:** `eaf030b6-cbfd-4ef3-9eba-4eb4d7f67283`
 
 ### 29. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\dashboard\page.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `5e4e766b-8c3a-40b1-9472-ddeb0e6083df`
+- **Flag ID:** `e9ae2637-b03f-478d-ae2c-5db2a9c1e7bf`
 
 ### 30. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\error-monitoring-test\page.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `2812354a-fec0-4e13-bcd3-8cb7a6b27d7b`
+- **Flag ID:** `f0d07c6a-caf8-4674-a910-3dbc366bb7bd`
 
 ### 31. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\app\request-tracking-test\page.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4a4d69cd-1b70-4657-bc14-9f3bb9e3b435`
+- **Flag ID:** `5c1328c1-e30b-4b15-9e3b-2314c2f62ba6`
 
 ### 32. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\AdminCreditDistribution.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `3b47657f-4d1e-408d-a2d8-890f2bca6c43`
+- **Flag ID:** `664baa18-b229-46d7-aab0-279c3e93b269`
 
 ### 33. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\basic\AnalyticsButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4e1240e4-9ec7-41c7-9eb2-e6d06cab3a49`
+- **Flag ID:** `02e1eadf-6b1d-4099-bcc5-d3253e8ff174`
 
 ### 34. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\basic\FactExtractionButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4cf9b638-cf5e-4ecc-b9e0-a7ee364c55e7`
+- **Flag ID:** `57947f66-a73b-46ae-9f71-5ca66e2744ad`
 
 ### 35. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\basic\ThreePhaseWorkflowButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6bad5049-78ea-4380-80a3-8c61b1d31e9c`
+- **Flag ID:** `28c249fc-8bef-4892-88e0-86487a8f97c5`
 
 ### 36. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\basic\WorldBuilderButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4bc5fd10-3c92-4fc4-a833-f9e58ad98db2`
+- **Flag ID:** `cb8d2c85-4df5-4db1-98b6-aa222f034290`
 
 ### 37. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\ChoiceBookReader.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `806ba5ef-ed76-4852-8e39-ca2df3f34b92`
+- **Flag ID:** `366faafd-2b37-47cd-bbeb-9222d62b62e4`
 
 ### 38. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\CreatorEarningsHub.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4bc0992b-fa54-4c36-875d-04b0844e0e46`
+- **Flag ID:** `41bfaad6-11f6-4f09-8af6-82915a0974aa`
 
 ### 39. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\CreditBalance.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `ca6dd623-1005-420a-af61-3fcfc4b4c433`
+- **Flag ID:** `30a14c03-a93b-44f4-9bcd-f42096974bdc`
 
 ### 40. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\dashboard\AnalyticsDashboard.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c18ef0a3-3af1-4123-9f40-1983bd1cca84`
+- **Flag ID:** `be80e34f-88c0-4fd5-904b-4af5a1a286c5`
 
 ### 41. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\dashboard\CreatorHub.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6762ea76-b8c2-4a6e-97ce-fc21213da735`
+- **Flag ID:** `4934dcd2-90be-4047-89ac-e12fef579c46`
 
 ### 42. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\dashboard\StoryLibrary.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `12344562-a8db-40ac-8d2b-b24e221ee70a`
+- **Flag ID:** `8a4189d2-78c7-4a21-a11e-12f03b87dc2d`
 
 ### 43. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\optimized\VirtualizedStoryList.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `afedbcab-48cc-480e-9cd9-12f1711d30d3`
+- **Flag ID:** `b32c8a06-e97d-4139-967a-ebdbe61248fc`
 
 ### 44. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\story-creator\StoryCreationForm.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `31bf3b13-d6ec-48bb-8ff1-8b2d80494a53`
+- **Flag ID:** `a378ac2a-8f15-4c8c-83a6-e28d84856c86`
 
 ### 45. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\story-creator\StoryList.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `ebc2ba56-4fbc-414d-8144-ce273f30a3c5`
+- **Flag ID:** `fb781771-280a-4833-b144-69a33c2dd7b7`
 
 ### 46. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\story-creator\types.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `d45febca-e230-48ae-8a6c-609b54c6400d`
+- **Flag ID:** `23d10b8e-7177-420d-8483-e4e1a107bf41`
 
 ### 47. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\StoryCard.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `8e31e855-484d-41ef-a561-61e686b640d2`
+- **Flag ID:** `f357afb0-17dc-40cf-8d04-6cb7718b895e`
 
 ### 48. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\StoryReader.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `1247d041-a4c4-4e35-a810-a96ef51a8302`
+- **Flag ID:** `7ceccea3-6fec-42a3-a7c6-2358742edf0e`
 
 ### 49. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\StreamingStoryCreator.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `13d15956-6237-46b9-9313-ba14aeac1509`
+- **Flag ID:** `833f990a-ada2-4623-9083-9e32eb643033`
 
 ### 50. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\TransparentStoryGenerator.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `28c96624-0cff-4108-b04c-1cc2712f98bb`
+- **Flag ID:** `431a42f3-ccf2-43df-a92f-47627583c977`
 
 ### 51. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\UnifiedAnalyticsDashboard.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `8dc055a1-3526-4e14-a725-faaa560b85d2`
+- **Flag ID:** `79dcefbd-9080-4335-bf73-57b62cf854ec`
 
 ### 52. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\UnifiedStoryCreator.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `fddc0195-47b3-4d1b-bbe9-ea07dfb417bb`
+- **Flag ID:** `e167e7d6-d094-4227-bac3-82ec19b7e6b3`
 
 ### 53. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\EnhancementSliders.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `ce292185-d62b-4cb7-b41e-ca95bc670931`
+- **Flag ID:** `b1af9103-c283-462e-b5e9-5ff8fe837b57`
 
 ### 54. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\index.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `86173a20-d125-4298-9b52-c25026c43f1c`
+- **Flag ID:** `89939f31-2c31-4c2d-934f-43f5963e41d8`
 
 ### 55. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\StoryLibrary.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c9e1c7c4-1ef6-4d75-b66d-d2165e3052b6`
+- **Flag ID:** `ef8916e6-4ef5-4c9f-acb9-28aa71f818a9`
 
 ### 56. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\ThreePhaseWorkflow.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4f6f4dc2-d5b8-44a5-91a0-5c268c4a07a3`
+- **Flag ID:** `0e3a99a5-883f-4086-b1b0-3c4782c2faba`
 
 ### 57. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\TimelineVisualization.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `0545b0ba-5fa6-4829-a9c6-4b617a7e54dd`
+- **Flag ID:** `74a6b743-90ad-452e-9584-e01205bd67e9`
 
 ### 58. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\components\v2\WorkflowInterface.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `65729e4d-7dfd-402c-8029-b66dd5b8fdaa`
+- **Flag ID:** `9babd792-d97c-489d-92ea-5b13185a6400`
 
 ### 59. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\hooks\useAIGeneration.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `d731e37f-f482-4cea-bda8-77c9981728e7`
+- **Flag ID:** `3ce4c4b8-719b-4919-bde3-2db82787b6e7`
 
 ### 60. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\hooks\useCreatorEarnings.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `92ab3fbf-b303-4ae4-95dd-245e2e906606`
+- **Flag ID:** `2a3d5f70-b636-4a3b-910d-d3b28128277f`
 
 ### 61. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\hooks\useRequestMonitoring.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c408ef09-71a7-4a08-9da4-03a763e77e0c`
+- **Flag ID:** `6e6a8ae5-2dc7-439b-9405-7712be67904e`
 
 ### 62. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+- **File:** `\infinite-pages-v3\app\api\admin\process-payouts\route.ts`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Define proper interfaces and types
+- **Flag ID:** `347b768e-e5a8-4bc3-bc55-bc574e8a26ff`
+
+### 63. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\infinite-pages-v3\app\api\stories\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `66696ac8-ee3c-41b0-88df-6aaea076b27b`
+- **Flag ID:** `7892bdf6-afa9-44d2-b286-353d88321305`
 
-### 63. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 64. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+- **File:** `\infinite-pages-v3\app\dashboard\page.tsx`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Define proper interfaces and types
+- **Flag ID:** `958b4c22-372c-4c62-bd49-2bc3b98b759f`
+
+### 65. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\infinite-pages-v3\src\components\features\stories\story-creator.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `7f1022dc-7cb1-4164-bbde-a6b9037d02cc`
+- **Flag ID:** `108f17b8-071c-4f32-a926-ca76639c85e4`
 
-### 64. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 66. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\infinite-pages-v3\src\hooks\useClaudeStreaming.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `e47d6382-9c70-4c11-89e6-2896ee744251`
+- **Flag ID:** `8457e209-6c42-43d1-951d-0da855a4a5c0`
 
-### 65. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 67. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+- **File:** `\infinite-pages-v3\src\lib\ai\cache.ts`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Define proper interfaces and types
+- **Flag ID:** `60c0deaf-e0e4-4f48-a2d9-4518616cdecf`
+
+### 68. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\infinite-pages-v3\src\lib\ai\streaming.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `70ab0749-d65d-4dc3-946b-c8207c1a3033`
+- **Flag ID:** `e9f57938-51e0-4ca8-865a-4496c70db0c6`
 
-### 66. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 69. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+- **File:** `\infinite-pages-v3\src\lib\auth\utils.ts`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Define proper interfaces and types
+- **Flag ID:** `2499da0a-574c-414e-b2bf-11954264e5ef`
+
+### 70. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\auth\utils.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `71547c44-bdeb-45fb-861b-87cb2cc3e9fb`
+- **Flag ID:** `5d19127d-2061-4052-a7cb-6703ff026e49`
 
-### 67. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 71. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\character-manager.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `5df16c06-044d-461d-b41e-c0ca5167ebf0`
+- **Flag ID:** `8c9de5f5-8f79-45f8-adca-941326c4eac9`
 
-### 68. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 72. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\choice-books\choice-analytics.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `de0a6cbe-4c5b-438d-bff3-3380e5979ab2`
+- **Flag ID:** `c47dcbc6-f569-4b4c-8862-c731799e8690`
 
-### 69. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 73. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\choice-books\choice-generator.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `52c10b6c-0467-4e7a-8dc6-eb79b2ae10bd`
+- **Flag ID:** `6c85c777-2fd7-4a7f-923b-e4bf1ba82b4e`
 
-### 70. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 74. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\choice-books\choice-prompts.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6be738c3-dfdc-4004-abc4-259280a19bb8`
+- **Flag ID:** `6714cb6c-8b4b-454b-b16f-f47d80460f70`
 
-### 71. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 75. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\choice-books\choice-types.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `a7d714bd-abaa-4edd-a0ba-5a8a6be5d728`
+- **Flag ID:** `6be8ee71-03ad-457f-995e-0aa1436b9f13`
 
-### 72. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 76. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\adaptive-context.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `1ebf432b-ddc6-4b98-a5ee-7c32e12fe18c`
+- **Flag ID:** `d04ab474-65f9-4488-9d1d-b2880b85cf31`
 
-### 73. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 77. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\advanced-batch-processor.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `7077705c-d5b8-4e32-a214-7af99375e280`
+- **Flag ID:** `81de8e8c-b1aa-4cbc-9a87-b0571edb2ce6`
 
-### 74. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 78. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\ai-cost-optimization-hub.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `0ad45f27-9759-4e8e-b331-75ba0e8d13d9`
+- **Flag ID:** `9e80a57b-be52-4c39-9854-8097a9deb11d`
 
-### 75. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 79. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\analytics.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `13e302e7-2dbe-43a2-99f0-7ef1e1eb7105`
+- **Flag ID:** `57623141-6033-4107-bc37-259aea766288`
 
-### 76. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 80. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\batch.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `a4ba51ec-7285-4544-892c-d6f4c66aaf84`
+- **Flag ID:** `847c39f8-dbf2-47ad-a284-12ceca7931cd`
 
-### 77. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 81. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\cache.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `121ff43e-13d3-4cc0-8a07-362f0a045364`
+- **Flag ID:** `4dcf0898-7705-41a8-b7e3-ad5660f60be0`
 
-### 78. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 82. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\context-optimizer.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `e8336df7-da86-4563-a7b9-c5de24f4cced`
+- **Flag ID:** `fadf110f-8ea5-4f6a-a47a-64af7bd25e38`
 
-### 79. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 83. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\enhanced-cost-analytics.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `26d69f0d-53e4-41e5-a95c-f95867bf1d1e`
+- **Flag ID:** `5b7fc36a-6672-4918-8c53-53ba6bbc099e`
 
-### 80. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 84. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\fact-extractor.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `9c4a32b4-6f86-44dd-b538-daf89edfca7c`
+- **Flag ID:** `6057b528-e041-43b0-934d-eae254a44cdf`
 
-### 81. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 85. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\hooks.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `668bc13b-3c9f-4d34-9c3b-dee47b12093f`
+- **Flag ID:** `173951e6-93cf-452f-94a7-2dd4c217d998`
 
-### 82. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 86. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\infinitePagesCache.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `176ff3c4-13d1-4adf-b788-68205387b511`
+- **Flag ID:** `6cdc655f-63bb-44d8-aa2a-16827cb3f229`
 
-### 83. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 87. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\prompt-templates.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `88dadce1-a513-4208-8bca-5120c0f9073c`
+- **Flag ID:** `0116de52-bb6b-403a-a133-c63704c525ac`
 
-### 84. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 88. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\prompts.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6b68005e-bb70-4cd8-bef1-3f1284b637de`
+- **Flag ID:** `8dcdf80b-d476-4cf3-927e-cf108daac05c`
 
-### 85. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 89. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\service.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `453a1c36-060b-4d3f-8678-bd64d9b7a7ba`
+- **Flag ID:** `d7ef5db1-5d0e-4043-baf6-efb624d0cd24`
 
-### 86. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 90. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\sfsl-schema.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `ffc881bb-a318-495f-9f53-09d8bae7b3d2`
+- **Flag ID:** `dbaf899c-942e-4f3e-9648-c75ee3510115`
 
-### 87. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 91. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\streaming.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `194e5e68-bd40-4fa7-9991-f26b8c56d630`
+- **Flag ID:** `bd93de87-2c59-4b9c-b3fb-d29c32de19a8`
 
-### 88. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 92. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\claude\v2-enhancements.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `21377d2b-195f-4f2c-a4cb-b38e3988f390`
+- **Flag ID:** `8c91d7cb-d31c-4637-b7f4-b32dcf306fa7`
 
-### 89. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 93. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\creator-earnings.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `d55d44fc-7d68-47b4-ad35-87d4068968d1`
+- **Flag ID:** `f1c3efeb-8be6-419f-9103-45a0e7b10fe6`
 
-### 90. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 94. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\database\query-optimizer.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `c97161b2-9991-47ba-b886-f6a80fef3d43`
+- **Flag ID:** `0f5f40f1-4830-4847-9547-bb822cbc7c25`
 
-### 91. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 95. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\error-monitoring.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `247740b5-ca64-4b53-a9b3-4670550eb266`
+- **Flag ID:** `a5365d2b-fdbd-433c-b739-ff8a3edb3a99`
 
-### 92. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 96. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\hooks\useDebounce.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `71e52989-e811-4a2e-b516-70ba48e95264`
+- **Flag ID:** `f23a467a-bbc7-4152-b616-1406b4060791`
 
-### 93. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 97. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\hooks\useQueryCache.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `103d1a92-6f99-48be-8a04-a679ec60c9b5`
+- **Flag ID:** `af5e0d47-e003-487f-9e9e-8e7a71b2fd37`
 
-### 94. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 98. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\providers\QueryProvider.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `e2202c8b-a3fd-4663-bce3-30a515d422da`
+- **Flag ID:** `21883031-42fd-4d34-b64f-cce33b861be7`
 
-### 95. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 99. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\rateLimit.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `0c7e44b5-5202-41ff-bf1f-80ce3d1aaa28`
+- **Flag ID:** `0a6d4b56-a641-4731-a7ce-62ae374f7daa`
 
-### 96. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 100. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\request-tracking-init.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `5e5bec5d-8d6d-4176-b2d6-ebca61eece50`
+- **Flag ID:** `e1fafafb-3182-4154-895a-d0a525fd3256`
 
-### 97. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 101. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\request-tracking.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `e123a524-0187-4c8d-bfdf-cc5264b0710f`
+- **Flag ID:** `1e44e12f-3766-4a98-8a6a-fcb96f136b1a`
 
-### 98. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 102. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\series\series-context-manager.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `f794d02c-e087-47e9-a20e-20e19badb588`
+- **Flag ID:** `05b5d184-f5f9-4dc9-92d6-31f60b55b396`
 
-### 99. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 103. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\series\series-types.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `ad8f78e5-107c-4a8f-933b-323c9c76ddff`
+- **Flag ID:** `d92d115a-6759-4435-b581-097371448601`
 
-### 100. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 104. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\series-manager.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `63e314d9-8af4-4b38-a85f-c35092786ced`
+- **Flag ID:** `163451b2-9c3e-4396-8d61-a1bd6f1ca873`
 
-### 101. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 105. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\server-error-monitoring.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `6c699b0a-9e00-4031-a955-84d3b22700d4`
+- **Flag ID:** `e19e5e7b-1485-4c3d-a982-77c7cee6f4d0`
 
-### 102. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 106. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\supabase\types.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `05ee30a2-407c-4602-a8c4-1c2c604e2b50`
+- **Flag ID:** `7af404bf-66ca-4ae3-b9a8-100cbdf68c8d`
 
-### 103. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 107. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\types\api.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `bcec3d84-3e46-4981-935d-a4e9a657d746`
+- **Flag ID:** `af33cc5b-f06b-4be5-a555-f91dd6aba54e`
 
-### 104. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 108. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\types\database.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `59f8c758-3817-430e-8f5c-472d24932085`
+- **Flag ID:** `cc2c3b38-96d2-49ee-bf90-aa917596898f`
 
-### 105. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 109. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\lib\utils.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `2c8a18b3-91d9-4abe-836d-8b881acad04d`
+- **Flag ID:** `5eaeea74-2d59-479c-8f77-5a837daf82f2`
 
-### 106. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
+### 110. MEDIUM: Uses "any" type. Replace with proper TypeScript types.
 - **File:** `\middleware.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Define proper interfaces and types
-- **Flag ID:** `4ddc7b0e-9566-4a39-93b8-1e6dad5fb715`
+- **Flag ID:** `c6c6fd24-4659-4050-aeba-9c03b58dbf17`
 
-### 107. MEDIUM: Missing new feature - Full story automation
+### 111. MEDIUM: Missing new feature - Full story automation
 - **File:** `src/lib/automation/automation-engine.ts`
 - **Category:** MISSING_DEPENDENCY
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Implement new feature
-- **Flag ID:** `06b3e8f7-9a79-4b1a-ab29-5790dece0ca0`
+- **Flag ID:** `9bed5515-2671-448b-9145-9c22754a0a74`
 
-### 108. MEDIUM: Found 2 components matching /Loading/i. Consolidate all loading components
+### 112. MEDIUM: Found 2 components matching /Loading/i. Consolidate all loading components
 - **File:** `src/components/ui/loading.tsx`
 - **Category:** NEEDS_CONSOLIDATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Create unified component
 - **Dependencies:** `CreatorEarningsLoading.tsx`, `LoadingFallback.tsx`
-- **Flag ID:** `d809d9d4-eb74-4a2d-b484-a46391857d64`
+- **Flag ID:** `554101e7-5f57-4111-b63d-6c220561cae6`
 
-### 109. MEDIUM: Found 5 components matching /Error/i. Consolidate error handling
+### 113. MEDIUM: Found 6 components matching /Error/i. Consolidate error handling
 - **File:** `src/components/ui/error-boundary.tsx`
 - **Category:** NEEDS_CONSOLIDATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Create unified component
-- **Dependencies:** `CreatorEarningsErrorBoundary.tsx`, `ErrorBoundary.tsx`, `ErrorFallback.tsx`, `error-monitoring.ts`, `server-error-monitoring.ts`
-- **Flag ID:** `56745d29-bbed-44da-9abe-d4d3609ee3f8`
+- **Dependencies:** `CreatorEarningsErrorBoundary.tsx`, `ErrorBoundary.tsx`, `ErrorFallback.tsx`, `error-boundary.tsx`, `error-monitoring.ts`, `server-error-monitoring.ts`
+- **Flag ID:** `3e3d4860-9116-4011-8d39-f8135f7c05db`
 
-### 110. MEDIUM: Found 7 components matching /Button/i. Consolidate button variants
+### 114. MEDIUM: Found 8 components matching /Button/i. Consolidate button variants
 - **File:** `src/components/ui/button.tsx`
 - **Category:** NEEDS_CONSOLIDATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Create unified component
-- **Dependencies:** `AnalyticsButtons.tsx`, `CharacterManagerButtons.tsx`, `FactExtractionButtons.tsx`, `ThreePhaseWorkflowButtons.tsx`, `TimelineButtons.tsx`, `WorldBuilderButtons.tsx`, `button.tsx`
-- **Flag ID:** `664e8895-34fd-4ac9-935a-400930c4d407`
+- **Dependencies:** `AnalyticsButtons.tsx`, `CharacterManagerButtons.tsx`, `FactExtractionButtons.tsx`, `ThreePhaseWorkflowButtons.tsx`, `TimelineButtons.tsx`, `WorldBuilderButtons.tsx`, `button.tsx`, `button.tsx`
+- **Flag ID:** `a0e33c1e-92dc-46ac-b3df-d89f03e8ab0f`
 
-### 111. MEDIUM: Auto-generation is 0.0% complete. Missing: src/lib/story-bible/auto-generator.ts, src/components/story-bible/story-bible-manager.tsx
+### 115. MEDIUM: Auto-generation is 0.0% complete. Missing: src/lib/story-bible/auto-generator.ts, src/components/story-bible/story-bible-manager.tsx
 - **File:** `Auto-generation`
 - **Category:** INCOMPLETE_IMPLEMENTATION
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Complete feature implementation
 - **Dependencies:** `auto-generator.ts`, `story-bible-manager.tsx`
-- **Flag ID:** `9568cc89-b21d-4e67-a7b3-405bcb92b4b1`
+- **Flag ID:** `c26738ff-1e4e-452a-b360-9ca1b294ae38`
 
-### 112. MEDIUM: Large file (18.6KB). Consider splitting.
+### 116. MEDIUM: Large file (18.6KB). Consider splitting.
 - **File:** `\app\admin\error-monitoring\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `4c21b225-949f-4d8f-baf1-144b3c13ce1e`
+- **Flag ID:** `49e705bc-c4df-43a5-b95b-4ea10132a5ba`
 
-### 113. MEDIUM: Large file (17.2KB). Consider splitting.
+### 117. MEDIUM: Large file (17.2KB). Consider splitting.
 - **File:** `\app\admin\request-flow\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `1ce4598f-640c-4184-b17d-bfc3034ee3a3`
+- **Flag ID:** `3347f18a-7609-4a5b-ad24-fe7928c2dd48`
 
-### 114. MEDIUM: Large file (10.2KB). Consider splitting.
+### 118. MEDIUM: Large file (10.2KB). Consider splitting.
 - **File:** `\app\api\admin\process-payouts\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7133f67a-1aa9-47d7-a424-3dbeceb517c8`
+- **Flag ID:** `fff35f8e-572a-497a-8549-ecf1e38fb3a0`
 
-### 115. MEDIUM: Large file (40.5KB). Consider splitting.
+### 119. MEDIUM: Large file (40.5KB). Consider splitting.
 - **File:** `\app\api\creators\earnings\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `d3c5e33b-1bf6-4618-bedf-fbb6e2cb924f`
+- **Flag ID:** `6c5bf284-57b7-4e3b-be76-569a53e9fe0c`
 
-### 116. MEDIUM: Large file (12.3KB). Consider splitting.
+### 120. MEDIUM: Large file (12.3KB). Consider splitting.
 - **File:** `\app\api\creators\earnings\unified\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `214e4cbd-1b50-4fc1-a3c7-b1c7ec716b02`
+- **Flag ID:** `b9c30021-ee84-46e4-80c7-f73a8b973c96`
 
-### 117. MEDIUM: Large file (11.3KB). Consider splitting.
+### 121. MEDIUM: Large file (11.3KB). Consider splitting.
 - **File:** `\app\api\creators\stripe\onboard\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `a7a3ba93-ff5d-4a1a-afa9-cbe47cd16439`
+- **Flag ID:** `caa1fa8a-4e5c-4d79-98c5-51068a1f866c`
 
-### 118. MEDIUM: Large file (10.2KB). Consider splitting.
+### 122. MEDIUM: Large file (10.2KB). Consider splitting.
 - **File:** `\app\api\creators\stripe\status\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `1bec29d6-d17d-4708-bec1-36cd4a6cb46b`
+- **Flag ID:** `9c518ee8-99d7-43b7-9ebf-6088436bcf01`
 
-### 119. MEDIUM: Large file (21.4KB). Consider splitting.
+### 123. MEDIUM: Large file (21.4KB). Consider splitting.
 - **File:** `\app\api\errors\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f62a0ca1-691a-42c0-9caa-1931430d0e13`
+- **Flag ID:** `bcf57694-2da1-40a4-8e69-53feb9294b9a`
 
-### 120. MEDIUM: Large file (10.2KB). Consider splitting.
+### 124. MEDIUM: Large file (10.2KB). Consider splitting.
 - **File:** `\app\api\stories\choice-books\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `5061c918-51c8-4573-9fbc-64eb5591913d`
+- **Flag ID:** `c8298fd8-f6e6-4f6b-b753-6c39b7573df0`
 
-### 121. MEDIUM: Large file (19.5KB). Consider splitting.
+### 125. MEDIUM: Large file (19.5KB). Consider splitting.
 - **File:** `\app\api\stories\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `312797b5-21fc-4329-b5f7-01c4b03aa9ad`
+- **Flag ID:** `23302f45-31a4-4bfd-b7d9-8ab023fe508a`
 
-### 122. MEDIUM: Large file (11.5KB). Consider splitting.
+### 126. MEDIUM: Large file (11.5KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\analyze\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `45477f68-2d8e-4baf-819d-dc9289b1818f`
+- **Flag ID:** `29c7def6-846d-4fb8-bd30-587fc7602ce7`
 
-### 123. MEDIUM: Large file (14.4KB). Consider splitting.
+### 127. MEDIUM: Large file (14.4KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\chapters\generate\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `88641b8d-a440-4ad4-ac09-31a7eaa7a851`
+- **Flag ID:** `d8840d01-9972-48d5-9712-d28fab4ec35f`
 
-### 124. MEDIUM: Large file (10.1KB). Consider splitting.
+### 128. MEDIUM: Large file (10.1KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\chapters\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `9b5b42f5-9f39-4987-9e3d-0b4f340bd048`
+- **Flag ID:** `58a17696-ba10-4c8e-ba35-535e1faaba97`
 
-### 125. MEDIUM: Large file (12.5KB). Consider splitting.
+### 129. MEDIUM: Large file (12.5KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\characters\generate\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `66144259-0afe-4d69-b0d6-2273bd6f2fd2`
+- **Flag ID:** `3f2987f6-9470-4b3c-8588-8c13ae5f205c`
 
-### 126. MEDIUM: Large file (11.4KB). Consider splitting.
+### 130. MEDIUM: Large file (11.4KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\cover\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `076cc5ee-07b5-4a5b-9574-adb6eed139b1`
+- **Flag ID:** `f760b5a8-9f16-47c0-9d5b-9385e4eaf995`
 
-### 127. MEDIUM: Large file (11.5KB). Consider splitting.
+### 131. MEDIUM: Large file (11.5KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\facts\optimize\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f7456ae5-775e-4fa8-9eee-1964af158a26`
+- **Flag ID:** `903d0c46-6ca1-4434-9d4c-09e8343742f1`
 
-### 128. MEDIUM: Large file (10.8KB). Consider splitting.
+### 132. MEDIUM: Large file (10.8KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\timeline\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `8d52e1b8-43b7-4a90-8c77-20e9395c07d4`
+- **Flag ID:** `80cfa29d-dbc2-402d-9993-cd864e652683`
 
-### 129. MEDIUM: Large file (18.9KB). Consider splitting.
+### 133. MEDIUM: Large file (18.9KB). Consider splitting.
 - **File:** `\app\api\stories\[id]\universe\setup\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `b2d7866c-ca11-4bce-a545-2c26ebcec5ce`
+- **Flag ID:** `aafdfb00-e623-4036-a140-91d2ebf6c425`
 
-### 130. MEDIUM: Large file (21.9KB). Consider splitting.
+### 134. MEDIUM: Large file (21.9KB). Consider splitting.
 - **File:** `\app\api\webhooks\stripe\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `a6b80f9b-77f8-40ce-b1a6-7baf2c9920de`
+- **Flag ID:** `4ba09970-9550-4ed8-8665-88abed92cc98`
 
-### 131. MEDIUM: Large file (20.0KB). Consider splitting.
+### 135. MEDIUM: Large file (20.0KB). Consider splitting.
 - **File:** `\app\dashboard\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `1d4de468-b176-40cd-b103-0c481dabc248`
+- **Flag ID:** `617a8c74-808b-4d4b-8a55-6cd66d4dd385`
 
-### 132. MEDIUM: Large file (13.7KB). Consider splitting.
+### 136. MEDIUM: Large file (13.7KB). Consider splitting.
 - **File:** `\app\error-monitoring-test\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `5d424b73-b9c5-4a10-bcc1-8878cc18c163`
+- **Flag ID:** `cfc0ce0b-139e-409f-b32f-53ebea8c1e79`
 
-### 133. MEDIUM: Large file (19.5KB). Consider splitting.
+### 137. MEDIUM: Large file (19.5KB). Consider splitting.
 - **File:** `\app\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `ef2bbba3-4891-42a9-9853-c6de20bb18f5`
+- **Flag ID:** `11a378cb-8038-4276-9b5b-bfc7aea5edf3`
 
-### 134. MEDIUM: Large file (18.2KB). Consider splitting.
+### 138. MEDIUM: Large file (18.2KB). Consider splitting.
 - **File:** `\app\request-tracking-test\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `a723939e-6e8a-4dc7-8e75-7f952e0b524e`
+- **Flag ID:** `75ea5fc4-8515-4884-933a-c0243265507b`
 
-### 135. MEDIUM: Large file (12.0KB). Consider splitting.
+### 139. MEDIUM: Large file (12.0KB). Consider splitting.
 - **File:** `\components\AdminCreditDistribution.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `09faad5c-0630-4049-88ec-0ec62f938cb0`
+- **Flag ID:** `cdbb3a64-6d5c-4301-8881-bf3c5b4918d4`
 
-### 136. MEDIUM: Large file (15.4KB). Consider splitting.
+### 140. MEDIUM: Large file (15.4KB). Consider splitting.
 - **File:** `\components\AdminPayoutInterface.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `8f5d5179-20ce-4887-a3d7-38806174629b`
+- **Flag ID:** `aa101d99-fc5d-46cb-9573-d3c986ab8137`
 
-### 137. MEDIUM: Large file (14.6KB). Consider splitting.
+### 141. MEDIUM: Large file (14.6KB). Consider splitting.
 - **File:** `\components\basic\CharacterManagerButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `299be17b-6b88-4de4-812b-cee3b0389045`
+- **Flag ID:** `83df240a-0e7f-4d0d-a5a8-d2dc18ba1c25`
 
-### 138. MEDIUM: Large file (16.0KB). Consider splitting.
+### 142. MEDIUM: Large file (16.0KB). Consider splitting.
 - **File:** `\components\basic\WorldBuilderButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `c29bf849-a605-44b8-bba7-02148619a0b4`
+- **Flag ID:** `c11196b3-e89b-4a2b-ac70-8ad374734f48`
 
-### 139. MEDIUM: Large file (17.5KB). Consider splitting.
+### 143. MEDIUM: Large file (17.5KB). Consider splitting.
 - **File:** `\components\ChoiceBookReader.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `24fa6450-5eef-4879-b3b8-4ce3344bb7e6`
+- **Flag ID:** `dc45d8e4-6487-4e44-af70-28c36d8a4d33`
 
-### 140. MEDIUM: Large file (11.8KB). Consider splitting.
+### 144. MEDIUM: Large file (11.8KB). Consider splitting.
 - **File:** `\components\CoverGenerator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f7e2dea1-4adc-4c24-936a-5370f2a06a63`
+- **Flag ID:** `aed1c189-4906-4683-ab23-d16074414060`
 
-### 141. MEDIUM: Large file (21.3KB). Consider splitting.
+### 145. MEDIUM: Large file (21.3KB). Consider splitting.
 - **File:** `\components\CreatorEarningsHub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `761e4824-d7fb-421b-94bb-2bd3baa6d2cc`
+- **Flag ID:** `568ee92f-2ada-40c3-9e1b-237bf47dd487`
 
-### 142. MEDIUM: Large file (17.3KB). Consider splitting.
+### 146. MEDIUM: Large file (17.3KB). Consider splitting.
 - **File:** `\components\dashboard\AnalyticsDashboard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `6d1e5b90-2419-4a2e-9db7-75b8e6155a77`
+- **Flag ID:** `d9dc2e5e-2c07-4780-8587-bac47dfd4e34`
 
-### 143. MEDIUM: Large file (18.5KB). Consider splitting.
+### 147. MEDIUM: Large file (18.5KB). Consider splitting.
 - **File:** `\components\dashboard\CreatorHub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `ac323483-990b-44b8-a02c-b6b489a31494`
+- **Flag ID:** `814e4e24-5d60-4de8-83b5-f70d61d7246c`
 
-### 144. MEDIUM: Large file (15.0KB). Consider splitting.
+### 148. MEDIUM: Large file (15.0KB). Consider splitting.
 - **File:** `\components\dashboard\StoryLibrary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `ed907932-d1b9-469b-afb5-0121b330eb3c`
+- **Flag ID:** `ade71f85-4179-40e1-ae06-69a747cd1092`
 
-### 145. MEDIUM: Large file (13.1KB). Consider splitting.
+### 149. MEDIUM: Large file (13.1KB). Consider splitting.
 - **File:** `\components\ErrorBoundary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `0e950452-3a2e-49ff-8e87-ee5b624d4fb9`
+- **Flag ID:** `78777f69-7981-4f75-919e-5fabd28d3ceb`
 
-### 146. MEDIUM: Large file (26.8KB). Consider splitting.
+### 150. MEDIUM: Large file (26.8KB). Consider splitting.
 - **File:** `\components\GlassStoryCreatorWrapper.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `909baca8-550b-47ea-8723-cf27b4fd677e`
+- **Flag ID:** `f57510c4-9d7f-4fe7-b404-17a3722ddd45`
 
-### 147. MEDIUM: Large file (14.3KB). Consider splitting.
+### 151. MEDIUM: Large file (14.3KB). Consider splitting.
 - **File:** `\components\story-creator\OptimizedUnifiedStoryCreator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `b35aed8a-ca51-4349-8db5-928cd9b8ece9`
+- **Flag ID:** `8006115e-85eb-4b08-98a7-6277fc7703a5`
 
-### 148. MEDIUM: Large file (10.8KB). Consider splitting.
+### 152. MEDIUM: Large file (10.8KB). Consider splitting.
 - **File:** `\components\story-creator\StoryCreationForm.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f8c342db-e015-4580-8268-aa73dac6b0c1`
+- **Flag ID:** `fbe38f73-3eb5-4aee-acff-e513f9e23369`
 
-### 149. MEDIUM: Large file (17.2KB). Consider splitting.
+### 153. MEDIUM: Large file (17.2KB). Consider splitting.
 - **File:** `\components\StoryCard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `9889b8b3-8699-4034-8f44-e8ff033ddba4`
+- **Flag ID:** `c6d531ca-3f09-4667-9782-6bad99ebf221`
 
-### 150. MEDIUM: Large file (11.4KB). Consider splitting.
+### 154. MEDIUM: Large file (11.4KB). Consider splitting.
 - **File:** `\components\StripeConnectOnboarding.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `013b710a-9a22-4617-a0dc-24df3dbb3c55`
+- **Flag ID:** `aa559eb2-7dc1-413f-b658-786fbfd4aedb`
 
-### 151. MEDIUM: Large file (22.1KB). Consider splitting.
+### 155. MEDIUM: Large file (22.1KB). Consider splitting.
 - **File:** `\components\SubscriptionManager.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `6866dae1-6a0b-472d-96f8-f346e4794c6d`
+- **Flag ID:** `d8fa9341-5db3-4fd1-8bd8-466d5a9e0735`
 
-### 152. MEDIUM: Large file (21.5KB). Consider splitting.
+### 156. MEDIUM: Large file (21.5KB). Consider splitting.
 - **File:** `\components\UnifiedAnalyticsDashboard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e6af1708-8ace-43f7-9c72-fee4c1d3d4b0`
+- **Flag ID:** `b54079d9-5d6b-488f-954a-b3e677c84133`
 
-### 153. MEDIUM: Large file (30.8KB). Consider splitting.
+### 157. MEDIUM: Large file (30.8KB). Consider splitting.
 - **File:** `\components\UnifiedStoryCreator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `5df60ec7-e926-4d6e-be31-c7be3e2b09c5`
+- **Flag ID:** `d971e74b-b39b-430b-8f19-e4656b3ba3f9`
 
-### 154. MEDIUM: Large file (18.0KB). Consider splitting.
+### 158. MEDIUM: Large file (18.0KB). Consider splitting.
 - **File:** `\components\v2\EnhancementSliders.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f181a4e2-08b3-47e3-8a60-63a154ecb9e0`
+- **Flag ID:** `c5189677-7160-4dcf-8d20-b0151b27b1e9`
 
-### 155. MEDIUM: Large file (23.7KB). Consider splitting.
+### 159. MEDIUM: Large file (23.7KB). Consider splitting.
 - **File:** `\components\v2\StoryLibrary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e65601e2-856f-4afa-980b-f8c329649baa`
+- **Flag ID:** `4a24147b-fbcb-4338-928f-73248e524ab8`
 
-### 156. MEDIUM: Large file (25.0KB). Consider splitting.
+### 160. MEDIUM: Large file (25.0KB). Consider splitting.
 - **File:** `\components\v2\ThreePhaseWorkflow.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `9ea0f0be-f077-4d79-8df6-f5b33bf8c95d`
+- **Flag ID:** `d41a08b1-110a-46fb-b680-51291b1836e6`
 
-### 157. MEDIUM: Large file (19.1KB). Consider splitting.
+### 161. MEDIUM: Large file (19.1KB). Consider splitting.
 - **File:** `\components\v2\TimelineVisualization.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `6c6cf41b-fadd-414b-a6b9-58c70fa5737a`
+- **Flag ID:** `6fc2dcb6-c50c-425f-bb28-481fbb86d435`
 
-### 158. MEDIUM: Large file (24.6KB). Consider splitting.
+### 162. MEDIUM: Large file (24.6KB). Consider splitting.
 - **File:** `\components\v2\WorkflowInterface.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e607705c-2f79-4d7f-9bc5-45eb4b23e68d`
+- **Flag ID:** `67ae93f7-ab42-48b4-b926-83a97abdaf25`
 
-### 159. MEDIUM: Large file (12.9KB). Consider splitting.
+### 163. MEDIUM: Large file (12.9KB). Consider splitting.
 - **File:** `\hooks\useCreatorEarnings.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `26b5c18a-a429-4978-a6d0-9d790e5ce157`
+- **Flag ID:** `bf8220b9-2cc8-44c8-a388-8a188905c71f`
 
-### 160. MEDIUM: Large file (19.5KB). Consider splitting.
+### 164. MEDIUM: Large file (11.2KB). Consider splitting.
+- **File:** `\infinite-pages-v3\app\api\admin\distribute-credits\route.ts`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Split into smaller, focused components
+- **Flag ID:** `e359fa67-3348-46a4-ba2f-cd7032ce09f7`
+
+### 165. MEDIUM: Large file (10.9KB). Consider splitting.
+- **File:** `\infinite-pages-v3\app\api\admin\process-payouts\route.ts`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Split into smaller, focused components
+- **Flag ID:** `75085930-1078-4522-bd2a-094714256d81`
+
+### 166. MEDIUM: Large file (19.3KB). Consider splitting.
 - **File:** `\infinite-pages-v3\app\api\stories\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f43a1f54-3ad1-4025-b595-0fe719dbb056`
+- **Flag ID:** `1973989d-52d8-464a-94bb-2d27aa2ffe47`
 
-### 161. MEDIUM: Large file (18.1KB). Consider splitting.
+### 167. MEDIUM: Large file (15.6KB). Consider splitting.
+- **File:** `\infinite-pages-v3\app\dashboard\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Split into smaller, focused components
+- **Flag ID:** `032af0fa-30fc-410d-988c-78a5e156a539`
+
+### 168. MEDIUM: Large file (19.4KB). Consider splitting.
+- **File:** `\infinite-pages-v3\app\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 30 minutes - 1 hour
+- **Auto-fix:** Split into smaller, focused components
+- **Flag ID:** `d4c0b057-c6a3-49a6-88d5-013e8eb601fa`
+
+### 169. MEDIUM: Large file (18.1KB). Consider splitting.
 - **File:** `\infinite-pages-v3\middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `5d62afd7-f99e-4bdb-9c23-7cc92a4b70f1`
+- **Flag ID:** `bfbeaa63-b303-4350-ab2b-66ef87062525`
 
-### 162. MEDIUM: Large file (12.8KB). Consider splitting.
+### 170. MEDIUM: Large file (12.8KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\features\creator\earnings-hub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `67059235-0f9d-4731-b513-3cbc7d81dd6b`
+- **Flag ID:** `f6be3a34-8273-4253-af9d-6f8322aacba8`
 
-### 163. MEDIUM: Large file (12.6KB). Consider splitting.
+### 171. MEDIUM: Large file (12.6KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\features\library\ai-library-view.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `69de2926-ded4-4634-8edf-d22bf3ae9f13`
+- **Flag ID:** `4e415812-02f7-4921-b2b1-7920e616562a`
 
-### 164. MEDIUM: Large file (17.7KB). Consider splitting.
+### 172. MEDIUM: Large file (17.7KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\features\library\my-library-view.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7b66bd7a-a4fd-4f6a-a451-a1d6238758d4`
+- **Flag ID:** `a1b74918-f471-401d-b61f-1e1b62238f42`
 
-### 165. MEDIUM: Large file (32.7KB). Consider splitting.
+### 173. MEDIUM: Large file (24.6KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\features\stories\story-creator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `a54de8ca-ede5-42f5-b860-8664d07ab6f7`
+- **Flag ID:** `495c3e9a-d369-4cc9-bcc1-2b92f109825d`
 
-### 166. MEDIUM: Large file (15.9KB). Consider splitting.
+### 174. MEDIUM: Large file (15.9KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\pricing\cost-display.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `426a4346-5014-4de5-baaa-2b1fbceca013`
+- **Flag ID:** `fde723d8-8ff0-47d1-99b6-548524db0928`
 
-### 167. MEDIUM: Large file (11.3KB). Consider splitting.
+### 175. MEDIUM: Large file (11.3KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\pricing\credit-purchase.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `976383b1-6556-4453-828f-991d090d42d3`
+- **Flag ID:** `48c01fd4-8528-459b-bb6d-108abce9b122`
 
-### 168. MEDIUM: Large file (13.2KB). Consider splitting.
+### 176. MEDIUM: Large file (13.2KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\components\pricing\pricing-guard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7a67a641-d3f2-406c-8b49-ed4a4ec1177f`
+- **Flag ID:** `4a49d046-625d-4f11-a6d6-a2643ed00822`
 
-### 169. MEDIUM: Large file (17.3KB). Consider splitting.
+### 177. MEDIUM: Large file (17.3KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\lib\ai\context-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `c0efb27f-d678-4ef4-9eda-fc77abfe68d0`
+- **Flag ID:** `841163b4-94b5-49c7-9b4b-5dc7cce4b9d1`
 
-### 170. MEDIUM: Large file (16.9KB). Consider splitting.
+### 178. MEDIUM: Large file (16.9KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\lib\middleware\compression-middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `b646a7e2-cbf5-420c-a680-1febda78544f`
+- **Flag ID:** `92290b02-c006-4e3c-ae55-eef0d0b20935`
 
-### 171. MEDIUM: Large file (10.5KB). Consider splitting.
+### 179. MEDIUM: Large file (10.5KB). Consider splitting.
 - **File:** `\infinite-pages-v3\src\lib\pricing\cost-calculator.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `0f73a4b0-7efc-47ce-a628-809079dba0c5`
+- **Flag ID:** `f036dbe1-1446-46cc-8bd1-4066378558f3`
 
-### 172. MEDIUM: Large file (16.7KB). Consider splitting.
+### 180. MEDIUM: Large file (16.7KB). Consider splitting.
 - **File:** `\lib\choice-books\choice-analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `de322bdf-b238-4e1f-a1ce-37c7cb5b5db1`
+- **Flag ID:** `02cf0ab0-6070-4ad5-a1da-754357f74b09`
 
-### 173. MEDIUM: Large file (23.0KB). Consider splitting.
+### 181. MEDIUM: Large file (23.0KB). Consider splitting.
 - **File:** `\lib\choice-books\choice-generator.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `911ca58e-c462-47d4-a506-a213375de061`
+- **Flag ID:** `d7cd334b-7db1-4ff0-ab3a-b600ba748834`
 
-### 174. MEDIUM: Large file (13.9KB). Consider splitting.
+### 182. MEDIUM: Large file (13.9KB). Consider splitting.
 - **File:** `\lib\choice-books\choice-prompts.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `bfda5ee4-31e4-4838-82d0-fc77051a4cce`
+- **Flag ID:** `700b23b1-47a8-4032-b6c6-c64cdff051c9`
 
-### 175. MEDIUM: Large file (24.0KB). Consider splitting.
+### 183. MEDIUM: Large file (24.0KB). Consider splitting.
 - **File:** `\lib\claude\adaptive-context.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `10153a12-ce45-46fb-ac12-509986f30608`
+- **Flag ID:** `29d24b8f-06f3-46a1-9296-2817a626e973`
 
-### 176. MEDIUM: Large file (17.3KB). Consider splitting.
+### 184. MEDIUM: Large file (17.3KB). Consider splitting.
 - **File:** `\lib\claude\advanced-batch-processor.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `5f9e7810-ff4f-4e62-9b04-8c3037b36222`
+- **Flag ID:** `814002f3-0211-4a0e-a42d-8b20d797b31a`
 
-### 177. MEDIUM: Large file (22.9KB). Consider splitting.
+### 185. MEDIUM: Large file (22.9KB). Consider splitting.
 - **File:** `\lib\claude\ai-cost-optimization-hub.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `9cb3e86b-831e-4971-ad4d-26dd5cf44b6c`
+- **Flag ID:** `bff55894-aa2d-46ca-ae06-3ac3208f5d8e`
 
-### 178. MEDIUM: Large file (45.7KB). Consider splitting.
+### 186. MEDIUM: Large file (45.7KB). Consider splitting.
 - **File:** `\lib\claude\analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `ea44c954-a2b4-4844-b757-ccd5ed4b42e3`
+- **Flag ID:** `646f8c94-d24e-4937-a690-cd2d8ba12cc8`
 
-### 179. MEDIUM: Large file (10.6KB). Consider splitting.
+### 187. MEDIUM: Large file (10.6KB). Consider splitting.
 - **File:** `\lib\claude\batch.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e80a2168-c884-417b-99fb-7d390b72ade0`
+- **Flag ID:** `352fd0a1-3d8c-49ba-9692-824dd7a278a2`
 
-### 180. MEDIUM: Large file (12.2KB). Consider splitting.
+### 188. MEDIUM: Large file (12.2KB). Consider splitting.
 - **File:** `\lib\claude\cache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `f60080b5-c262-461a-9243-bd3309527766`
+- **Flag ID:** `d9760f0c-ab21-4900-9e70-2c68970a78ef`
 
-### 181. MEDIUM: Large file (15.6KB). Consider splitting.
+### 189. MEDIUM: Large file (15.6KB). Consider splitting.
 - **File:** `\lib\claude\context-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `4375f74b-f934-4fbb-a59e-0112981c7a0f`
+- **Flag ID:** `1b929a4b-4e44-41eb-ace7-d658465629ac`
 
-### 182. MEDIUM: Large file (20.7KB). Consider splitting.
+### 190. MEDIUM: Large file (20.7KB). Consider splitting.
 - **File:** `\lib\claude\enhanced-cost-analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `77bca605-ca5e-44b4-8da6-24b3539c99cb`
+- **Flag ID:** `513136a4-6c82-43a1-be39-b41868c538b2`
 
-### 183. MEDIUM: Large file (10.2KB). Consider splitting.
+### 191. MEDIUM: Large file (10.2KB). Consider splitting.
 - **File:** `\lib\claude\fact-extractor.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `c1bfe175-7c60-4cec-b6e8-4a89155e3b76`
+- **Flag ID:** `e6096aba-291b-431d-8fc1-e86244774c1f`
 
-### 184. MEDIUM: Large file (38.4KB). Consider splitting.
+### 192. MEDIUM: Large file (38.4KB). Consider splitting.
 - **File:** `\lib\claude\infinitePagesCache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `bbc45fee-8366-4370-a208-b66230d22f37`
+- **Flag ID:** `0df98819-6606-4631-806f-d6b9ae711392`
 
-### 185. MEDIUM: Large file (19.6KB). Consider splitting.
+### 193. MEDIUM: Large file (19.6KB). Consider splitting.
 - **File:** `\lib\claude\intelligent-model-selector.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e1f4c29c-2a80-4171-8f2e-8ab0ee14865d`
+- **Flag ID:** `9ee7a029-bc51-49d9-89d5-bc7d0508254f`
 
-### 186. MEDIUM: Large file (11.0KB). Consider splitting.
+### 194. MEDIUM: Large file (11.0KB). Consider splitting.
 - **File:** `\lib\claude\prompt-templates.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `c34f8ff7-083c-48d9-82a5-44efcf1fa58a`
+- **Flag ID:** `f1655493-37be-4409-9b36-fbc74d8dbd75`
 
-### 187. MEDIUM: Large file (29.1KB). Consider splitting.
+### 195. MEDIUM: Large file (29.1KB). Consider splitting.
 - **File:** `\lib\claude\prompts.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `018b4beb-7f34-4bf1-9310-510022b1a599`
+- **Flag ID:** `b92529a3-8f07-4ac5-a868-20a0a1cb2684`
 
-### 188. MEDIUM: Large file (26.7KB). Consider splitting.
+### 196. MEDIUM: Large file (26.7KB). Consider splitting.
 - **File:** `\lib\claude\service.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7683b133-6124-43f0-90af-b01e6de73f3a`
+- **Flag ID:** `00d88e31-4877-41a2-990c-440a5708c0ba`
 
-### 189. MEDIUM: Large file (11.8KB). Consider splitting.
+### 197. MEDIUM: Large file (11.8KB). Consider splitting.
 - **File:** `\lib\claude\streaming.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7b66c87f-3e40-4d0f-b9d3-f787d215fbd2`
+- **Flag ID:** `2c59a354-2530-4117-9b0a-b186127aca3a`
 
-### 190. MEDIUM: Large file (11.1KB). Consider splitting.
+### 198. MEDIUM: Large file (11.1KB). Consider splitting.
 - **File:** `\lib\claude\v2-enhancements.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `304f0479-9b45-4098-a276-ebd8462c495d`
+- **Flag ID:** `ba141d0c-ce99-42f9-9eb4-ab4a169404e8`
 
-### 191. MEDIUM: Large file (14.0KB). Consider splitting.
+### 199. MEDIUM: Large file (14.0KB). Consider splitting.
 - **File:** `\lib\database\query-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `27b8f464-9898-437c-a6f0-6dac0fbb0c70`
+- **Flag ID:** `e718fa18-7c59-41ff-a96b-7b55be797dcb`
 
-### 192. MEDIUM: Large file (10.4KB). Consider splitting.
+### 200. MEDIUM: Large file (10.4KB). Consider splitting.
 - **File:** `\lib\hooks\useQueryCache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `76286064-aaff-4256-8489-e9c578e014a2`
+- **Flag ID:** `9e675f32-23d7-4d28-b846-272032d1bc4a`
 
-### 193. MEDIUM: Large file (14.3KB). Consider splitting.
+### 201. MEDIUM: Large file (14.3KB). Consider splitting.
 - **File:** `\lib\rateLimit.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `14239e8d-bbf4-421b-8a74-1f59c1185f43`
+- **Flag ID:** `8328a6bd-c872-4768-9e40-701646c25b80`
 
-### 194. MEDIUM: Large file (11.3KB). Consider splitting.
+### 202. MEDIUM: Large file (11.3KB). Consider splitting.
 - **File:** `\lib\request-tracking-init.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `7a3be469-3b46-4b7d-a179-607e1ce5d98f`
+- **Flag ID:** `6c025d72-853b-4b61-8a4f-54cb24265010`
 
-### 195. MEDIUM: Large file (15.7KB). Consider splitting.
+### 203. MEDIUM: Large file (15.7KB). Consider splitting.
 - **File:** `\lib\request-tracking.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `c3f30212-2b0e-4242-bd34-723f1758d55c`
+- **Flag ID:** `25040e98-5608-4f96-8544-f247f12f5c0c`
 
-### 196. MEDIUM: Large file (27.2KB). Consider splitting.
+### 204. MEDIUM: Large file (27.2KB). Consider splitting.
 - **File:** `\lib\series\series-context-manager.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e18aa307-041e-4f78-a4c0-794fce89c035`
+- **Flag ID:** `b0d69d37-f087-43cb-b438-2fad46c1c052`
 
-### 197. MEDIUM: Large file (22.2KB). Consider splitting.
+### 205. MEDIUM: Large file (22.2KB). Consider splitting.
 - **File:** `\lib\series-manager.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `a71de3f3-dbf6-480a-baf2-02bf967e2f6d`
+- **Flag ID:** `fed17d1c-b799-4c1e-a44c-525e68711391`
 
-### 198. MEDIUM: Large file (11.0KB). Consider splitting.
+### 206. MEDIUM: Large file (11.0KB). Consider splitting.
 - **File:** `\lib\server-error-monitoring.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `98ec0d47-3ba5-4af3-bd5e-97a0b07a683d`
+- **Flag ID:** `c1c5ece5-acd7-4758-b574-334765216907`
 
-### 199. MEDIUM: Large file (26.7KB). Consider splitting.
+### 207. MEDIUM: Large file (26.7KB). Consider splitting.
 - **File:** `\lib\supabase\types.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `19baaf25-69a7-4b1f-80a6-d9ac410728b5`
+- **Flag ID:** `a73ace6e-c56f-44b1-804d-106cb052d7e8`
 
-### 200. MEDIUM: Large file (11.7KB). Consider splitting.
+### 208. MEDIUM: Large file (11.7KB). Consider splitting.
 - **File:** `\lib\types\ai.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `e902adb0-91ce-4189-ba1a-0cec5ac6ee59`
+- **Flag ID:** `1e94a9ce-a279-4968-a884-943a46e0ed40`
 
-### 201. MEDIUM: Large file (10.8KB). Consider splitting.
+### 209. MEDIUM: Large file (10.8KB). Consider splitting.
 - **File:** `\lib\types\components.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `30becb85-daea-4bfc-a08c-00a2f4482b2e`
+- **Flag ID:** `75362092-68b5-40cd-a8ed-a0eaf9ae527a`
 
-### 202. MEDIUM: Large file (11.2KB). Consider splitting.
+### 210. MEDIUM: Large file (11.2KB). Consider splitting.
 - **File:** `\lib\v2-feature-flags.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `07ec3431-2a82-4258-918e-a70e439a1bd8`
+- **Flag ID:** `fa18afe3-e7eb-4f14-bf53-e338ac9136ca`
 
-### 203. MEDIUM: Large file (16.5KB). Consider splitting.
+### 211. MEDIUM: Large file (16.5KB). Consider splitting.
 - **File:** `\middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 30 minutes - 1 hour
 - **Auto-fix:** Split into smaller, focused components
-- **Flag ID:** `bfd9a52e-d4d6-474e-90c6-9a6134a01b18`
+- **Flag ID:** `aca34031-93a5-401d-94bf-8bfea5eb7e4e`
 
-## 🔥 LOW PRIORITY (186 flags)
+## 🔥 LOW PRIORITY (195 flags)
 
 ### 1. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\admin\distribute-credits\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `aa324b29-a41c-4e57-97cb-379fc3be07e3`
+- **Flag ID:** `1ce95627-109a-4429-84db-8db181f22fa4`
 
 ### 2. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\admin\monthly-maintenance\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `67a2fead-5514-45f8-92bb-440a4b4b3c60`
+- **Flag ID:** `6840b0f4-0f6d-4cce-8851-387519fae116`
 
 ### 3. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\admin\process-payouts\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `e03b8505-e12c-4bb9-bcb9-c52fdfb9aa69`
+- **Flag ID:** `c0896768-2bb2-487c-a159-e5e387cd1aa3`
 
 ### 4. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\admin\revert-excess-credits\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `d2d70479-5173-4a95-8c96-cb7755701654`
+- **Flag ID:** `15037564-c14f-4ed3-addd-2b2c0d1c8a2c`
 
 ### 5. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\creator\earnings\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `441cd33b-b8cd-4d08-9da7-78783de32e8b`
+- **Flag ID:** `196ee7a8-147c-49b9-98a7-5c053d2921ac`
 
 ### 6. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\creators\earnings\enhanced\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `45839ca1-027b-43d0-bbf5-10d460f6a54e`
+- **Flag ID:** `5a26b4a8-c5e4-4e86-9c66-4f37a1563ed3`
 
 ### 7. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\creators\stripe\status\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `c2495c53-ad4e-49db-9100-96693456d5fb`
+- **Flag ID:** `9885271d-06e3-4839-b779-dc69a21023ee`
 
 ### 8. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\errors\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `dee5405e-3d4c-4c74-8ae8-366eddd18d87`
+- **Flag ID:** `842066be-e6cd-448d-8027-ec18824f2e32`
 
 ### 9. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\guest\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `f7bde746-84bf-4062-897e-e6f5d1803546`
+- **Flag ID:** `e62b9647-143b-4fa2-9eb2-e09a61c18d6e`
 
 ### 10. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `4e0127ec-5fc8-4ea6-98c4-f56652b0dac0`
+- **Flag ID:** `13d44c2e-617a-4c46-8636-732f4d71f334`
 
 ### 11. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\[id]\analyze\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `97d2f042-4c08-4670-a82d-acd6ed9326eb`
+- **Flag ID:** `a8bae2dd-8bcb-4c33-96b8-941bc612d7bf`
 
 ### 12. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\[id]\chapters\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `cffc0312-c03f-451c-8f19-f3f3400e9926`
+- **Flag ID:** `6036e003-b5b8-451f-9670-e6ed935521d8`
 
 ### 13. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\[id]\facts\extract\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `a7fb76a4-015c-4bc2-a1cf-b32147c86bf2`
+- **Flag ID:** `e655626e-6341-460d-9048-b543d73df0ee`
 
 ### 14. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\[id]\facts\optimize\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `4508d50b-3fea-4e78-a673-776c65a6157d`
+- **Flag ID:** `6ad0a1cb-dd6c-467c-9ac3-70d43bacea0d`
 
 ### 15. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\stories\[id]\timeline\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `24457a01-8f84-4ac5-a7a7-87ae563d2563`
+- **Flag ID:** `65a77b3c-3669-43de-886e-7e96a3b7419d`
 
 ### 16. LOW: Contains console.log statements. Remove for production.
 - **File:** `\app\api\webhooks\stripe\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `6c1d6227-ec3f-4e04-b99a-7c1191e8dfa5`
+- **Flag ID:** `644bfa3b-e21d-4807-a585-644ff730bd70`
 
 ### 17. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\basic\CharacterManagerButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `bf70ac01-06f7-4f64-9544-72c3a93ff535`
+- **Flag ID:** `db9e9150-41a6-433c-bcb6-7f73f157f882`
 
 ### 18. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\basic\FactExtractionButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `c81ec5e7-0efc-4b35-ab73-163472468492`
+- **Flag ID:** `1e2a85ac-477f-4ab6-92be-9575efcecbca`
 
 ### 19. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\basic\ThreePhaseWorkflowButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `33e36afb-f02c-458d-a371-00f5cdcb8018`
+- **Flag ID:** `6ffafb5c-08b9-4d2b-8560-0feea386cd94`
 
 ### 20. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\basic\TimelineButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `239a7fdf-30e5-4a7e-bd9d-1d19b718bac3`
+- **Flag ID:** `be8f6125-bdc8-4e10-a33f-3fa05fc389de`
 
 ### 21. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\basic\WorldBuilderButtons.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `fb3960fc-0b6d-45ba-87c0-f5e33ea95c25`
+- **Flag ID:** `d2418479-05b1-45ef-8a73-963387ec45fb`
 
 ### 22. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\ChoiceBookReader.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `e2bf6288-b1af-4dc5-931a-1c57567576c2`
+- **Flag ID:** `a84672c2-03e8-4211-a366-6591e31969dc`
 
 ### 23. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\dashboard\CreatorHub.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `723a0f85-fecb-47d2-894f-54eac6063650`
+- **Flag ID:** `2c9831fd-ef87-4e9b-a754-18e743889fab`
 
 ### 24. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\dashboard\StoryLibrary.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `1f31ed09-31a8-4336-8346-be8688c44ce4`
+- **Flag ID:** `ca7c4c1b-b620-42e4-8a18-f464adbbcd19`
 
 ### 25. LOW: Contains console.log statements. Remove for production.
 - **File:** `\components\v2\WorkflowInterface.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `916b15aa-f53b-47a6-81b7-9224cf29481e`
+- **Flag ID:** `18d0a965-0440-40e4-b16d-531bd42937c6`
 
 ### 26. LOW: Contains console.log statements. Remove for production.
+- **File:** `\infinite-pages-v3\app\api\admin\distribute-credits\route.ts`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Replace with proper logging system
+- **Flag ID:** `1e8653cb-8a6c-4639-b9a5-2f7ac9bc3e4c`
+
+### 27. LOW: Contains console.log statements. Remove for production.
+- **File:** `\infinite-pages-v3\app\api\admin\process-payouts\route.ts`
+- **Category:** ARCHITECTURAL_VIOLATION
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Replace with proper logging system
+- **Flag ID:** `49fb8d02-3d45-4387-bd81-99c486b062d9`
+
+### 28. LOW: Contains console.log statements. Remove for production.
 - **File:** `\infinite-pages-v3\app\api\billing\webhook\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `e7212e76-3de5-4827-bd1e-9f0aebfb308c`
+- **Flag ID:** `3bf149a6-16a0-467c-bcd1-b7da7c301f41`
 
-### 27. LOW: Contains console.log statements. Remove for production.
+### 29. LOW: Contains console.log statements. Remove for production.
 - **File:** `\infinite-pages-v3\app\api\stories\route.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `d0fdec3e-77aa-4676-ae23-01a8b7aea7fd`
+- **Flag ID:** `3a69bf19-3d37-4b64-a421-f65f2fc1db1f`
 
-### 28. LOW: Contains console.log statements. Remove for production.
+### 30. LOW: Contains console.log statements. Remove for production.
 - **File:** `\infinite-pages-v3\middleware.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `938dde79-f8f2-41e3-bc61-1bc8a81d279e`
+- **Flag ID:** `ec9ca1ee-34e6-4b1a-96b4-5bc464f1aad9`
 
-### 29. LOW: Contains console.log statements. Remove for production.
-- **File:** `\infinite-pages-v3\src\components\features\stories\story-creator.tsx`
+### 31. LOW: Contains console.log statements. Remove for production.
+- **File:** `\infinite-pages-v3\src\lib\middleware\rate-limit.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `9ffc70a1-5125-4a97-bf19-c8164275f1dc`
+- **Flag ID:** `9826583a-d85a-4343-8951-cc7b5010ea0f`
 
-### 30. LOW: Contains console.log statements. Remove for production.
+### 32. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\claude\analytics.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `8fe44755-35a8-4d2d-a08c-50c33a371a43`
+- **Flag ID:** `515b4928-3263-4a01-bdb3-eeb7b305ba42`
 
-### 31. LOW: Contains console.log statements. Remove for production.
+### 33. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\claude\cache.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `56f0da65-f8ae-4ba9-9390-69b27890163c`
+- **Flag ID:** `2a0ded9c-e284-42b8-8d2a-4332101a426f`
 
-### 32. LOW: Contains console.log statements. Remove for production.
+### 34. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\claude\fact-extractor.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `cd2a6449-734d-4345-a44e-5770348492a1`
+- **Flag ID:** `9002a82a-cb8b-4bbb-b4f3-7e0948e7ced9`
 
-### 33. LOW: Contains console.log statements. Remove for production.
+### 35. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\claude\infinitePagesCache.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `6a05c2d0-d936-487f-ae0c-7407073bc432`
+- **Flag ID:** `adaa69b0-fef3-452f-b82e-93da0bb75687`
 
-### 34. LOW: Contains console.log statements. Remove for production.
+### 36. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\feature-flags.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `af8e1adf-4892-4121-ab42-263dd2b28a2e`
+- **Flag ID:** `40c811e7-a150-4e64-ad80-7508e0792160`
 
-### 35. LOW: Contains console.log statements. Remove for production.
+### 37. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\hooks\useDebounce.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `7942e731-6a73-4f24-9c0d-7bb8d36a9616`
+- **Flag ID:** `5cae6faa-8cde-4b17-8e5d-9e913922e9a3`
 
-### 36. LOW: Contains console.log statements. Remove for production.
+### 38. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\providers\QueryProvider.tsx`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `943aebae-9c69-4c2e-ac70-9555b59a382a`
+- **Flag ID:** `1b61be4e-c977-413c-a6d9-2bbfd759aa94`
 
-### 37. LOW: Contains console.log statements. Remove for production.
+### 39. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\rateLimit.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `33659073-d329-492d-82c4-8786d6c2b4d6`
+- **Flag ID:** `37e0542a-090e-4c64-b63f-02dc44af4f5e`
 
-### 38. LOW: Contains console.log statements. Remove for production.
+### 40. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\request-tracking-init.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `066aaf77-ec8a-4bf5-80fd-cbd71de6f2de`
+- **Flag ID:** `a4bdb6f8-3d20-4cc3-89a7-10dddc04a471`
 
-### 39. LOW: Contains console.log statements. Remove for production.
+### 41. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\series\series-context-manager.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `9e96f5f2-c15c-4bdd-9662-64ba10ea4016`
+- **Flag ID:** `d4333050-57de-4f3f-9145-1410e7d6fcda`
 
-### 40. LOW: Contains console.log statements. Remove for production.
+### 42. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\supabase\client.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `948d7aef-017b-4fa3-a2de-5e212a46bc5d`
+- **Flag ID:** `b0cbcb0f-b024-447d-b5cd-babea7e797b0`
 
-### 41. LOW: Contains console.log statements. Remove for production.
+### 43. LOW: Contains console.log statements. Remove for production.
 - **File:** `\lib\v2-feature-flags.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `51c2934f-54ca-48fd-a9b7-a8731ff08fb7`
+- **Flag ID:** `c0db5635-a614-4471-b507-16f1dbf75c3f`
 
-### 42. LOW: Contains console.log statements. Remove for production.
+### 44. LOW: Contains console.log statements. Remove for production.
 - **File:** `\middleware.ts`
 - **Category:** ARCHITECTURAL_VIOLATION
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Replace with proper logging system
-- **Flag ID:** `0b8cb51c-78a3-45ac-8d4f-ee22eed624f0`
+- **Flag ID:** `c29f7455-fa9a-4710-9290-97024b317e65`
 
-### 43. LOW: Large component without memoization. Consider React.memo.
+### 45. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\admin\error-monitoring\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7d85ba05-20bf-4225-b2fe-2f010b1eea57`
+- **Flag ID:** `66e981e5-862f-4a90-96d6-2b45cdc5da99`
 
-### 44. LOW: Large component without memoization. Consider React.memo.
+### 46. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\admin\request-flow\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `77e20922-b576-469f-8a60-5b69c37a3892`
+- **Flag ID:** `ca7c6439-66d5-4e9f-b7cb-392c5af18a6a`
 
-### 45. LOW: Large component without memoization. Consider React.memo.
+### 47. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\admin\distribute-credits\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `d7aa3f5e-4ba4-41ff-a779-9e1bdfdf8b1b`
+- **Flag ID:** `25e6b021-3e7c-4f63-8a4a-13bd902e07ac`
 
-### 46. LOW: Large component without memoization. Consider React.memo.
+### 48. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\admin\monthly-maintenance\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5d63438a-c273-4499-97f6-82c9144d6e7b`
+- **Flag ID:** `93fe7729-7f03-4a5f-8ae2-b00370a7df5a`
 
-### 47. LOW: Large component without memoization. Consider React.memo.
+### 49. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\admin\process-payouts\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `8d043448-01bd-448b-a079-85f2674e4196`
+- **Flag ID:** `f849e1bd-b676-44c3-8e5a-2bc51bb0c705`
 
-### 48. LOW: Large component without memoization. Consider React.memo.
+### 50. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\admin\revert-excess-credits\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f23b62ca-9b4a-40cc-a85e-62173746bf4d`
+- **Flag ID:** `cb428ccc-4644-4516-b7fd-fd34b521970a`
 
-### 49. LOW: Large component without memoization. Consider React.memo.
+### 51. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\ai-usage\track\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `3e21eb62-28a1-4d6d-a8fe-3963c65591b2`
+- **Flag ID:** `a6046833-d849-4488-a91f-bd0cec6a3387`
 
-### 50. LOW: Large component without memoization. Consider React.memo.
+### 52. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creator\earnings\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ec62536e-efcb-438b-bf53-69c57243ffef`
+- **Flag ID:** `d56641f0-b4f9-4218-b4b6-f0ca5c7ffbb6`
 
-### 51. LOW: Large component without memoization. Consider React.memo.
+### 53. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\earnings\enhanced\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `3365d465-d20c-4cad-8601-7fc3569ad50a`
+- **Flag ID:** `e569d04a-5be1-49db-a4ab-1f1697f36e6f`
 
-### 52. LOW: Large component without memoization. Consider React.memo.
+### 54. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\earnings\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `365a9ccc-d9ca-4193-a90d-d014305e3de4`
+- **Flag ID:** `1df06a72-e328-43e6-8af8-82a143b6643c`
 
-### 53. LOW: Large component without memoization. Consider React.memo.
+### 55. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\earnings\unified\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `76982a5e-55be-418a-b91c-21dca6a98b58`
+- **Flag ID:** `8246e4e5-b4ff-46f6-b73a-fc0a64252a03`
 
-### 54. LOW: Large component without memoization. Consider React.memo.
+### 56. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\payout\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `35880841-14e3-4206-b1ed-905ac39eedf8`
+- **Flag ID:** `c699ca8c-9f85-4a0d-93b3-ee7115e90609`
 
-### 55. LOW: Large component without memoization. Consider React.memo.
+### 57. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\stripe\callback\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `c64c1628-010b-4677-b483-8dda8a4dccd6`
+- **Flag ID:** `e9997205-906e-44f2-8169-b373ca5a59f1`
 
-### 56. LOW: Large component without memoization. Consider React.memo.
+### 58. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\stripe\onboard\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ad21b774-769d-49b2-9abd-7aed73b0b0a1`
+- **Flag ID:** `1dbcb888-6b17-48d8-9e1c-2b70d1f8737e`
 
-### 57. LOW: Large component without memoization. Consider React.memo.
+### 59. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\stripe\refresh\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ae9c9d6c-cb3b-4a30-b281-cddca3fe3d26`
+- **Flag ID:** `67eb25a9-0638-49d4-94fb-341a4d4c29e6`
 
-### 58. LOW: Large component without memoization. Consider React.memo.
+### 60. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\creators\stripe\status\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f57f6bc7-1b5b-4c35-9ffc-e4065bbf614f`
+- **Flag ID:** `041e2115-27df-4b48-9a17-2dbc75264d72`
 
-### 59. LOW: Large component without memoization. Consider React.memo.
+### 61. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\errors\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `61c0796b-8a5c-4ae6-95ab-6256e16bdb37`
+- **Flag ID:** `40369b04-8506-42bf-ba1e-e8841d3a55b3`
 
-### 60. LOW: Large component without memoization. Consider React.memo.
+### 62. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\request-tracking\log\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0f2742bc-b9d4-4cc1-bc82-4cc97b2ef220`
+- **Flag ID:** `9fbe2b31-9624-4b92-bc8b-6eb3ce28078e`
 
-### 61. LOW: Large component without memoization. Consider React.memo.
+### 63. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\choice-books\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `e4d37672-843f-47fe-bd03-4064fa207319`
+- **Flag ID:** `27972ba5-ea2c-4ae6-9cc4-6952a4b91471`
 
-### 62. LOW: Large component without memoization. Consider React.memo.
+### 64. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\guest\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `83b00b0a-4fc0-468f-aa9d-8a3111819b60`
+- **Flag ID:** `cb2325e5-2f50-47c5-bb23-cb6fa9bddf32`
 
-### 63. LOW: Large component without memoization. Consider React.memo.
+### 65. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `199d75c0-ca11-4885-9f45-8efa3dab0276`
+- **Flag ID:** `1296ddbf-b543-404b-b839-18c82bcf44a4`
 
-### 64. LOW: Large component without memoization. Consider React.memo.
+### 66. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\analyze\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f8767a4d-6937-4e90-9524-12288e96c53a`
+- **Flag ID:** `84d7b709-41e3-48f3-94ab-16a352edda6a`
 
-### 65. LOW: Large component without memoization. Consider React.memo.
+### 67. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\chapters\generate\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `80829277-449b-4fa1-8a49-bccb76aa4e97`
+- **Flag ID:** `481fa2e1-c035-421d-8046-b2b47f792e6d`
 
-### 66. LOW: Large component without memoization. Consider React.memo.
+### 68. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\chapters\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7a98c06e-7a9d-4358-9180-7035550e13a8`
+- **Flag ID:** `4d144a46-fef9-43b5-8759-94e35b535970`
 
-### 67. LOW: Large component without memoization. Consider React.memo.
+### 69. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\chapters\stream\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0b66de31-34d0-4057-a78f-ea155505e1a9`
+- **Flag ID:** `6d1b99f5-0870-42f8-bffe-dfde1b49f526`
 
-### 68. LOW: Large component without memoization. Consider React.memo.
+### 70. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\characters\generate\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `8870c9c3-00e9-4f3a-b5fd-ff2be1621cc2`
+- **Flag ID:** `e54ba922-e06c-4f6b-828e-a0b494f67576`
 
-### 69. LOW: Large component without memoization. Consider React.memo.
+### 71. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\choices\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `100fbb0b-7998-4e78-8e86-97d7df4d830b`
+- **Flag ID:** `7833ede7-1e58-422d-8a2f-7d62428db7a3`
 
-### 70. LOW: Large component without memoization. Consider React.memo.
+### 72. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\cover\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `3fede49f-316d-40c8-b7b1-db43dce733c1`
+- **Flag ID:** `d81561d1-bae2-4c10-bf9c-cb532c0016e7`
 
-### 71. LOW: Large component without memoization. Consider React.memo.
+### 73. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\export\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `45da21e9-cfa7-4056-8fe5-dbd719f9fac6`
+- **Flag ID:** `391fdd68-b5f1-446d-a063-7df92546a795`
 
-### 72. LOW: Large component without memoization. Consider React.memo.
+### 74. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\facts\extract\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5e9a46fc-908a-40e4-aa62-9dec47c8d6df`
+- **Flag ID:** `9bd66485-bf7f-4239-986f-5983618e1eea`
 
-### 73. LOW: Large component without memoization. Consider React.memo.
+### 75. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\facts\optimize\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `075a7af7-730d-4a34-bc5d-5c78afc22386`
+- **Flag ID:** `68e67a4b-c5c2-47c3-92ff-1bd8322a9d44`
 
-### 74. LOW: Large component without memoization. Consider React.memo.
+### 76. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\generate-choice-chapter\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `b7c87b3c-6c6e-42dc-a17f-7390e3efb680`
+- **Flag ID:** `4d6461f6-6dc4-4a66-b0f9-648891ceb15b`
 
-### 75. LOW: Large component without memoization. Consider React.memo.
+### 77. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\timeline\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `d02338b1-319c-4a06-a364-1cf015ec4015`
+- **Flag ID:** `c3a0ce8d-bfee-4166-9f29-3c201e5846f0`
 
-### 76. LOW: Large component without memoization. Consider React.memo.
+### 78. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\stories\[id]\universe\setup\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `46f15584-d3d8-4de2-9b66-9cda3b5bfafb`
+- **Flag ID:** `ad3b98e1-734c-4272-934b-9551c065a904`
 
-### 77. LOW: Large component without memoization. Consider React.memo.
+### 79. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\api\webhooks\stripe\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `2e40ce4a-94c7-44cb-a061-602a1d54ac8f`
+- **Flag ID:** `08ae1596-b05b-4d31-b0fd-93546ad9e0a2`
 
-### 78. LOW: Large component without memoization. Consider React.memo.
+### 80. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\auth\signup\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7c0433f4-f263-4320-b3be-8245dc39130f`
+- **Flag ID:** `6689e838-002d-42f5-b1a9-644e841dfe8b`
 
-### 79. LOW: Large component without memoization. Consider React.memo.
+### 81. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\dashboard\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `9a467e0c-3e4c-45ed-b6cb-8f12c968106f`
+- **Flag ID:** `6e0259f0-500c-4ba0-b0fb-9b4e6944640e`
 
-### 80. LOW: Large component without memoization. Consider React.memo.
+### 82. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\error-monitoring-test\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `2df797fe-ad4e-4dd8-8ad2-a4cf49298ece`
+- **Flag ID:** `477a87e9-8219-4dbc-bf28-11de273c01d4`
 
-### 81. LOW: Large component without memoization. Consider React.memo.
+### 83. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `3457ef7c-0efb-44b5-890f-8fe78e8dc3f6`
+- **Flag ID:** `14cd1d6b-9e6c-48a8-9b7d-6a67b6179ec1`
 
-### 82. LOW: Large component without memoization. Consider React.memo.
+### 84. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\app\request-tracking-test\page.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `48697813-35f6-470e-b611-0f3ab6427d05`
+- **Flag ID:** `c5b3e9c8-1901-4c20-9121-ce1a203ce761`
 
-### 83. LOW: Large component without memoization. Consider React.memo.
+### 85. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\AdminCreditDistribution.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `6eeacd66-c50b-40b0-8f09-cd52f1d60016`
+- **Flag ID:** `81f0a0e2-cfac-4219-8474-870473bfaeda`
 
-### 84. LOW: Large component without memoization. Consider React.memo.
+### 86. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\AdminPayoutInterface.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7a4434e8-643b-4537-9b7b-65e7c46c9905`
+- **Flag ID:** `4812afde-5665-434f-b38e-754f8309f597`
 
-### 85. LOW: Large component without memoization. Consider React.memo.
+### 87. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\AICostDisplay.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `e37fd736-b267-40cf-899e-e7ec11a261de`
+- **Flag ID:** `87fd27e7-2bdd-43b9-8a97-1f46f2a568ec`
 
-### 86. LOW: Large component without memoization. Consider React.memo.
+### 88. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\basic\CharacterManagerButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `03053272-ec11-4290-98af-eb25e46d3259`
+- **Flag ID:** `b96e6f9e-b2b6-42f8-8b93-90fc5d4074b5`
 
-### 87. LOW: Large component without memoization. Consider React.memo.
+### 89. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\basic\FactExtractionButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `fdb12d93-8cd5-47ca-acb7-e0b624951002`
+- **Flag ID:** `cad72fd0-e059-4949-a2c2-a36e0afd8196`
 
-### 88. LOW: Large component without memoization. Consider React.memo.
+### 90. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\basic\ThreePhaseWorkflowButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `1d5ae184-dbca-4396-903d-c4a5774b7d25`
+- **Flag ID:** `4bce24b9-a48d-4c13-9188-2d651499683d`
 
-### 89. LOW: Large component without memoization. Consider React.memo.
+### 91. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\basic\WorldBuilderButtons.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `16102206-03d8-49e0-b818-7d07fa43fcd6`
+- **Flag ID:** `1d172e9f-a149-4265-9325-598c60899e79`
 
-### 90. LOW: Large component without memoization. Consider React.memo.
+### 92. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CacheChart.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `cc9d9dc2-cbe4-42ea-95f6-8e45fefbe839`
+- **Flag ID:** `e4c06d49-7fba-454f-b283-944822df1b0d`
 
-### 91. LOW: Large component without memoization. Consider React.memo.
+### 93. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\ChoiceBookReader.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `a2fa38d9-fa2b-4d63-aec2-1516c58278ec`
+- **Flag ID:** `e4364168-00c2-4808-9026-512d1e4ec541`
 
-### 92. LOW: Large component without memoization. Consider React.memo.
+### 94. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CoverGenerator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7e943dbe-4552-44a5-94e3-1409d6ec676c`
+- **Flag ID:** `678cf620-5a0d-4863-bf6f-52733494ffb7`
 
-### 93. LOW: Large component without memoization. Consider React.memo.
+### 95. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CreatorEarningsErrorBoundary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5e30279f-c2e5-46aa-8bce-d88909071beb`
+- **Flag ID:** `c46e17d7-c9bb-473b-972d-efb1d809b3ea`
 
-### 94. LOW: Large component without memoization. Consider React.memo.
+### 96. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CreatorEarningsHub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5688986a-aa91-4ea0-8241-924c7e5ad667`
+- **Flag ID:** `6fbe5061-cc08-4bb6-a085-dacc35eef001`
 
-### 95. LOW: Large component without memoization. Consider React.memo.
+### 97. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CreatorEarningsLoading.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `a1791217-cc45-4b5e-a147-3f233fffc0e1`
+- **Flag ID:** `03514c6a-d9e3-4414-b1d5-96189575b562`
 
-### 96. LOW: Large component without memoization. Consider React.memo.
+### 98. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CreditBalance.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `eb94d611-8789-4efe-9602-fe0980bdd7ca`
+- **Flag ID:** `2259794a-5ea4-4643-9efd-4efc0435bde0`
 
-### 97. LOW: Large component without memoization. Consider React.memo.
+### 99. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\CreditPurchase.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `c0f14dc5-9008-46ed-b52a-ae83e290cbc3`
+- **Flag ID:** `c67adda6-c68f-4578-83fd-8b2ba7a79d7f`
 
-### 98. LOW: Large component without memoization. Consider React.memo.
+### 100. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\dashboard\AnalyticsDashboard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `196f4ff5-8b9a-472c-b234-c0fca1280c68`
+- **Flag ID:** `6c2f035b-a5b3-4331-bd87-123d39a28985`
 
-### 99. LOW: Large component without memoization. Consider React.memo.
+### 101. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\dashboard\CreatorHub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5ae0723a-b685-4aee-8031-9c0d107f1eaf`
+- **Flag ID:** `12abe09b-3485-41f0-8563-89cecb18f178`
 
-### 100. LOW: Large component without memoization. Consider React.memo.
+### 102. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\dashboard\StoryLibrary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `1a684765-131f-4de3-80ac-57578d41e745`
+- **Flag ID:** `edbc5288-355a-442b-82a0-f70f5991bc4d`
 
-### 101. LOW: Large component without memoization. Consider React.memo.
+### 103. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\ErrorBoundary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `12320616-7fb6-497d-994c-8be61818c43f`
+- **Flag ID:** `62eb1185-6a27-4cc2-9917-55c52d9df08c`
 
-### 102. LOW: Large component without memoization. Consider React.memo.
+### 104. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\GlassCreatorEarningsWrapper.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `98396560-5e93-4dfd-a362-6e3257c924d9`
+- **Flag ID:** `508e4707-69f1-4c8a-b3bd-365c0e43155f`
 
-### 103. LOW: Large component without memoization. Consider React.memo.
+### 105. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\GlassStoryCreatorWrapper.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `80f99ffe-83ed-4602-887f-761933b9d5e0`
+- **Flag ID:** `5cf40e16-e6cf-448b-94af-cdcc84779fa3`
 
-### 104. LOW: Large component without memoization. Consider React.memo.
+### 106. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\LibraryReader.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `e6532388-8373-4c88-bb40-bd4c60910e20`
+- **Flag ID:** `5bf50453-568f-4034-a4a9-680c11df9977`
 
-### 105. LOW: Large component without memoization. Consider React.memo.
+### 107. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\LoadingFallback.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `284362ce-8a75-4b2e-8af2-884907e0d152`
+- **Flag ID:** `190509da-b7cf-40e3-9634-da38d5a2bde0`
 
-### 106. LOW: Large component without memoization. Consider React.memo.
+### 108. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\PremiumUpgradePrompt.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7fe99747-9639-4d1a-82e6-1cc033e36812`
+- **Flag ID:** `606c6e62-e6ba-4ec2-baad-d95cfc6a6a9d`
 
-### 107. LOW: Large component without memoization. Consider React.memo.
+### 109. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\RequestTrackingStatus.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `375196cb-2c86-4cb7-bd0a-6783fc694010`
+- **Flag ID:** `dd38975d-54a7-4a40-b9aa-8030ea67f87e`
 
-### 108. LOW: Large component without memoization. Consider React.memo.
+### 110. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\StoryCard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `c77217ad-aee8-4eec-9d3a-ae897506d033`
+- **Flag ID:** `dec27ff2-74df-4aa9-85e1-fd06aafcfb36`
 
-### 109. LOW: Large component without memoization. Consider React.memo.
+### 111. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\StoryReader.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `73eb46f3-d363-4f96-8e6f-cc390cf5a3d8`
+- **Flag ID:** `54a1f443-70ee-4fb5-a74d-ee51843a8d9f`
 
-### 110. LOW: Large component without memoization. Consider React.memo.
+### 112. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\StreamingStoryCreator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `43b2d9d6-2ea0-466b-bf77-0dbbc43a391a`
+- **Flag ID:** `016c2fc3-b70f-43e5-bbe7-656060dc7b7f`
 
-### 111. LOW: Large component without memoization. Consider React.memo.
+### 113. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\StripeConnectOnboarding.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f0c53a41-9400-4508-9777-23179194f8d9`
+- **Flag ID:** `40907ec3-a2eb-4195-b26a-27c76aaf775d`
 
-### 112. LOW: Large component without memoization. Consider React.memo.
+### 114. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\SubscriptionManager.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `a5cb3f5e-9bbe-49c8-b482-04c64ced4789`
+- **Flag ID:** `a431e668-0466-45e9-b14d-0fd96b4bad86`
 
-### 113. LOW: Large component without memoization. Consider React.memo.
+### 115. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\TransparentStoryGenerator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `26b62c40-9b52-4cd9-917d-31f85f953f98`
+- **Flag ID:** `004363ef-4828-4b2e-a1c8-44dd46de0cc7`
 
-### 114. LOW: Large component without memoization. Consider React.memo.
+### 116. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\ui\select.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `6894e88a-8f8f-42dc-81b6-3e6b56eb2806`
+- **Flag ID:** `ea96bb9a-794b-489e-861b-0291bf571593`
 
-### 115. LOW: Large component without memoization. Consider React.memo.
+### 117. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\UnifiedAnalyticsDashboard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5a7f3955-7cd5-469d-883c-2e8604295039`
+- **Flag ID:** `580a26fe-f999-42bb-8fc4-1b27f62cc057`
 
-### 116. LOW: Large component without memoization. Consider React.memo.
+### 118. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\UnifiedStoryCreator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `01d49f82-4c26-4e81-9aec-0f7ee58bf468`
+- **Flag ID:** `f725a93a-d909-48af-88ca-644e8423e9f2`
 
-### 117. LOW: Large component without memoization. Consider React.memo.
+### 119. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\v2\EnhancementSliders.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `9999040b-cea3-46f6-be7b-ccb0da6fce07`
+- **Flag ID:** `7de6c1c4-a7fe-4bf1-9035-119783af4530`
 
-### 118. LOW: Large component without memoization. Consider React.memo.
+### 120. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\v2\StoryLibrary.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `d1293da8-25e2-4f3a-9285-53b91b3ba05c`
+- **Flag ID:** `5ea886de-b461-4018-bb85-ec795ab0ee94`
 
-### 119. LOW: Large component without memoization. Consider React.memo.
+### 121. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\v2\ThreePhaseWorkflow.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `d391c7d8-e341-4ddb-b0f4-1991d2adac39`
+- **Flag ID:** `80ab50a3-ed88-4d98-9f7a-01909cc61715`
 
-### 120. LOW: Large component without memoization. Consider React.memo.
+### 122. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\v2\TimelineVisualization.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `a827f427-d229-48fd-adc6-d89b63263bc1`
+- **Flag ID:** `ab0e1189-8f28-4535-938c-248febf4ee21`
 
-### 121. LOW: Large component without memoization. Consider React.memo.
+### 123. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\components\v2\WorkflowInterface.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `28f6b040-7190-40f3-a494-fec2d2941619`
+- **Flag ID:** `8e56a37f-f726-4eab-84d2-ae998bda7963`
 
-### 122. LOW: Large component without memoization. Consider React.memo.
+### 124. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\hooks\useAIGeneration.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `93f7e4e3-e496-4b16-8b17-93861c614d63`
+- **Flag ID:** `bcc8cf53-e82c-46e6-8980-16c0ef0a1873`
 
-### 123. LOW: Large component without memoization. Consider React.memo.
+### 125. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\hooks\useCreatorEarnings.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `76e4d2b4-b005-4465-bc8e-9d85b30faee1`
+- **Flag ID:** `467e53bb-baa7-452d-9fb6-7755efab4835`
 
-### 124. LOW: Large component without memoization. Consider React.memo.
+### 126. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\api\admin\distribute-credits\route.ts`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `31992d81-202a-4071-adf1-7d0d5a746b40`
+
+### 127. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\api\admin\process-payouts\route.ts`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `f253dfe6-9262-4e7f-b349-fc571500f50f`
+
+### 128. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\app\api\billing\webhook\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5ef08720-9433-404a-abf2-860dbe64c844`
+- **Flag ID:** `52cd19a0-b103-4ffb-96cd-5692bf9d979e`
 
-### 125. LOW: Large component without memoization. Consider React.memo.
+### 129. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\app\api\stories\route.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `cd2178e8-1704-451e-b06b-1adb5916a2c7`
+- **Flag ID:** `393d02f4-5a10-4caa-9b4d-3de3ffb7945b`
 
-### 126. LOW: Large component without memoization. Consider React.memo.
+### 130. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\auth\signin\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `3354c7af-dffa-40a5-80bd-ba2b5ad130d6`
+
+### 131. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\auth\signup\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `a61293f6-c50d-4626-a0f4-7d39bb6becfc`
+
+### 132. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\dashboard\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `6452da90-730a-4012-a5be-3638e2e72a80`
+
+### 133. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\app\page.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `df4e6848-4aa1-43a0-9b56-07ca52dcd37a`
+
+### 134. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `eefc1c78-276b-4006-ace2-1c540c207717`
+- **Flag ID:** `ca601139-705f-4d72-a5cf-8128cd3a4e67`
 
-### 127. LOW: Large component without memoization. Consider React.memo.
+### 135. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\features\creator\earnings-hub.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `e8c34786-8fcb-4149-a73b-b9176f66260e`
+- **Flag ID:** `4e763448-8072-43dd-bf5b-6da559b82190`
 
-### 128. LOW: Large component without memoization. Consider React.memo.
+### 136. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\features\library\ai-library-view.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `644f0ca2-74af-4ea4-92ab-5dd9bdd8a5c9`
+- **Flag ID:** `d72f2f23-1271-411c-8e61-c80f8e2db183`
 
-### 129. LOW: Large component without memoization. Consider React.memo.
+### 137. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\features\library\my-library-view.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `95d50bbb-1f26-44e9-b8eb-f0194c54bb8a`
+- **Flag ID:** `6bd16094-2005-4990-96af-78af610fd980`
 
-### 130. LOW: Large component without memoization. Consider React.memo.
+### 138. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\features\stories\story-creator.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0ae6b906-ba73-4d44-97f5-4f2209ab9329`
+- **Flag ID:** `2b4519b7-561a-469e-95bb-ac4cee286086`
 
-### 131. LOW: Large component without memoization. Consider React.memo.
+### 139. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\pricing\cost-display.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `581d722c-22d1-4cff-8993-a1b1b114b07f`
+- **Flag ID:** `25fe19e6-ba97-4f84-adef-59bbba8c302d`
 
-### 132. LOW: Large component without memoization. Consider React.memo.
+### 140. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\pricing\credit-purchase.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `65bcf07f-d83a-4081-935c-1b5a8345b103`
+- **Flag ID:** `dba515cc-3559-42b5-9fa3-c98cdf9981d1`
 
-### 133. LOW: Large component without memoization. Consider React.memo.
+### 141. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\components\pricing\pricing-guard.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `73f34444-ea06-4220-9773-9dada251070b`
+- **Flag ID:** `6c5b2308-50ed-41b0-b8bd-80c244cb2ae1`
 
-### 134. LOW: Large component without memoization. Consider React.memo.
+### 142. LOW: Large component without memoization. Consider React.memo.
+- **File:** `\infinite-pages-v3\src\components\ui\select.tsx`
+- **Category:** PERFORMANCE_ISSUE
+- **Effort:** 15-30 minutes
+- **Auto-fix:** Add React.memo if component props are stable
+- **Flag ID:** `9783059c-3c3a-4e59-af48-d89441356840`
+
+### 143. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\ai\context-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `fc2a174e-36ff-4913-9842-fd42764d8a5f`
+- **Flag ID:** `e0208db4-53e5-4743-b953-875656dedfd8`
 
-### 135. LOW: Large component without memoization. Consider React.memo.
+### 144. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\ai\streaming.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ef3b61d2-dd69-4f2f-892b-ae511e59a627`
+- **Flag ID:** `7ff1b2a7-d674-4855-b904-8af82b3ac694`
 
-### 136. LOW: Large component without memoization. Consider React.memo.
+### 145. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\middleware\compression-middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `c7454898-2da7-4760-9d84-a5f2e259c892`
+- **Flag ID:** `97dd3293-ef16-41c4-96d0-e9d1d3b88b29`
 
-### 137. LOW: Large component without memoization. Consider React.memo.
+### 146. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\pricing\cost-calculator.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `81c5fe85-261e-43cd-961c-3257079974dd`
+- **Flag ID:** `b25b7820-33ce-43a6-82e8-267aea1cfb4e`
 
-### 138. LOW: Large component without memoization. Consider React.memo.
+### 147. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\security\content-sanitizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `d684a2c1-a246-4887-af3d-32c6cdfff3b6`
+- **Flag ID:** `b368fd60-230f-4479-9e1c-8e530ebc5e6d`
 
-### 139. LOW: Large component without memoization. Consider React.memo.
+### 148. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\infinite-pages-v3\src\lib\utils\constants.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `8c507383-3c9a-4bbe-bff4-8f0a205229a2`
+- **Flag ID:** `40f3373a-b6e4-4fd6-9ba1-23a9e948b1c2`
 
-### 140. LOW: Large component without memoization. Consider React.memo.
+### 149. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\ai-cost-calculator.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `fae09cb7-b803-427e-83f4-d1c8d7024965`
+- **Flag ID:** `3e975b2f-905e-4925-9c44-be518728a896`
 
-### 141. LOW: Large component without memoization. Consider React.memo.
+### 150. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\character-manager.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `fec8d641-c6d7-4c57-906d-6b5dc9a41f7e`
+- **Flag ID:** `4529d6ad-5b89-49f5-8170-fbf5d20cad8f`
 
-### 142. LOW: Large component without memoization. Consider React.memo.
+### 151. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\choice-books\choice-analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `82affd79-0fa2-4782-8f41-b078275e7801`
+- **Flag ID:** `68ca3574-68bf-4bea-bd76-e73c5a03415e`
 
-### 143. LOW: Large component without memoization. Consider React.memo.
+### 152. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\choice-books\choice-generator.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `1a177a77-85c8-4b99-a90f-18ed1a129ee7`
+- **Flag ID:** `f939c55d-2008-4e9f-9ea2-e19d852cdb0d`
 
-### 144. LOW: Large component without memoization. Consider React.memo.
+### 153. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\choice-books\choice-prompts.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `e5b85992-e741-4d6e-b2e4-5a637961aad2`
+- **Flag ID:** `b29565ef-2aae-434f-8cc7-4ae9eb0827cd`
 
-### 145. LOW: Large component without memoization. Consider React.memo.
+### 154. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\choice-books\choice-types.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `36149f75-5c50-4c4a-93e8-6658bd2876f3`
+- **Flag ID:** `54c77b24-b4c9-4688-9f16-031df1b0c40a`
 
-### 146. LOW: Large component without memoization. Consider React.memo.
+### 155. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\adaptive-context.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `50fc53e6-2f9d-4bc5-80be-d8eec372b0c2`
+- **Flag ID:** `7b9d2bf8-61ef-47c3-9af7-9e3dbf15e050`
 
-### 147. LOW: Large component without memoization. Consider React.memo.
+### 156. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\advanced-batch-processor.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `1afe26ee-8e1b-4945-9572-5c0aaa117ad1`
+- **Flag ID:** `4780e216-d21a-4a8a-a4a2-ae768e92c9b5`
 
-### 148. LOW: Large component without memoization. Consider React.memo.
+### 157. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\ai-cost-optimization-hub.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f87271f8-2627-4a86-b176-fb78fa51648a`
+- **Flag ID:** `9b2e39e5-57ed-4edc-8464-0245af84c1a9`
 
-### 149. LOW: Large component without memoization. Consider React.memo.
+### 158. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `06a4a2ad-0906-4a67-90db-b9fa2bc5ddcc`
+- **Flag ID:** `a7ec7b1c-f613-420f-bd67-58b5cbd576bb`
 
-### 150. LOW: Large component without memoization. Consider React.memo.
+### 159. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\batch.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `13ae3c9d-c86d-427a-bbe8-57388514b8b5`
+- **Flag ID:** `9a5f0a3c-6ba5-4948-becc-8ac93022202a`
 
-### 151. LOW: Large component without memoization. Consider React.memo.
+### 160. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\cache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `2678f305-910c-48ae-8ee5-3fc0f9bdfbf2`
+- **Flag ID:** `42d55014-9d43-4873-bd9f-a503b4b26e06`
 
-### 152. LOW: Large component without memoization. Consider React.memo.
+### 161. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\context-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `698e4653-97bb-4ac1-a580-c4c0f2198b08`
+- **Flag ID:** `36657d0e-1de6-4904-8fe6-3d15cc430c16`
 
-### 153. LOW: Large component without memoization. Consider React.memo.
+### 162. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\enhanced-cost-analytics.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0bf7ef14-086b-4024-b50e-acec88e45e51`
+- **Flag ID:** `c0f2cd25-19d4-4dd6-a224-9d07827549f3`
 
-### 154. LOW: Large component without memoization. Consider React.memo.
+### 163. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\fact-extractor.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f38c9c45-0527-45f1-ab0b-72a9714e3f65`
+- **Flag ID:** `d936c714-5b28-420c-a0d2-62f766fdf439`
 
-### 155. LOW: Large component without memoization. Consider React.memo.
+### 164. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\infinitePagesCache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ccd2c91d-a42a-4f9c-b2fe-9d54947fa57c`
+- **Flag ID:** `ff1759c6-0468-42a9-9723-e54cb17258a1`
 
-### 156. LOW: Large component without memoization. Consider React.memo.
+### 165. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\intelligent-model-selector.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `7c368e30-db9f-4084-8131-b9b0d642dd23`
+- **Flag ID:** `486d541f-3ac9-4616-a7b8-85730728f5c7`
 
-### 157. LOW: Large component without memoization. Consider React.memo.
+### 166. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\prompt-templates.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `da25fa9f-bfbb-4a39-a764-badccc750590`
+- **Flag ID:** `d8fb61b9-9af8-49a2-a07b-19f96e35a69e`
 
-### 158. LOW: Large component without memoization. Consider React.memo.
+### 167. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\prompts.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `9c6c1e27-7fee-4a7f-aa0a-cdd2e4c6bb6b`
+- **Flag ID:** `6684ecb6-24f1-42af-b712-9a3586470129`
 
-### 159. LOW: Large component without memoization. Consider React.memo.
+### 168. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\service.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `06fe20a0-d352-49ac-a6e5-75f12be24044`
+- **Flag ID:** `087ed664-6f48-4846-a419-f2e9e11e0d87`
 
-### 160. LOW: Large component without memoization. Consider React.memo.
+### 169. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\sfsl-schema.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `248aee91-329b-406d-a8fd-d46716a8a642`
+- **Flag ID:** `9d7bf10c-bbe7-48c3-9672-2b5faae83efc`
 
-### 161. LOW: Large component without memoization. Consider React.memo.
+### 170. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\streaming.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `921b9672-2e2e-4175-b4ee-5a5acba40843`
+- **Flag ID:** `43479c5a-02de-49b9-9817-2b174245d842`
 
-### 162. LOW: Large component without memoization. Consider React.memo.
+### 171. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\claude\v2-enhancements.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `32f39990-c17f-4045-a9b5-b7402d417a11`
+- **Flag ID:** `7e98719f-c510-4434-b504-b2503769b032`
 
-### 163. LOW: Large component without memoization. Consider React.memo.
+### 172. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\constants.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `f5e8c601-133c-4113-91ee-e0af9d1f324c`
+- **Flag ID:** `590aaa9f-449f-449e-b586-26cc1100108b`
 
-### 164. LOW: Large component without memoization. Consider React.memo.
+### 173. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\creator-earnings.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `b64f6751-cefa-4f27-b679-e42b4a1755d2`
+- **Flag ID:** `6df9fe2f-a1bc-4cc7-9323-3073aaeead7d`
 
-### 165. LOW: Large component without memoization. Consider React.memo.
+### 174. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\database\query-optimizer.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `8ab41aa3-1f7a-4ab5-a8b1-00159f98a6f4`
+- **Flag ID:** `f9b5f455-80a3-4ce9-8c74-7b0034b9db3b`
 
-### 166. LOW: Large component without memoization. Consider React.memo.
+### 175. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\error-monitoring.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `2f5268f3-a1b7-478c-a99f-98ad7a3328a2`
+- **Flag ID:** `e5aea884-bdcd-4aa5-9835-7818bced3b16`
 
-### 167. LOW: Large component without memoization. Consider React.memo.
+### 176. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\hooks\useDebounce.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0fe3f0f9-a25c-49da-a599-e0a20c58e4b5`
+- **Flag ID:** `b9bd0d9c-1e29-4371-baf2-ebb47dd191a3`
 
-### 168. LOW: Large component without memoization. Consider React.memo.
+### 177. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\hooks\useQueryCache.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `1423b2cc-fda9-4d5d-920a-2f14b5feb2f5`
+- **Flag ID:** `268148dc-e15a-41f6-ade0-b9ebbacfcc63`
 
-### 169. LOW: Large component without memoization. Consider React.memo.
+### 178. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\providers\QueryProvider.tsx`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `558e2c16-e2ad-4cb1-b319-92e272aa49bd`
+- **Flag ID:** `5f2136b2-1c81-40a3-a4ea-50893e055e51`
 
-### 170. LOW: Large component without memoization. Consider React.memo.
+### 179. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\rateLimit.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `fefd52f0-ae0d-44b4-a7bd-6ecf20b9c755`
+- **Flag ID:** `a5c6dbcb-439d-4c0c-b80a-ff41856fc352`
 
-### 171. LOW: Large component without memoization. Consider React.memo.
+### 180. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\request-tracking-init.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5d308a9d-9428-4fea-bab4-ba6e3b98fa93`
+- **Flag ID:** `cfd903d6-e0dc-42da-a819-59c417ee44fb`
 
-### 172. LOW: Large component without memoization. Consider React.memo.
+### 181. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\request-tracking.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `5c17eab1-aecf-4c07-bf26-0a3f85f1a751`
+- **Flag ID:** `dc72d5d9-f393-4a3d-9802-12d98dfca99c`
 
-### 173. LOW: Large component without memoization. Consider React.memo.
+### 182. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\series\series-context-manager.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `ac713759-380a-4072-a060-9a28550da660`
+- **Flag ID:** `5ee7fa76-69f0-4148-9518-e7fd222788f6`
 
-### 174. LOW: Large component without memoization. Consider React.memo.
+### 183. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\series\series-types.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `0569f94c-9f49-48bd-b50c-b0a06432de45`
+- **Flag ID:** `9602b637-2ed2-4552-bb84-7bc2b0e682ad`
 
-### 175. LOW: Large component without memoization. Consider React.memo.
+### 184. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\series-manager.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `76c2ed2e-89ef-4094-a45f-e6175a0c0718`
+- **Flag ID:** `ccf109a1-4405-4f65-bb29-0055c0cb850b`
 
-### 176. LOW: Large component without memoization. Consider React.memo.
+### 185. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\server-error-monitoring.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `de9b03f0-2eca-4b77-8185-121d7a31c99c`
+- **Flag ID:** `f848d19b-3ecf-46d0-b5e0-b6b1e69ea8a3`
 
-### 177. LOW: Large component without memoization. Consider React.memo.
+### 186. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\stripe-payouts.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `4eac6899-d8d4-4b33-94d6-4b92d7439e08`
+- **Flag ID:** `cf1328a4-f53a-4e99-8877-e0bb7ec17c2e`
 
-### 178. LOW: Large component without memoization. Consider React.memo.
+### 187. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\supabase\types.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `17c5f42f-bccc-4eea-8ec5-3b5e3533b8b5`
+- **Flag ID:** `7fdb1dec-9a5d-46c2-8558-af890a3ced25`
 
-### 179. LOW: Large component without memoization. Consider React.memo.
+### 188. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\types\ai.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `bd003cc3-c1ec-4732-a5c2-a60f94870db8`
+- **Flag ID:** `bb7de337-6ad4-4bd7-a003-35f88de15852`
 
-### 180. LOW: Large component without memoization. Consider React.memo.
+### 189. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\types\api.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `59da45ff-3b9c-4a0c-9e6d-e2b702baa25f`
+- **Flag ID:** `d69ad42b-c6ee-4cad-9739-c2b102f435b2`
 
-### 181. LOW: Large component without memoization. Consider React.memo.
+### 190. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\types\components.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `90448d32-9347-459a-a49d-f62230562855`
+- **Flag ID:** `7340bc86-c5a9-4516-abd7-f0cf8d7d8f25`
 
-### 182. LOW: Large component without memoization. Consider React.memo.
+### 191. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\types\database.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `52483a65-994f-40cc-8b0a-5f44f9032bca`
+- **Flag ID:** `ef070049-2b25-4d30-a5d1-9efece325033`
 
-### 183. LOW: Large component without memoization. Consider React.memo.
+### 192. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\types\index.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `6ba686c1-e350-4182-a503-607fae258a33`
+- **Flag ID:** `46bee402-ced8-4975-af21-a9b1350d436d`
 
-### 184. LOW: Large component without memoization. Consider React.memo.
+### 193. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\lib\v2-feature-flags.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `badcf6b1-94f5-48e4-aa28-87b3eb8a1917`
+- **Flag ID:** `1af8499d-4d8a-472b-9226-a1faf34a24a6`
 
-### 185. LOW: Large component without memoization. Consider React.memo.
+### 194. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\middleware.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `b6584f66-0946-4c94-8ced-b97c1b723539`
+- **Flag ID:** `cf9537db-40c5-49a5-a5c6-cd6d7765b7d8`
 
-### 186. LOW: Large component without memoization. Consider React.memo.
+### 195. LOW: Large component without memoization. Consider React.memo.
 - **File:** `\types\creator-earnings.ts`
 - **Category:** PERFORMANCE_ISSUE
 - **Effort:** 15-30 minutes
 - **Auto-fix:** Add React.memo if component props are stable
-- **Flag ID:** `bcbcb0a3-3626-480f-a2ae-67c409b07ed8`
+- **Flag ID:** `60aa9b76-b284-4109-b1f1-42ac61cdca67`
 
 
 ## 📋 RESOLUTION WORKFLOW
