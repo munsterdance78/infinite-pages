@@ -55,17 +55,17 @@ export async function POST(request: NextRequest) {
 }
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
-  if (!session.metadata?.userId) return
+  if (!session.metadata?.['userId']) return
 
   const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
   const supabase = createServiceRoleClient()
 
   // Determine tier from metadata, default to premium for backward compatibility
-  const tier = session.metadata.tier || 'premium'
+  const tier = session.metadata?.['tier'] || 'premium'
   const subscriptionLimits = SUBSCRIPTION_LIMITS[tier as 'basic' | 'premium']
   const creditsToGrant = subscriptionLimits.MONTHLY_CREDITS
 
-  console.log(`[Webhook] Checkout completed for user ${session.metadata.userId}, tier: ${tier}, credits: ${creditsToGrant}`)
+  console.log(`[Webhook] Checkout completed for user ${session.metadata?.['userId']}, tier: ${tier}, credits: ${creditsToGrant}`)
 
   await supabase
     .from('profiles')
@@ -76,13 +76,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       tokens_remaining: creditsToGrant,
       stripe_subscription_id: subscription.id
     })
-    .eq('id', session.metadata.userId)
+    .eq('id', session.metadata?.['userId'])
 
   // Log the subscription event
   await supabase
     .from('subscription_logs')
     .insert({
-      user_id: session.metadata.userId,
+      user_id: session.metadata?.['userId'],
       event_type: 'subscription_created',
       subscription_tier: tier,
       credits_granted: creditsToGrant,
