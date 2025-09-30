@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import type { NextResponse } from 'next/server'
 
 /**
  * Simplified rate limiting for build compatibility

@@ -1,18 +1,19 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/lib/supabase/types'
 
 /**
  * Client-side Supabase client
  * Uses exact environment variables from Vercel
  */
 export const createClient = () => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']!
+  const supabaseKey = process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error('Missing Supabase environment variables')
   }
 
-  return createSupabaseClient(supabaseUrl, supabaseKey, {
+  return createSupabaseClient<Database>(supabaseUrl, supabaseKey, {
     auth: {
       autoRefreshToken: true,
       persistSession: true,
@@ -37,14 +38,14 @@ export const createServiceClient = () => {
 }
 
 export const createServiceRoleClient = () => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']!
+  const serviceRoleKey = process.env['SUPABASE_SERVICE_ROLE_KEY']!
 
   if (!supabaseUrl || !serviceRoleKey) {
     throw new Error('Missing Supabase service role credentials')
   }
 
-  return createSupabaseClient(supabaseUrl, serviceRoleKey, {
+  return createSupabaseClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false

@@ -39,7 +39,7 @@ export default function LandingPage() {
   const handleSignIn = async () => {
     setLoading(true)
     try {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`
+      const redirectUrl = `${process.env['NEXT_PUBLIC_SITE_URL'] || window.location.origin}/api/auth/callback`
 
       await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -79,8 +79,8 @@ export default function LandingPage() {
                 variant="ghost"
                 className="hidden sm:inline-flex"
                 onClick={() => {
-                  const pricingSection = document.getElementById('pricing-section');
-                  pricingSection?.scrollIntoView({ behavior: 'smooth' });
+                  const pricingSection = document.getElementById('pricing-section')
+                  pricingSection?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
                 Pricing
@@ -89,8 +89,8 @@ export default function LandingPage() {
                 variant="ghost"
                 className="hidden sm:inline-flex"
                 onClick={() => {
-                  const featuresSection = document.getElementById('features-section');
-                  featuresSection?.scrollIntoView({ behavior: 'smooth' });
+                  const featuresSection = document.getElementById('features-section')
+                  featuresSection?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
                 Features
@@ -145,8 +145,8 @@ export default function LandingPage() {
                 variant="outline"
                 className="text-lg px-8 py-4"
                 onClick={() => {
-                  const featuresSection = document.getElementById('features-section');
-                  featuresSection?.scrollIntoView({ behavior: 'smooth' });
+                  const featuresSection = document.getElementById('features-section')
+                  featuresSection?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
                 <BookOpen className="w-5 h-5 mr-2" />

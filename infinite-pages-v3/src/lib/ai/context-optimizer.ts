@@ -149,6 +149,8 @@ export class ContextOptimizer {
 
     for (let i = 0; i < contexts.length; i++) {
       const context = contexts[i]
+      if (!context) continue // Skip undefined contexts
+
       const operation = operations[i] || 'chapter'
 
       const options = getOptimalCompressionSettings(

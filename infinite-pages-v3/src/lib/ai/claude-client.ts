@@ -6,7 +6,7 @@ import { env } from '@/types/environment'
  * Uses exact environment variables from Vercel
  */
 export const anthropic = new Anthropic({
-  apiKey: env.ANTHROPIC_API_KEY,
+  apiKey: env.ANTHROPIC_API_KEY
 })
 
 /**
@@ -15,7 +15,7 @@ export const anthropic = new Anthropic({
 export const claudeConfig = {
   model: 'claude-3-sonnet-20240229',
   maxTokens: 4000,
-  temperature: 0.7,
+  temperature: 0.7
 } as const
 
 /**
@@ -23,7 +23,7 @@ export const claudeConfig = {
  */
 export const claudePricing = {
   inputTokenCost: 0.000003,  // $0.000003 per input token
-  outputTokenCost: 0.000015, // $0.000015 per output token
+  outputTokenCost: 0.000015 // $0.000015 per output token
 } as const
 
 /**
@@ -48,7 +48,7 @@ export async function createMessage({
   model = claudeConfig.model,
   maxTokens = claudeConfig.maxTokens,
   temperature = claudeConfig.temperature,
-  system,
+  system
 }: {
   messages: Anthropic.MessageParam[]
   model?: string
@@ -64,7 +64,7 @@ export async function createMessage({
       max_tokens: maxTokens,
       temperature,
       messages,
-      ...(system && { system }),
+      ...(system && { system })
     })
 
     const endTime = Date.now()
@@ -83,7 +83,7 @@ export async function createMessage({
         outputTokens,
         cost,
         credits,
-        duration,
+        duration
       }
     }
   } catch (error) {
@@ -100,7 +100,7 @@ export async function streamMessage({
   maxTokens = claudeConfig.maxTokens,
   temperature = claudeConfig.temperature,
   system,
-  onChunk,
+  onChunk
 }: {
   messages: Anthropic.MessageParam[]
   model?: string
@@ -118,7 +118,7 @@ export async function streamMessage({
       temperature,
       messages,
       ...(system && { system }),
-      stream: true,
+      stream: true
     })
 
     let fullContent = ''
@@ -126,8 +126,8 @@ export async function streamMessage({
     let outputTokens = 0
 
     for await (const chunk of stream) {
-      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text') {
-        const text = chunk.delta.text
+      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+        const text = (chunk.delta as { type: 'text_delta'; text: string }).text
         fullContent += text
         onChunk?.(text)
       } else if (chunk.type === 'message_start') {
@@ -149,7 +149,7 @@ export async function streamMessage({
         outputTokens,
         cost,
         credits,
-        duration,
+        duration
       }
     }
   } catch (error) {

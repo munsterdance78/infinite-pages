@@ -26,7 +26,7 @@ export default function SignInPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
-        password,
+        password
       })
 
       if (error) {
@@ -45,7 +45,7 @@ export default function SignInPage() {
   const handleGoogleSignIn = async () => {
     setLoading(true)
     try {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`
+      const redirectUrl = `${process.env['NEXT_PUBLIC_SITE_URL'] || window.location.origin}/api/auth/callback`
 
       await supabase.auth.signInWithOAuth({
         provider: 'google',

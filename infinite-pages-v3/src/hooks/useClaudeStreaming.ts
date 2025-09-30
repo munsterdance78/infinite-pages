@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import type { StreamResponse } from '@/lib/ai/streaming'
-import { claudeStreamingService } from '@/lib/ai/streaming'
+import { claudeStreamingService, type StreamResponse } from '@/lib/ai/streaming'
 
 export interface UseClaudeStreamingOptions {
   onComplete?: (response: StreamResponse) => void

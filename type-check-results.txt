@@ -1,0 +1,547 @@
+
+> infinite-pages-mvp@0.1.0 type-check
+> tsc --noEmit
+
+app/admin/error-monitoring/page.tsx(383,32): error TS2322: Type 'string' is not assignable to type '"default" | "secondary" | "outline" | "destructive" | null | undefined'.
+app/admin/error-monitoring/page.tsx(428,26): error TS2322: Type 'string' is not assignable to type '"default" | "secondary" | "outline" | "destructive" | null | undefined'.
+app/api/admin/request-flow/health/route.ts(75,69): error TS7006: Parameter 'a' implicitly has an 'any' type.
+app/api/admin/request-flow/health/route.ts(75,72): error TS7006: Parameter 'b' implicitly has an 'any' type.
+app/api/stories/[id]/analyze/route.ts(303,21): error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+app/api/stories/[id]/chapters/generate/route.ts(92,41): error TS2339: Property 'checkRateLimit' does not exist on type 'RateLimiter'.
+app/api/stories/[id]/chapters/generate/route.ts(157,30): error TS2339: Property 'id' does not exist on type '{ tokens_remaining: any; subscription_tier: any; }'.
+app/api/stories/[id]/chapters/generate/route.ts(171,41): error TS2339: Property 'sql' does not exist on type 'SupabaseClient<any, "public", any, any, any>'.
+app/api/stories/[id]/chapters/generate/route.ts(198,69): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/chapters/generate/route.ts(199,45): error TS2339: Property 'optimization' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'optimization' does not exist on type 'CacheEntry'.
+app/api/stories/[id]/chapters/generate/route.ts(234,41): error TS2339: Property 'sql' does not exist on type 'SupabaseClient<any, "public", any, any, any>'.
+app/api/stories/[id]/chapters/generate/route.ts(297,41): error TS2339: Property 'sql' does not exist on type 'SupabaseClient<any, "public", any, any, any>'.
+app/api/stories/[id]/chapters/generate/route.ts(310,66): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/chapters/generate/route.ts(329,29): error TS2304: Cannot find name 'requestBody'.
+app/api/stories/[id]/chapters/generate/route.ts(343,16): error TS2304: Cannot find name 'requestBody'.
+app/api/stories/[id]/chapters/generate/route.ts(392,63): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/characters/generate/route.ts(87,41): error TS2339: Property 'checkRateLimit' does not exist on type 'RateLimiter'.
+app/api/stories/[id]/characters/generate/route.ts(108,50): error TS2551: Property 'CHARACTER_GENERATION' does not exist on type '{ readonly STORY_FOUNDATION: 24; readonly CHAPTER_GENERATION: 15; readonly CHAPTER_IMPROVEMENT: 8; readonly CONTENT_ANALYSIS: 5; readonly FACT_EXTRACTION: 12; readonly STORY_ANALYSIS: 8; }'. Did you mean 'CHAPTER_GENERATION'?
+app/api/stories/[id]/characters/generate/route.ts(140,47): error TS7006: Parameter 'c' implicitly has an 'any' type.
+app/api/stories/[id]/characters/generate/route.ts(236,37): error TS2339: Property 'sql' does not exist on type 'SupabaseClient<any, "public", any, any, any>'.
+app/api/stories/[id]/characters/generate/route.ts(250,7): error TS2345: Argument of type '"character"' is not assignable to parameter of type '"chapter" | "universe" | "series" | "book"'.
+app/api/stories/[id]/characters/generate/route.ts(258,36): error TS2339: Property 'inputTokens' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'inputTokens' does not exist on type 'CacheEntry'.
+app/api/stories/[id]/characters/generate/route.ts(259,37): error TS2339: Property 'outputTokens' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'outputTokens' does not exist on type 'CacheEntry'.
+app/api/stories/[id]/characters/generate/route.ts(269,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/characters/generate/route.ts(279,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/characters/generate/route.ts(362,64): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ universe: any; series: any; book: any; chapter: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ universe: any; series: any; book: any; chapter: any; }'.
+app/api/stories/[id]/facts/optimize/route.ts(76,22): error TS2339: Property 'trackWorkflowPhase' does not exist on type 'ClaudeAnalyticsService'.
+app/api/stories/[id]/facts/optimize/route.ts(139,22): error TS2339: Property 'trackWorkflowCompletion' does not exist on type 'ClaudeAnalyticsService'.
+app/api/stories/[id]/facts/optimize/route.ts(169,28): error TS2339: Property 'trackWorkflowError' does not exist on type 'ClaudeAnalyticsService'.
+app/api/stories/[id]/facts/optimize/route.ts(214,5): error TS2353: Object literal may only specify known properties, and 'cacheOptions' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+app/api/stories/[id]/facts/optimize/route.ts(275,5): error TS2353: Object literal may only specify known properties, and 'cacheOptions' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+app/api/stories/[id]/universe/setup/route.ts(93,41): error TS2339: Property 'checkRateLimit' does not exist on type 'RateLimiter'.
+app/api/stories/[id]/universe/setup/route.ts(114,50): error TS2339: Property 'UNIVERSE_GENERATION' does not exist on type '{ readonly STORY_FOUNDATION: 24; readonly CHAPTER_GENERATION: 15; readonly CHAPTER_IMPROVEMENT: 8; readonly CONTENT_ANALYSIS: 5; readonly FACT_EXTRACTION: 12; readonly STORY_ANALYSIS: 8; }'.
+app/api/stories/[id]/universe/setup/route.ts(276,37): error TS2339: Property 'sql' does not exist on type 'SupabaseClient<any, "public", any, any, any>'.
+app/api/stories/guest/[id]/characters/generate/route.ts(29,7): error TS2345: Argument of type '"guest"' is not assignable to parameter of type '"free" | "pro"'.
+app/api/stories/guest/route.ts(132,7): error TS2345: Argument of type '"guest"' is not assignable to parameter of type '"free" | "pro"'.
+app/sentry-test/page.tsx(47,32): error TS2339: Property 'startTransaction' does not exist on type 'typeof import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/@sentry/nextjs/build/types/index.types")'.
+app/sentry-test/page.tsx(48,12): error TS2339: Property 'getCurrentHub' does not exist on type 'typeof import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/@sentry/nextjs/build/types/index.types")'.
+app/sentry-test/page.tsx(48,43): error TS7006: Parameter 'scope' implicitly has an 'any' type.
+components/basic/ThreePhaseWorkflowButtons.tsx(81,15): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(116,34): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(124,16): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(129,25): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(131,30): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(134,32): error TS18048: 'phase' is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(166,11): error TS2532: Object is possibly 'undefined'.
+components/basic/ThreePhaseWorkflowButtons.tsx(316,50): error TS2532: Object is possibly 'undefined'.
+components/LibraryReader.tsx(64,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ user_id: string; story_id: string; chapter_id: string; progress_percentage: number; last_read_at: string; reading_time_minutes: number; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+components/LibraryReader.tsx(76,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ user_id: string; story_id: string; reading_status: string; added_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'user_id' does not exist in type 'never[]'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(112,23): error TS2339: Property 'title' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(113,23): error TS2339: Property 'genre' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(114,25): error TS2339: Property 'premise' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(115,29): error TS2339: Property 'description' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(116,22): error TS2339: Property 'tone' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(117,24): error TS2339: Property 'length' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(118,28): error TS2339: Property 'characters' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(119,25): error TS2339: Property 'setting' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(120,31): error TS2339: Property 'target_length' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(121,35): error TS2339: Property 'choice_complexity' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(122,37): error TS2339: Property 'target_ending_count' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(123,34): error TS2339: Property 'estimated_length' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(124,29): error TS2339: Property 'main_themes' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(125,33): error TS2339: Property 'target_audience' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(127,22): error TS2339: Property 'type' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(253,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "stories", never, "POST">', gave the following error.
+    Argument of type 'Partial<UnifiedStory>[]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "stories", never, "POST">', gave the following error.
+    Type 'Partial<UnifiedStory>' is not assignable to type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(260,43): error TS2339: Property 'id' does not exist on type 'never'.
+components/story-creator/OptimizedUnifiedStoryCreator.tsx(343,17): error TS2345: Argument of type '{ status: string; }' is not assignable to parameter of type 'never'.
+components/SubscriptionManager.tsx(86,23): error TS7053: Element implicitly has an 'any' type because expression of type '"free" | "pro"' can't be used to index type '{ basic: { name: string; price: number; tokens: number; features: string[]; limits: string[]; color: string; popular: boolean; }; premium: { name: string; price: number; tokens: number; features: string[]; limits: never[]; color: string; popular: boolean; }; }'.
+  Property 'free' does not exist on type '{ basic: { name: string; price: number; tokens: number; features: string[]; limits: string[]; color: string; popular: boolean; }; premium: { name: string; price: number; tokens: number; features: string[]; limits: never[]; color: string; popular: boolean; }; }'.
+components/SubscriptionManager.tsx(112,19): error TS2339: Property 'tokens_input' does not exist on type 'never'.
+components/SubscriptionManager.tsx(112,38): error TS2339: Property 'tokens_output' does not exist on type 'never'.
+components/SubscriptionManager.tsx(113,71): error TS2339: Property 'cost_usd' does not exist on type 'never'.
+components/ui/label.tsx(4,33): error TS2307: Cannot find module '@radix-ui/react-label' or its corresponding type declarations.
+components/ui/slider.tsx(4,34): error TS2307: Cannot find module '@radix-ui/react-slider' or its corresponding type declarations.
+components/UnifiedStoryCreator.tsx(222,23): error TS2339: Property 'title' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(223,23): error TS2339: Property 'genre' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(224,25): error TS2339: Property 'premise' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(225,29): error TS2339: Property 'description' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(226,22): error TS2339: Property 'tone' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(227,24): error TS2339: Property 'length' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(228,28): error TS2339: Property 'characters' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(229,25): error TS2339: Property 'setting' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(230,31): error TS2339: Property 'target_length' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(231,35): error TS2339: Property 'choice_complexity' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(232,37): error TS2339: Property 'target_ending_count' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(233,34): error TS2339: Property 'estimated_length' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(234,29): error TS2339: Property 'main_themes' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(235,33): error TS2339: Property 'target_audience' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(237,22): error TS2339: Property 'type' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(337,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "stories", never, "POST">', gave the following error.
+    Argument of type 'Partial<UnifiedStory>[]' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "stories", never, "POST">', gave the following error.
+    Type 'Partial<UnifiedStory>' is not assignable to type 'never'.
+components/UnifiedStoryCreator.tsx(344,45): error TS2339: Property 'id' does not exist on type 'never'.
+components/UnifiedStoryCreator.tsx(460,19): error TS2345: Argument of type '{ status: string; }' is not assignable to parameter of type 'never'.
+components/v2/StoryLibrary.tsx(99,24): error TS2304: Cannot find name 'session'.
+components/v2/StoryLibrary.tsx(106,9): error TS2698: Spread types may only be created from object types.
+components/v2/StoryLibrary.tsx(107,30): error TS2339: Property 'chapters' does not exist on type 'never'.
+components/v2/StoryLibrary.tsx(108,27): error TS2339: Property 'chapters' does not exist on type 'never'.
+components/v2/StoryLibrary.tsx(110,39): error TS2339: Property 'story_facts' does not exist on type 'never'.
+components/v2/StoryLibrary.tsx(112,31): error TS2339: Property 'story_facts' does not exist on type 'never'.
+components/v2/StoryLibrary.tsx(114,36): error TS2339: Property 'story_facts' does not exist on type 'never'.
+components/v2/StoryLibrary.tsx(142,9): error TS2304: Cannot find name 'session'.
+components/v2/StoryLibrary.tsx(145,7): error TS2304: Cannot find name 'session'.
+components/v2/StoryLibrary.tsx(363,46): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number | null'.
+  Type 'undefined' is not assignable to type 'number | null'.
+components/v2/StoryLibrary.tsx(369,34): error TS2551: Property 'chapter_count' does not exist on type 'Story'. Did you mean 'character_count'?
+components/v2/StoryLibrary.tsx(434,48): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number | null'.
+  Type 'undefined' is not assignable to type 'number | null'.
+components/v2/StoryLibrary.tsx(438,40): error TS2551: Property 'chapter_count' does not exist on type 'Story'. Did you mean 'character_count'?
+components/v2/StoryLibrary.tsx(474,46): error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number | null'.
+  Type 'undefined' is not assignable to type 'number | null'.
+components/v2/StoryLibrary.tsx(480,34): error TS2551: Property 'chapter_count' does not exist on type 'Story'. Did you mean 'character_count'?
+components/v2/ThreePhaseWorkflow.tsx(179,36): error TS2304: Cannot find name 'session'.
+components/v2/ThreePhaseWorkflow.tsx(208,36): error TS2304: Cannot find name 'session'.
+components/v2/ThreePhaseWorkflow.tsx(253,36): error TS2304: Cannot find name 'session'.
+components/v2/ThreePhaseWorkflow.tsx(441,25): error TS2532: Object is possibly 'undefined'.
+infinite-pages-v3/app/ai-library/page.tsx(4,27): error TS2307: Cannot find module '@/components/features/library/ai-library-view' or its corresponding type declarations.
+infinite-pages-v3/app/api/admin/distribute-credits/route.ts(2,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/api/admin/distribute-credits/route.ts(3,40): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/app/api/admin/distribute-credits/route.ts(107,30): error TS7006: Parameter 'purchase' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/distribute-credits/route.ts(270,9): error TS7006: Parameter 'transaction' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(2,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(87,53): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(87,58): error TS7006: Parameter 'c' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(95,41): error TS7006: Parameter 'c' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(165,52): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(165,57): error TS7006: Parameter 'c' implicitly has an 'any' type.
+infinite-pages-v3/app/api/admin/process-payouts/route.ts(168,48): error TS7006: Parameter 'creator' implicitly has an 'any' type.
+infinite-pages-v3/app/api/auth/callback/route.ts(1,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/create-checkout/route.ts(5,24): error TS2307: Cannot find module '@/lib/billing/stripe' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/create-checkout/route.ts(6,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/create-checkout/route.ts(9,40): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/billing/create-portal/route.ts(5,24): error TS2307: Cannot find module '@/lib/billing/stripe' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/create-portal/route.ts(6,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/create-portal/route.ts(9,40): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/billing/webhook/route.ts(3,24): error TS2307: Cannot find module '@/lib/billing/stripe' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/webhook/route.ts(4,41): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/webhook/route.ts(5,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/app/api/billing/webhook/route.ts(6,37): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/app/api/stories/route.ts(15,8): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/app/api/stories/route.ts(16,59): error TS2307: Cannot find module '@/lib/utils/subscription-config' or its corresponding type declarations.
+infinite-pages-v3/app/api/stories/route.ts(144,40): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/stories/route.ts(151,5): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/stories/route.ts(158,61): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/stories/route.ts(197,40): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/stories/route.ts(233,7): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/api/stories/route.ts(240,66): error TS2345: Argument of type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' is not assignable to parameter of type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+  Property '[INTERNALS]' is missing in type 'import("C:/Users/thoma/infinite-pages/extracted-project/infinite-pages-v3/node_modules/next/dist/server/web/spec-extension/request").NextRequest' but required in type 'import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/next/dist/server/web/spec-extension/request").NextRequest'.
+infinite-pages-v3/app/auth/signin/page.tsx(4,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/auth/signin/page.tsx(85,20): error TS2322: Type '{ children: Element; variant: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+infinite-pages-v3/app/auth/signup/page.tsx(4,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/auth/signup/page.tsx(106,20): error TS2322: Type '{ children: Element; variant: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+infinite-pages-v3/app/dashboard/page.tsx(4,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/app/dashboard/page.tsx(8,26): error TS2307: Cannot find module '@/components/features/stories/story-creator' or its corresponding type declarations.
+infinite-pages-v3/app/dashboard/page.tsx(9,25): error TS2307: Cannot find module '@/components/features/creator/earnings-hub' or its corresponding type declarations.
+infinite-pages-v3/app/dashboard/page.tsx(10,28): error TS2307: Cannot find module '@/components/pricing/credit-purchase' or its corresponding type declarations.
+infinite-pages-v3/app/dashboard/page.tsx(11,26): error TS2307: Cannot find module '@/components/pricing/pricing-guard' or its corresponding type declarations.
+infinite-pages-v3/app/dashboard/page.tsx(44,40): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/app/my-library/page.tsx(4,27): error TS2307: Cannot find module '@/components/features/library/my-library-view' or its corresponding type declarations.
+infinite-pages-v3/app/page.tsx(4,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/middleware.ts(3,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/src/components/common/error-boundary.tsx(22,3): error TS4114: This member must have an 'override' modifier because it overrides a member in the base class 'Component<ErrorBoundaryProps, ErrorBoundaryState, any>'.
+infinite-pages-v3/src/components/common/error-boundary.tsx(26,3): error TS4114: This member must have an 'override' modifier because it overrides a member in the base class 'Component<ErrorBoundaryProps, ErrorBoundaryState, any>'.
+infinite-pages-v3/src/components/common/secure-content-renderer.tsx(11,56): error TS2307: Cannot find module '@/lib/security/content-sanitizer' or its corresponding type declarations.
+infinite-pages-v3/src/components/common/secure-content-renderer.tsx(86,35): error TS7006: Parameter 'paragraph' implicitly has an 'any' type.
+infinite-pages-v3/src/components/common/secure-content-renderer.tsx(86,46): error TS7006: Parameter 'index' implicitly has an 'any' type.
+infinite-pages-v3/src/components/features/library/ai-library-view.tsx(23,32): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/library/ai-library-view.tsx(232,33): error TS7006: Parameter 'genre' implicitly has an 'any' type.
+infinite-pages-v3/src/components/features/library/my-library-view.tsx(30,32): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/library/my-library-view.tsx(298,37): error TS7006: Parameter 'genre' implicitly has an 'any' type.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(4,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(5,31): error TS2307: Cannot find module '@/types/database' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(16,23): error TS2307: Cannot find module '@/components/features/stories/story-card' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(17,27): error TS2307: Cannot find module '@/components/common/error-boundary' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(18,34): error TS2307: Cannot find module '@/components/pricing/premium-upgrade-prompt' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(58,8): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(59,39): error TS2307: Cannot find module '@/lib/utils/subscription-config' or its corresponding type declarations.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(511,43): error TS7006: Parameter 'genre' implicitly has an 'any' type.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(558,37): error TS2345: Argument of type '(prev: { title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; target_length: number; choice_complexity: "moderate"; target_ending_count: number; estimated_length: number; main_themes: string[]; target_audience: string; }) => { ...; }' is not assignable to parameter of type 'SetStateAction<{ title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; target_length: number; choice_complexity: "moderate"; target_ending_count: number; estimated_length: number; main_themes: string[]; target_audience: string; }>'.
+  Type '(prev: { title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; target_length: number; choice_complexity: "moderate"; target_ending_count: number; estimated_length: number; main_themes: string[]; target_audience: string; }) => { ...; }' is not assignable to type '(prevState: { title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; target_length: number; choice_complexity: "moderate"; target_ending_count: number; estimated_length: number; main_themes: string[]; target_audience: string; }) => { ......'.
+    Call signature return types '{ choice_complexity: "simple" | "complex" | "moderate"; title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; ... 4 more ...; target_audience: string; }' and '{ title: string; genre: string; premise: string; description: string; tone: string; length: string; characters: string; setting: string; target_length: number; choice_complexity: "moderate"; target_ending_count: number; estimated_length: number; main_themes: string[]; target_audience: string; }' are incompatible.
+      The types of 'choice_complexity' are incompatible between these types.
+        Type '"simple" | "complex" | "moderate"' is not assignable to type '"moderate"'.
+          Type '"simple"' is not assignable to type '"moderate"'.
+infinite-pages-v3/src/components/features/stories/story-creator.tsx(643,35): error TS7006: Parameter 'genre' implicitly has an 'any' type.
+infinite-pages-v3/src/components/pricing/cost-display.tsx(30,8): error TS2307: Cannot find module '@/lib/pricing/cost-calculator' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/credit-purchase.tsx(11,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/credit-purchase.tsx(12,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/credit-purchase.tsx(148,16): error TS2322: Type '{ children: Element[]; variant: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(26,8): error TS2307: Cannot find module '@/lib/pricing/cost-calculator' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(27,40): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(28,28): error TS2307: Cannot find module '@/components/pricing/credit-purchase' or its corresponding type declarations.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(183,18): error TS2322: Type '{ children: Element[]; variant: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(353,18): error TS2322: Type '{ children: Element[]; variant: string; }' is not assignable to type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(386,52): error TS2469: The '+' operator cannot be applied to type 'symbol'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(387,36): error TS2469: The '>=' operator cannot be applied to type 'symbol'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(399,22): error TS2322: Type 'string | number | symbol' is not assignable to type 'Key | null | undefined'.
+  Type 'symbol' is not assignable to type 'Key | null | undefined'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(400,52): error TS2339: Property 'replace' does not exist on type 'string | number | symbol'.
+  Property 'replace' does not exist on type 'number'.
+infinite-pages-v3/src/components/pricing/pricing-guard.tsx(407,19): error TS2322: Type 'string | number | symbol' is not assignable to type 'ReactNode'.
+  Type 'symbol' is not assignable to type 'ReactNode'.
+infinite-pages-v3/src/components/ui/alert.tsx(3,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/badge.tsx(3,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/button.tsx(4,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/card.tsx(2,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/dialog.tsx(4,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/input.tsx(2,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/label.tsx(2,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/progress.tsx(3,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/select.tsx(4,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/skeleton.tsx(1,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/tabs.tsx(3,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/components/ui/textarea.tsx(2,20): error TS2307: Cannot find module '@/lib/utils/cn' or its corresponding type declarations.
+infinite-pages-v3/src/hooks/useClaudeStreaming.ts(4,37): error TS2307: Cannot find module '@/lib/ai/streaming' or its corresponding type declarations.
+infinite-pages-v3/src/hooks/useClaudeStreaming.ts(5,40): error TS2307: Cannot find module '@/lib/ai/streaming' or its corresponding type declarations.
+infinite-pages-v3/src/lib/ai/claude-client.ts(2,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/src/lib/ai/claude-client.ts(129,51): error TS2367: This comparison appears to be unintentional because the types '"text_delta" | "input_json_delta"' and '"text"' have no overlap.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(22,8): error TS2307: Cannot find module '@/lib/middleware/compression-middleware' or its corresponding type declarations.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(23,56): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(136,7): error TS2353: Object literal may only specify known properties, and 'contextWindow' does not exist in type 'OptimizationOptions'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(136,30): error TS2339: Property 'contextWindow' does not exist on type 'OptimizationOptions'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(201,73): error TS2339: Property 'compressionLevel' does not exist on type 'OptimizationOptions'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(225,26): error TS2339: Property 'maxTokens' does not exist on type 'OptimizationOptions'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(378,32): error TS2339: Property 'contextWindow' does not exist on type 'OptimizationOptions'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(488,7): error TS2353: Object literal may only specify known properties, and 'compressionLevel' does not exist in type 'Partial<OptimizationOptions>'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(494,7): error TS2353: Object literal may only specify known properties, and 'compressionLevel' does not exist in type 'Partial<OptimizationOptions>'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(501,7): error TS2353: Object literal may only specify known properties, and 'compressionLevel' does not exist in type 'Partial<OptimizationOptions>'.
+infinite-pages-v3/src/lib/ai/context-optimizer.ts(509,7): error TS2353: Object literal may only specify known properties, and 'compressionLevel' does not exist in type 'Partial<OptimizationOptions>'.
+infinite-pages-v3/src/lib/ai/streaming.ts(8,8): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/lib/auth/middleware.ts(1,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/lib/auth/middleware.ts(4,32): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/lib/auth/types.ts(1,35): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/lib/billing/stripe.ts(2,21): error TS2307: Cannot find module '@/types/environment' or its corresponding type declarations.
+infinite-pages-v3/src/lib/character-manager.ts(103,38): error TS2345: Argument of type 'VoicePattern' is not assignable to parameter of type '{ [key: string]: unknown; name?: string | undefined; storyId?: string | undefined; voicePattern?: VoicePattern | undefined; characterName?: string | undefined; }'.
+  Index signature for type 'string' is missing in type 'VoicePattern'.
+infinite-pages-v3/src/lib/character-manager.ts(220,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ character_name: string | undefined; story_id: string; speech_patterns: {}; vocabulary_style: {}; tonal_characteristics: {}; dialogue_examples: {}; consistency_markers: {}; created_at: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'character_name' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/choice-books/choice-analytics.ts(578,30): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+      Type 'undefined' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+      Type 'undefined' is not assignable to type 'string | number'.
+infinite-pages-v3/src/lib/choice-books/choice-analytics.ts(579,28): error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+      Type 'undefined' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+      Type 'undefined' is not assignable to type 'string | number'.
+infinite-pages-v3/src/lib/choice-books/choice-generator.ts(189,20): error TS2352: Conversion of type 'OptimizedContext' to type '{ core_facts?: string[] | undefined; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'core_facts' are incompatible.
+    Type '{ genre: string; setting: SettingFacts; protagonist: string; central_conflict: string; }' is missing the following properties from type 'string[]': length, pop, push, concat, and 29 more.
+infinite-pages-v3/src/lib/choice-books/choice-generator.ts(269,100): error TS2352: Conversion of type 'ChoiceOptimizedContext' to type '{ core_facts: { genre: string; setting: { location: string; }; protagonist: string; central_conflict: string; current_chapter_id?: string | undefined; }; active_characters: { name: string; current_goal: string; key_trait: string; current_emotion: string; }[]; recent_events: string[]; choice_context: { ...; }; branch...' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'ChoiceOptimizedContext' is missing the following properties from type '{ core_facts: { genre: string; setting: { location: string; }; protagonist: string; central_conflict: string; current_chapter_id?: string | undefined; }; active_characters: { name: string; current_goal: string; key_trait: string; current_emotion: string; }[]; recent_events: string[]; choice_context: { ...; }; branch...': active_characters, recent_events
+infinite-pages-v3/src/lib/claude/analytics.ts(1,30): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/lib/claude/analytics.ts(723,11): error TS2353: Object literal may only specify known properties, and 'creditsUsed' does not exist in type 'FactExtractionMetadata'.
+infinite-pages-v3/src/lib/claude/analytics.ts(756,11): error TS2353: Object literal may only specify known properties, and 'storyId' does not exist in type 'AnalysisMetadata'.
+infinite-pages-v3/src/lib/claude/analytics.ts(1391,40): error TS2345: Argument of type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; } | undefined' is not assignable to parameter of type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; }'.
+  Type 'undefined' is not assignable to type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; }'.
+infinite-pages-v3/src/lib/claude/analytics.ts(1392,41): error TS2345: Argument of type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; } | undefined' is not assignable to parameter of type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; }'.
+  Type 'undefined' is not assignable to type '{ timestamp: number; original: number; compressed: number; ratio: number; compressionSavings?: number | undefined; }'.
+infinite-pages-v3/src/lib/claude/analytics.ts(1452,5): error TS2739: Type '{ overall: { hitRate: number; missRate: number; totalRequests: number; }; byLevel: { [k: string]: { hitRate: number; missRate: number; totalRequests: number; }; }; }' is missing the following properties from type '{ level?: string | undefined; hitRate: number; missRate: number; totalHits: number; totalMisses: number; totalRequests: number; overall?: { hitRate: number; missRate: number; totalRequests: number; } | undefined; byLevel?: Record<...> | undefined; }': hitRate, missRate, totalHits, totalMisses, totalRequests
+infinite-pages-v3/src/lib/claude/batch.ts(211,60): error TS2345: Argument of type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' is not assignable to parameter of type '{ title?: string | undefined; genre: string; premise: string; }'.
+  Types of property 'genre' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/claude/batch.ts(214,52): error TS2345: Argument of type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' is not assignable to parameter of type '{ storyContext: string | Record<string, unknown>; chapterNumber: number; previousChapters: { number: number; content: string; summary: string; }[]; targetWordCount?: number | undefined; chapterPlan?: { ...; } | undefined; useOptimizedContext?: boolean | undefined; }'.
+  Type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' is missing the following properties from type '{ storyContext: string | Record<string, unknown>; chapterNumber: number; previousChapters: { number: number; content: string; summary: string; }[]; targetWordCount?: number | undefined; chapterPlan?: { ...; } | undefined; useOptimizedContext?: boolean | undefined; }': storyContext, chapterNumber, previousChapters
+infinite-pages-v3/src/lib/claude/batch.ts(217,51): error TS2345: Argument of type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' is not assignable to parameter of type '{ content: string; feedback: string; improvementType?: "character" | "general" | "description" | "dialogue" | "pacing" | undefined; }'.
+  Types of property 'content' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/claude/batch.ts(227,52): error TS2345: Argument of type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' is not assignable to parameter of type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+  Property 'prompt' is missing in type '{ [key: string]: unknown; title?: string | undefined; genre?: string | undefined; premise?: string | undefined; content?: string | undefined; feedback?: string | undefined; improvementType?: string | undefined; }' but required in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+infinite-pages-v3/src/lib/claude/cache.ts(423,11): error TS2532: Object is possibly 'undefined'.
+infinite-pages-v3/src/lib/claude/context-optimizer.ts(163,45): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/claude/context-optimizer.ts(523,51): error TS2532: Object is possibly 'undefined'.
+infinite-pages-v3/src/lib/claude/infinitePagesCache.ts(493,61): error TS2345: Argument of type 'Awaited<T>' is not assignable to parameter of type '{ [key: string]: unknown; title?: string | undefined; premise?: string | undefined; genre?: string | undefined; themes?: string[] | undefined; mainCharacters?: { name: string; }[] | undefined; plotStructure?: Record<...> | undefined; setting?: { ...; } | undefined; targetAudience?: string | undefined; }'.
+  Type 'T | (T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? F extends (value: infer V, ...args: infer _) => any ? Awaited<V> : never : T)' is not assignable to type '{ [key: string]: unknown; title?: string | undefined; premise?: string | undefined; genre?: string | undefined; themes?: string[] | undefined; mainCharacters?: { name: string; }[] | undefined; plotStructure?: Record<...> | undefined; setting?: { ...; } | undefined; targetAudience?: string | undefined; }'.
+    Type '(null | undefined) & T' is not assignable to type '{ [key: string]: unknown; title?: string | undefined; premise?: string | undefined; genre?: string | undefined; themes?: string[] | undefined; mainCharacters?: { name: string; }[] | undefined; plotStructure?: Record<...> | undefined; setting?: { ...; } | undefined; targetAudience?: string | undefined; }'.
+      Type 'undefined & T' is not assignable to type '{ [key: string]: unknown; title?: string | undefined; premise?: string | undefined; genre?: string | undefined; themes?: string[] | undefined; mainCharacters?: { name: string; }[] | undefined; plotStructure?: Record<...> | undefined; setting?: { ...; } | undefined; targetAudience?: string | undefined; }'.
+infinite-pages-v3/src/lib/claude/service.ts(195,20): error TS18046: 'error' is of type 'unknown'.
+infinite-pages-v3/src/lib/claude/service.ts(644,34): error TS2345: Argument of type '{ id: string; type: "story_foundation" | "general" | "content_improvement" | "content_analysis" | "chapter_generation"; params: { prompt: string; model: string | undefined; maxTokens: number | undefined; temperature: number | undefined; }; userId: string | undefined; }[]' is not assignable to parameter of type 'BatchOperation[]'.
+  Type '{ id: string; type: "story_foundation" | "chapter_generation" | "content_improvement" | "content_analysis" | "general"; params: { prompt: string; model: string | undefined; maxTokens: number | undefined; temperature: number | undefined; }; userId: string | undefined; }' is not assignable to type 'BatchOperation'.
+    Types of property 'type' are incompatible.
+      Type '"story_foundation" | "general" | "content_improvement" | "content_analysis" | "chapter_generation"' is not assignable to type '"chapter" | "story_foundation" | "general" | "content_improvement" | "content_analysis"'.
+        Type '"chapter_generation"' is not assignable to type '"chapter" | "story_foundation" | "general" | "content_improvement" | "content_analysis"'.
+infinite-pages-v3/src/lib/claude/service.ts(747,52): error TS2345: Argument of type 'Record<string, unknown>' is not assignable to parameter of type '{ type: string; content: string; }[]'.
+  Type 'Record<string, unknown>' is missing the following properties from type '{ type: string; content: string; }[]': length, pop, push, concat, and 29 more.
+infinite-pages-v3/src/lib/claude/service.ts(774,7): error TS2559: Type '{ [key: string]: unknown; number: number; targetWordCount?: number | undefined; }' has no properties in common with type '{ purpose?: string | undefined; keyEvents?: string[] | undefined; plotAdvancement?: string | undefined; }'.
+infinite-pages-v3/src/lib/claude/service.ts(784,7): error TS2739: Type '{ [key: string]: unknown; number: number; targetWordCount?: number | undefined; }' is missing the following properties from type '{ [key: string]: unknown; purpose: string; keyEvents: string[]; }': purpose, keyEvents
+infinite-pages-v3/src/lib/claude/sfsl-schema.ts(233,9): error TS2322: Type '{ type: string | undefined; content: string | undefined; }[]' is not assignable to type '{ type: string; content: string; }[]'.
+  Type '{ type: string | undefined; content: string | undefined; }' is not assignable to type '{ type: string; content: string; }'.
+    Types of property 'type' are incompatible.
+      Type 'string | undefined' is not assignable to type 'string'.
+        Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/creator-earnings.ts(39,83): error TS2345: Argument of type '{ p_creator_id: string; p_story_id: string; p_reader_id: string; p_credits_spent: number; p_creator_earnings: number; p_usd_equivalent: number; }' is not assignable to parameter of type 'undefined'.
+infinite-pages-v3/src/lib/creator-earnings.ts(91,8): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ creator_id: string; total_accumulated_usd: number; last_payout_date: null; last_payout_amount: null; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'creator_id' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/error-monitoring.ts(85,20): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/middleware/compression-middleware.ts(16,53): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(20,8): error TS2307: Cannot find module '@/lib/utils/constants' or its corresponding type declarations.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(103,7): error TS2322: Type 'string | number | symbol' is not assignable to type 'string'.
+  Type 'number' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(121,57): error TS2469: The '+' operator cannot be applied to type 'symbol'.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(122,22): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(138,9): error TS2322: Type 'string | number | symbol' is not assignable to type 'number'.
+  Type 'string' is not assignable to type 'number'.
+infinite-pages-v3/src/lib/pricing/cost-calculator.ts(140,55): error TS2469: The '<' operator cannot be applied to type 'symbol'.
+infinite-pages-v3/src/lib/providers/QueryProvider.tsx(18,14): error TS2322: Type '(failureCount: number, error: { status?: number | undefined; }) => boolean' is not assignable to type 'RetryValue<Error> | undefined'.
+  Type '(failureCount: number, error: { status?: number | undefined; }) => boolean' is not assignable to type 'ShouldRetryFunction<Error>'.
+    Types of parameters 'error' and 'error' are incompatible.
+      Type 'Error' has no properties in common with type '{ status?: number | undefined; }'.
+infinite-pages-v3/src/lib/providers/QueryProvider.tsx(52,14): error TS2322: Type '(failureCount: number, error: { status?: number | undefined; }) => boolean' is not assignable to type 'RetryValue<Error> | undefined'.
+  Type '(failureCount: number, error: { status?: number | undefined; }) => boolean' is not assignable to type 'ShouldRetryFunction<Error>'.
+    Types of parameters 'error' and 'error' are incompatible.
+      Type 'Error' has no properties in common with type '{ status?: number | undefined; }'.
+infinite-pages-v3/src/lib/providers/QueryProvider.tsx(76,42): error TS2345: Argument of type '(event: { type: string; mutation: { options: { mutationKey?: unknown; }; state: { status: string; error?: unknown; }; }; }) => void' is not assignable to parameter of type 'MutationCacheListener'.
+  Types of parameters 'event' and 'event' are incompatible.
+    Type 'MutationCacheNotifyEvent' is not assignable to type '{ type: string; mutation: { options: { mutationKey?: unknown; }; state: { status: string; error?: unknown; }; }; }'.
+      Type 'NotifyEventMutationObserverOptionsUpdated' is not assignable to type '{ type: string; mutation: { options: { mutationKey?: unknown; }; state: { status: string; error?: unknown; }; }; }'.
+        Types of property 'mutation' are incompatible.
+          Type 'Mutation<any, any, any, any> | undefined' is not assignable to type '{ options: { mutationKey?: unknown; }; state: { status: string; error?: unknown; }; }'.
+            Type 'undefined' is not assignable to type '{ options: { mutationKey?: unknown; }; state: { status: string; error?: unknown; }; }'.
+infinite-pages-v3/src/lib/request-tracking-init.ts(77,49): error TS2307: Cannot find module '@/lib/database/supabase' or its corresponding type declarations.
+infinite-pages-v3/src/lib/request-tracking-init.ts(234,22): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/request-tracking.ts(122,20): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/request-tracking.ts(500,48): error TS2353: Object literal may only specify known properties, and 'requestId' does not exist in type 'RequestInit'.
+infinite-pages-v3/src/lib/security/content-sanitizer.ts(216,48): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+infinite-pages-v3/src/lib/series-manager.ts(120,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "series", never, "POST">', gave the following error.
+    Argument of type '{ name: string; planned_books: number; universe_id: string; description: string; genre: string; target_audience: string; themes: string[]; created_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "series", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'name' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/series-manager.ts(148,9): error TS2554: Expected 3 arguments, but got 4.
+infinite-pages-v3/src/lib/series-manager.ts(266,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+infinite-pages-v3/src/lib/series-manager.ts(328,52): error TS2345: Argument of type 'SeriesFacts | null' is not assignable to parameter of type 'SeriesFacts'.
+  Type 'null' is not assignable to type 'SeriesFacts'.
+infinite-pages-v3/src/lib/series-manager.ts(330,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+infinite-pages-v3/src/lib/series-manager.ts(333,14): error TS2352: Conversion of type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' to type 'ContinuityAnalysis' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' is missing the following properties from type 'ContinuityAnalysis': overallScore, characterContinuity, plotContinuity, worldContinuity, and 3 more.
+infinite-pages-v3/src/lib/series-manager.ts(356,51): error TS2345: Argument of type 'SeriesFacts | null' is not assignable to parameter of type 'SeriesFacts'.
+  Type 'null' is not assignable to type 'SeriesFacts'.
+infinite-pages-v3/src/lib/series-manager.ts(358,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+infinite-pages-v3/src/lib/series-manager.ts(361,14): error TS2352: Conversion of type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' to type 'ContinuityAnalysis' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' is missing the following properties from type 'ContinuityAnalysis': overallScore, characterContinuity, plotContinuity, worldContinuity, and 3 more.
+infinite-pages-v3/src/lib/series-manager.ts(489,8): error TS2532: Object is possibly 'undefined'.
+infinite-pages-v3/src/lib/series-manager.ts(489,33): error TS2532: Object is possibly 'undefined'.
+infinite-pages-v3/src/lib/series-manager.ts(517,74): error TS2554: Expected 1 arguments, but got 2.
+infinite-pages-v3/src/lib/series-manager.ts(519,16): error TS2352: Conversion of type '{ universe: Record<string, unknown> | null; series: Record<string, unknown> | null; book: Record<string, unknown> | null; chapter: Record<string, unknown> | null; }' to type 'SeriesFacts' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ universe: Record<string, unknown> | null; series: Record<string, unknown> | null; book: Record<string, unknown> | null; chapter: Record<string, unknown> | null; }' is missing the following properties from type 'SeriesFacts': seriesId, name, characterDatabase, plotStructure, and 3 more.
+infinite-pages-v3/src/lib/series-manager.ts(543,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ series_id: string; facts_data: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'series_id' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(193,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<never, never, never, null, "character_arcs", never, "POST">', gave the following error.
+    Argument of type '{ series_id: string; character_name: string; current_book_development: { [bookNumber]: Partial<BookDevelopment>; }; last_appearance_book: number; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<never, never, never, null, "character_arcs", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'series_id' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(208,19): error TS2345: Argument of type '{ current_book_development: { [x: number]: Partial<BookDevelopment>; }; last_appearance_book: number; updated_at: string; }' is not assignable to parameter of type 'never'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(234,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<never, never, never, null, "world_state_changes", never, "POST">', gave the following error.
+    Argument of type '{ chapter_number?: number | undefined; duration: "temporary" | "permanent" | "gradual" | "unknown"; description: string; change_type: "political" | "technological" | "social" | "geographic" | "magical" | "economic" | "cultural"; ... 6 more ...; book_number: number; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<never, never, never, null, "world_state_changes", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'series_id' does not exist in type 'never[]'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(391,36): error TS2531: Object is possibly 'null'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(434,45): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ geography?: { world_type?: string | undefined; } | undefined; }'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(435,62): error TS2559: Type '{ genre: string; world_rules: unknown; total_planned_books: number; }' has no properties in common with type '{ description?: string | undefined; }'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(448,49): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, unknown>'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(497,61): error TS2345: Argument of type 'Record<string, unknown> | undefined' is not assignable to parameter of type 'Record<string, unknown>'.
+  Type 'undefined' is not assignable to type 'Record<string, unknown>'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(501,7): error TS2322: Type '{ affects_future_books: boolean; description: string; }[]' is not assignable to type 'WorldStateChange[]'.
+  Type '{ affects_future_books: boolean; description: string; }' is missing the following properties from type 'WorldStateChange': id, series_id, book_number, change_type, and 5 more.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(514,5): error TS2322: Type '{ id: string; name: string; type: "personal" | "political" | "social" | "economic" | "ideological"; parties_involved: string[]; stakes: string; escalation_level: number; introduced_book: number; tension_level: "low" | ... 2 more ... | "critical"; }[]' is not assignable to type 'UnresolvedConflict[]'.
+  Type '{ id: string; name: string; type: "personal" | "political" | "social" | "economic" | "ideological"; parties_involved: string[]; stakes: string; escalation_level: number; introduced_book: number; tension_level: "low" | ... 2 more ... | "critical"; }' is not assignable to type 'UnresolvedConflict'.
+    Types of property 'type' are incompatible.
+      Type '"personal" | "political" | "social" | "economic" | "ideological"' is not assignable to type '"personal" | "political" | "cosmic" | "interpersonal" | "societal"'.
+        Type '"social"' is not assignable to type '"personal" | "political" | "cosmic" | "interpersonal" | "societal"'. Did you mean '"societal"'?
+infinite-pages-v3/src/lib/series/series-context-manager.ts(533,5): error TS2322: Type '{ current_status: string; introduced_book: number; expected_resolution_book?: number | undefined; }[]' is not assignable to type 'PlotThread[]'.
+  Type '{ current_status: string; introduced_book: number; expected_resolution_book?: number | undefined; }' is missing the following properties from type 'PlotThread': id, name, description, priority, and 2 more.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(653,61): error TS2345: Argument of type '{ series_uuid: string; }' is not assignable to parameter of type 'undefined'.
+infinite-pages-v3/src/lib/series/series-context-manager.ts(712,5): error TS2322: Type 'CharacterArc[]' is not assignable to type '{ character_name: string; current_goal: string; key_trait: string; current_emotion: string; series_arc_progress: number; }[]'.
+  Type 'CharacterArc' is missing the following properties from type '{ character_name: string; current_goal: string; key_trait: string; current_emotion: string; series_arc_progress: number; }': current_goal, key_trait, current_emotion, series_arc_progress
+infinite-pages-v3/src/lib/types/components.ts(10,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(11,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(12,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(13,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(14,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(19,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(20,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(25,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(26,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(27,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/components.ts(28,3): error TS1205: Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.
+infinite-pages-v3/src/lib/types/database.ts(266,3): error TS2536: Type '"Insert"' cannot be used to index type '{ profiles: { Row: { id: string; email: string; full_name: string | null; subscription_tier: "basic" | "premium"; subscription_status: string; stripe_customer_id: string | null; current_period_end: string | null; ... 25 more ...; updated_at: string; }; Insert: { ...; }; Update: { ...; }; }; ... 20 more ...; individu...'.
+infinite-pages-v3/src/lib/types/database.ts(269,3): error TS2536: Type '"Update"' cannot be used to index type '{ profiles: { Row: { id: string; email: string; full_name: string | null; subscription_tier: "basic" | "premium"; subscription_status: string; stripe_customer_id: string | null; current_period_end: string | null; ... 25 more ...; updated_at: string; }; Insert: { ...; }; Update: { ...; }; }; ... 20 more ...; individu...'.
+lib/character-manager.ts(37,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/character-manager.ts(44,18): error TS2339: Property 'character' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'character' does not exist on type 'CacheEntry'.
+lib/character-manager.ts(45,45): error TS2339: Property 'character' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'character' does not exist on type 'CacheEntry'.
+lib/character-manager.ts(66,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/character-manager.ts(72,14): error TS2352: Conversion of type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' to type 'VoiceConsistencyResult' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' is missing the following properties from type 'VoiceConsistencyResult': isConsistent, consistencyScore, deviations, suggestions
+lib/character-manager.ts(208,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ character_name: any; story_id: any; speech_patterns: any; vocabulary_style: any; tonal_characteristics: any; dialogue_examples: any; consistency_markers: any; created_at: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'character_name' does not exist in type 'never[]'.
+lib/character-manager.ts(248,29): error TS2339: Property 'character_name' does not exist on type 'never'.
+lib/character-manager.ts(249,30): error TS2339: Property 'speech_patterns' does not exist on type 'never'.
+lib/character-manager.ts(250,31): error TS2339: Property 'vocabulary_style' does not exist on type 'never'.
+lib/character-manager.ts(251,36): error TS2339: Property 'tonal_characteristics' does not exist on type 'never'.
+lib/character-manager.ts(252,32): error TS2339: Property 'dialogue_examples' does not exist on type 'never'.
+lib/character-manager.ts(253,35): error TS2339: Property 'consistency_markers' does not exist on type 'never'.
+lib/claude/analytics.ts(1094,22): error TS2339: Property 'trackEvent' does not exist on type 'ClaudeAnalyticsService'.
+lib/claude/analytics.ts(1147,22): error TS2339: Property 'trackEvent' does not exist on type 'ClaudeAnalyticsService'.
+lib/claude/analytics.ts(1228,22): error TS2339: Property 'trackEvent' does not exist on type 'ClaudeAnalyticsService'.
+lib/claude/analytics.ts(1299,61): error TS2339: Property 'compressionSavings' does not exist on type '{ timestamp: number; original: number; compressed: number; ratio: number; }'.
+lib/claude/cache.ts(420,11): error TS2532: Object is possibly 'undefined'.
+lib/claude/fact-extractor.ts(67,9): error TS2353: Object literal may only specify known properties, and 'cacheOptions' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/claude/fact-extractor.ts(125,10): error TS2345: Argument of type '"story"' is not assignable to parameter of type '"chapter" | "universe" | "series" | "book"'.
+lib/claude/fact-extractor.ts(149,77): error TS2554: Expected 1 arguments, but got 2.
+lib/claude/fact-extractor.ts(151,9): error TS2740: Type '{ universe: any; series: any; book: any; chapter: any; }' is missing the following properties from type 'SFSLFact[]': length, pop, push, concat, and 29 more.
+lib/claude/v2-enhancements.ts(196,62): error TS2339: Property 'workflowPhase' does not exist on type 'never'.
+lib/claude/v2-enhancements.ts(217,19): error TS2353: Object literal may only specify known properties, and 'error' does not exist in type '{ content?: string | undefined; facts?: SFSLFact[] | undefined; analysis?: AnalysisResult | undefined; enhancements?: EnhancementResult | undefined; }'.
+lib/creator-earnings.ts(39,83): error TS2345: Argument of type '{ p_creator_id: string; p_story_id: string; p_reader_id: string; p_credits_spent: number; p_creator_earnings: number; p_usd_equivalent: number; }' is not assignable to parameter of type 'undefined'.
+lib/creator-earnings.ts(91,8): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ creator_id: string; total_accumulated_usd: number; last_payout_date: null; last_payout_amount: null; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'creator_id' does not exist in type 'never[]'.
+lib/error-monitoring.ts(85,20): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/error-monitoring.ts(135,61): error TS2339: Property 'url' does not exist on type 'Request | URL'.
+  Property 'url' does not exist on type 'URL'.
+lib/request-tracking-init.ts(77,19): error TS2339: Property 'createBrowserClient' does not exist on type '{ default: typeof import("C:/Users/thoma/infinite-pages/extracted-project/node_modules/@supabase/auth-helpers-nextjs/dist/index"); SupabaseClient: typeof SupabaseClient; ... 9 more ...; createServerSupabaseClient: <Database = any, SchemaName extends string & keyof Database = "public" extends keyof Database ? "public...'.
+lib/request-tracking-init.ts(200,61): error TS2339: Property 'url' does not exist on type 'Request | URL'.
+  Property 'url' does not exist on type 'URL'.
+lib/request-tracking-init.ts(237,22): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/request-tracking.ts(117,20): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/request-tracking.ts(311,61): error TS2339: Property 'url' does not exist on type 'Request | URL'.
+  Property 'url' does not exist on type 'URL'.
+lib/request-tracking.ts(495,48): error TS2353: Object literal may only specify known properties, and 'requestId' does not exist in type 'RequestInit'.
+lib/series-manager.ts(120,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "series", never, "POST">', gave the following error.
+    Argument of type '{ name: string; planned_books: number; universe_id: string; description: string; genre: string; target_audience: string; themes: string[]; created_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<{ PostgrestVersion: "12"; }, never, never, null, "series", never, "POST">', gave the following error.
+    Object literal may only specify known properties, and 'name' does not exist in type 'never[]'.
+lib/series-manager.ts(140,26): error TS2339: Property 'id' does not exist on type 'never'.
+lib/series-manager.ts(148,9): error TS2554: Expected 3 arguments, but got 4.
+lib/series-manager.ts(167,31): error TS2339: Property 'series_id' does not exist on type 'never'.
+lib/series-manager.ts(173,14): error TS2339: Property 'series_id' does not exist on type 'never'.
+lib/series-manager.ts(261,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/series-manager.ts(283,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/series-manager.ts(290,44): error TS2339: Property 'characterDatabase' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'characterDatabase' does not exist on type 'CacheEntry'.
+lib/series-manager.ts(291,40): error TS2339: Property 'plotStructure' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'plotStructure' does not exist on type 'CacheEntry'.
+lib/series-manager.ts(292,42): error TS2339: Property 'continuityRules' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'continuityRules' does not exist on type 'CacheEntry'.
+lib/series-manager.ts(293,44): error TS2339: Property 'timelineStructure' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'timelineStructure' does not exist on type 'CacheEntry'.
+lib/series-manager.ts(294,37): error TS2339: Property 'worldState' does not exist on type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }'.
+  Property 'worldState' does not exist on type 'CacheEntry'.
+lib/series-manager.ts(316,52): error TS2345: Argument of type 'SeriesFacts | null' is not assignable to parameter of type 'SeriesFacts'.
+  Type 'null' is not assignable to type 'SeriesFacts'.
+lib/series-manager.ts(318,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/series-manager.ts(321,14): error TS2352: Conversion of type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' to type 'ContinuityAnalysis' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' is missing the following properties from type 'ContinuityAnalysis': overallScore, characterContinuity, plotContinuity, worldContinuity, and 3 more.
+lib/series-manager.ts(340,22): error TS2339: Property 'buildOverallContinuityPrompt' does not exist on type 'SeriesManager'.
+lib/series-manager.ts(342,9): error TS2353: Object literal may only specify known properties, and 'context' does not exist in type '{ prompt: string; model?: string | undefined; maxTokens?: number | undefined; temperature?: number | undefined; systemPrompt?: string | undefined; retries?: number | undefined; useCache?: boolean | undefined; userId?: string | undefined; operation?: string | undefined; trackAnalytics?: boolean | undefined; }'.
+lib/series-manager.ts(345,14): error TS2352: Conversion of type 'CacheEntry | { content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' to type 'ContinuityAnalysis' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ content: string; usage: { inputTokens: number; outputTokens: number; totalTokens: number; }; cost: number; model: string; attempt: number; responseTime: number; }' is missing the following properties from type 'ContinuityAnalysis': overallScore, characterContinuity, plotContinuity, worldContinuity, and 3 more.
+lib/series-manager.ts(450,74): error TS2554: Expected 1 arguments, but got 2.
+lib/series-manager.ts(452,16): error TS2352: Conversion of type '{ universe: any; series: any; book: any; chapter: any; }' to type 'SeriesFacts' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ universe: any; series: any; book: any; chapter: any; }' is missing the following properties from type 'SeriesFacts': seriesId, name, characterDatabase, plotStructure, and 3 more.
+lib/series-manager.ts(465,30): error TS2339: Property 'facts_data' does not exist on type 'never'.
+lib/series-manager.ts(476,10): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: never, options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; } | undefined): PostgrestFilterBuilder<{ ...; }, ... 5 more ..., "POST">', gave the following error.
+    Argument of type '{ series_id: string; facts_data: string; updated_at: string; }' is not assignable to parameter of type 'never'.
+  Overload 2 of 2, '(values: never[], options?: { onConflict?: string | undefined; ignoreDuplicates?: boolean | undefined; count?: "exact" | "planned" | "estimated" | undefined; defaultToNull?: boolean | undefined; } | undefined): PostgrestFilterBuilder<...>', gave the following error.
+    Object literal may only specify known properties, and 'series_id' does not exist in type 'never[]'.
+lib/stripe-payouts.ts(311,18): error TS2339: Property 'is_creator' does not exist on type 'never'.
+lib/stripe-payouts.ts(315,17): error TS2339: Property 'subscription_tier' does not exist on type 'never'.
+lib/stripe-payouts.ts(319,18): error TS2339: Property 'stripe_customer_id' does not exist on type 'never'.
+lib/stripe-payouts.ts(325,28): error TS2339: Property 'stripe_customer_id' does not exist on type 'never'.
+lib/stripe-payouts.ts(326,22): error TS2339: Property 'email' does not exist on type 'never'.

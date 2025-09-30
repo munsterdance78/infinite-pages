@@ -45,9 +45,9 @@ export default function SignUpPage() {
         password,
         options: {
           data: {
-            full_name: fullName,
-          },
-        },
+            full_name: fullName
+          }
+        }
       })
 
       if (error) {
@@ -66,7 +66,7 @@ export default function SignUpPage() {
   const handleGoogleSignUp = async () => {
     setLoading(true)
     try {
-      const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`
+      const redirectUrl = `${process.env['NEXT_PUBLIC_SITE_URL'] || window.location.origin}/api/auth/callback`
 
       await supabase.auth.signInWithOAuth({
         provider: 'google',

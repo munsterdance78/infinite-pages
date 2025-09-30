@@ -23,10 +23,10 @@ import {
 import {
   CostCalculator,
   estimateStoryModeCost,
-  RealTimeCostTracker,
   type CostBreakdown,
   type OperationEstimate,
-  type TokenUsage
+  type TokenUsage,
+  type RealTimeCostTracker
 } from '@/lib/pricing/cost-calculator'
 
 interface CostDisplayProps {
@@ -87,7 +87,7 @@ export function CostDisplay({
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Credits Available</span>
-            <Badge variant={userBalance > 100 ? "default" : userBalance > 20 ? "secondary" : "destructive"}>
+            <Badge variant={userBalance > 100 ? 'default' : userBalance > 20 ? 'secondary' : 'destructive'}>
               {userBalance.toLocaleString()}
             </Badge>
           </div>
@@ -150,7 +150,7 @@ export function CostDisplay({
           <Button
             onClick={onUpgrade}
             className="w-full gap-2"
-            variant={userBalance < 10 ? "default" : "outline"}
+            variant={userBalance < 10 ? 'default' : 'outline'}
           >
             <CreditCard className="h-4 w-4" />
             Upgrade Plan
@@ -296,7 +296,7 @@ export function CostEstimate({
         <div className="space-y-3">
           <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
             <span className="font-medium">Estimated Credits</span>
-            <Badge variant={canAfford ? "default" : "destructive"}>
+            <Badge variant={canAfford ? 'default' : 'destructive'}>
               {estimate.estimatedCost.creditsRequired}
             </Badge>
           </div>
@@ -312,7 +312,7 @@ export function CostEstimate({
             </div>
             <div className="flex justify-between">
               <span>After Operation</span>
-              <span className={canAfford ? "text-green-600" : "text-red-600"}>
+              <span className={canAfford ? 'text-green-600' : 'text-red-600'}>
                 {canAfford
                   ? `${(userBalance - estimate.estimatedCost.creditsRequired).toLocaleString()} credits`
                   : `Need ${estimate.estimatedCost.creditsRequired - userBalance} more credits`

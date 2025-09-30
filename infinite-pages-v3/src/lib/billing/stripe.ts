@@ -10,7 +10,7 @@ export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   typescript: true,
   appInfo: {
     name: 'Infinite Pages V3',
-    version: '3.0.0',
+    version: '3.0.0'
   }
 })
 
@@ -36,7 +36,7 @@ export const stripeConfig = {
 
   // Creator onboarding URLs
   creatorRefreshUrl: `${env.SITE_URL}/creator/stripe/refresh`,
-  creatorReturnUrl: `${env.SITE_URL}/creator/stripe/success`,
+  creatorReturnUrl: `${env.SITE_URL}/creator/stripe/success`
 } as const
 
 /**
@@ -61,13 +61,13 @@ export async function createCheckoutSession({
     line_items: [
       {
         price: priceId,
-        quantity: 1,
-      },
+        quantity: 1
+      }
     ],
     mode: 'subscription',
     success_url: successUrl,
     cancel_url: cancelUrl,
-    metadata,
+    metadata
   })
 }
 
@@ -83,7 +83,7 @@ export async function createPortalSession({
 }) {
   return await stripe.billingPortal.sessions.create({
     customer: customerId,
-    return_url: returnUrl,
+    return_url: returnUrl
   })
 }
 

@@ -356,7 +356,7 @@ export default function MyLibraryView() {
                 <p className="text-muted-foreground mb-4">
                   {activeTab === 'all'
                     ? "You haven't created any stories yet."
-                    : "No stories match your current filters."
+                    : 'No stories match your current filters.'
                   }
                 </p>
                 <Button className="gap-2">

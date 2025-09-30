@@ -9,12 +9,12 @@ const url = args[0] || 'https://www.infinite-pages.com';
 
 // Initialize process monitor with safety limits
 let monitor = new ProcessMonitor({
-  maxMemoryMB: 100, // VERY CONSERVATIVE: 100MB to match process-monitor.js
-  maxBrowserMemoryMB: 80, // VERY CONSERVATIVE: 80MB to match process-monitor.js
-  maxSystemMemoryPercent: 60, // VERY CONSERVATIVE: 60% to match process-monitor.js
-  maxScanTimeoutMs: 10 * 1000, // VERY SHORT: 10 seconds to match process-monitor.js
-  monitorIntervalMs: 2 * 1000, // CHECK EVERY 2 SECONDS to match process-monitor.js
-  logFile: './claude-debugger/monitor.log'
+  maxMemoryMB: 600, // Higher limit for Playwright memory needs
+  maxBrowserMemoryMB: 400, // Per browser process
+  maxSystemMemoryPercent: 80, // System memory limit
+  maxScanTimeoutMs: 120 * 1000, // 2 minute timeout
+  monitorIntervalMs: 10 * 1000, // Check every 10 seconds
+  logFile: './monitor.log'
 });
 
 if (args.includes('--help') || args.includes('-h')) {

@@ -263,7 +263,7 @@ export default function DashboardPage() {
       const mockProfile: UnifiedUserProfile = {
         id: user.id,
         email: user.email || '',
-        full_name: user.user_metadata?.full_name || 'Story Creator',
+        full_name: user.user_metadata?.['full_name'] || 'Story Creator',
         subscription_tier: 'basic',
         subscription_status: 'active',
         credits_balance: 1000,
@@ -391,13 +391,16 @@ export default function DashboardPage() {
 
             {activeTab === 'create' && (
               <PricingGuard
-                operation="story_foundation"
+                operation="STORY_FOUNDATION"
                 userBalance={userProfile.credits_balance}
                 subscriptionTier={userProfile.subscription_tier}
                 onInsufficientCredits={() => setShowCreditPurchase(true)}
                 onPurchaseComplete={handleCreditPurchase}
               >
-                <StoryCreator />
+                <StoryCreator userProfile={{
+                  ...userProfile,
+                  tokens_remaining: (userProfile as { tokens_remaining?: number }).tokens_remaining || 0
+                }} />
               </PricingGuard>
             )}
 
@@ -444,7 +447,7 @@ export default function DashboardPage() {
             )}
 
             {activeTab === 'earnings' && userProfile.is_creator && (
-              <EarningsHub />
+              <EarningsHub userId={userProfile.id} />
             )}
 
             {activeTab === 'settings' && (

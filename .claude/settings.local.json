@@ -60,7 +60,9 @@
       "WebFetch(domain:sentry.io)",
       "Bash(mkdir:*)",
       "Bash(timeout:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(tee:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

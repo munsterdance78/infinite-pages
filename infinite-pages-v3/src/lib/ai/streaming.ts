@@ -29,12 +29,12 @@ export class ClaudeStreamingService {
 
   private getAnthropic(): Anthropic {
     if (!this.anthropic) {
-      if (!process.env.ANTHROPIC_API_KEY) {
+      if (!process.env['ANTHROPIC_API_KEY']) {
         throw new Error('ANTHROPIC_API_KEY environment variable is required')
       }
 
       this.anthropic = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY
+        apiKey: process.env['ANTHROPIC_API_KEY']
       })
     }
     return this.anthropic
@@ -52,7 +52,8 @@ export class ClaudeStreamingService {
     }
 
     // Check for inappropriate content
-    for (const pattern of MODERATION_PATTERNS) {
+    for (const item of MODERATION_PATTERNS) {
+      const pattern = 'pattern' in item ? item.pattern : item
       if (pattern.test(content.toLowerCase())) {
         throw new Error('Content violates community guidelines')
       }
@@ -265,7 +266,7 @@ Please provide the improved version that addresses the feedback while maintainin
    * Stream story analysis and fact extraction
    */
   async *streamStoryAnalysis(content: string): AsyncGenerator<StreamResponse, void, unknown> {
-    const systemPrompt = `You are an expert story analyst. Analyze the provided content and extract key story elements including characters, settings, plot points, themes, and narrative structure. Provide insights that would be useful for continuing or improving the story.`
+    const systemPrompt = 'You are an expert story analyst. Analyze the provided content and extract key story elements including characters, settings, plot points, themes, and narrative structure. Provide insights that would be useful for continuing or improving the story.'
 
     const prompt = `Analyze this story content and provide a comprehensive breakdown:
 

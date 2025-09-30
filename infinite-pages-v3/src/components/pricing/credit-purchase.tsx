@@ -41,7 +41,7 @@ interface CreditPurchaseProps {
 
 export default function CreditPurchase({ isOpen = false, onSuccess, onClose }: CreditPurchaseProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} {...(onClose !== undefined && { onOpenChange: onClose })}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

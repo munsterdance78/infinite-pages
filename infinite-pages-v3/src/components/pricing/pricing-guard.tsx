@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, ReactNode } from 'react'
+import React, { useState, useEffect, type ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -125,7 +125,7 @@ export default function PricingGuard({
     } else if (remaining < cost * 0.5) {
       return `Low credits warning. You'll have ${remaining} credits remaining.`
     } else if (remaining < 50) {
-      return `Running low on credits. Consider purchasing more soon.`
+      return 'Running low on credits. Consider purchasing more soon.'
     }
 
     return null

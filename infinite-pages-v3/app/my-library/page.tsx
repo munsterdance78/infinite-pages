@@ -1,11 +1,11 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { requireAuth } from '@/lib/auth/middleware'
 import { redirect } from 'next/navigation'
 import MyLibraryView from '@/components/features/library/my-library-view'
 
 export const metadata: Metadata = {
   title: 'My Library - Infinite Pages',
-  description: 'Manage and read your personal collection of stories',
+  description: 'Manage and read your personal collection of stories'
 }
 
 export default async function MyLibraryPage() {

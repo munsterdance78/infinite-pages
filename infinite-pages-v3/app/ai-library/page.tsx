@@ -1,11 +1,11 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { requireAuth } from '@/lib/auth/middleware'
 import { redirect } from 'next/navigation'
 import AILibraryView from '@/components/features/library/ai-library-view'
 
 export const metadata: Metadata = {
   title: 'AI Library - Infinite Pages',
-  description: 'Browse and read AI-generated stories from the Infinite Pages community',
+  description: 'Browse and read AI-generated stories from the Infinite Pages community'
 }
 
 export default async function AILibraryPage() {

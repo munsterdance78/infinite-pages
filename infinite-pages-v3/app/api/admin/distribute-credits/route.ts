@@ -48,7 +48,7 @@ function calculateProportionalCredits(
   const baseCredits = SUBSCRIPTION_TIERS[tier].credits_per_month
 
   // Base credits guaranteed
-  let totalCredits = baseCredits
+  const totalCredits = baseCredits
 
   // Bonus credits based on reading activity
   const activityBonus = Math.floor(storiesRead * 50) // 50 credits per story read
