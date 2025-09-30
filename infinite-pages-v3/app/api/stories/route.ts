@@ -14,6 +14,9 @@ import {
   getSubscriptionLimits
 } from '@/lib/utils/constants'
 import { SUBSCRIPTION_TIERS, type SubscriptionTier } from '@/lib/utils/subscription-config'
+import { subscriptionAwareRateLimit, logRateLimitViolation } from '@/lib/middleware/rate-limit'
+import { infinitePagesCache } from '@/lib/claude/infinitePagesCache'
+import { claudeService } from '@/lib/claude/service'
 
 // Using the centralized Claude service instead of direct Anthropic client
 
@@ -180,7 +183,7 @@ export async function GET(request: NextRequest) {
       { headers: { 'Content-Type': 'application/json' } }
     )
     Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
-      response.headers.set(key, value)
+      response.headers.set(key, String(value))
     })
 
     return response
@@ -443,7 +446,7 @@ export async function POST(request: NextRequest) {
 
     // Add rate limit headers
     Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
-      response.headers.set(key, value)
+      response.headers.set(key, String(value))
     })
 
     return response
