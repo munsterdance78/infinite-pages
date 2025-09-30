@@ -149,14 +149,12 @@ export async function GET(request: NextRequest) {
   // Apply rate limiting for general API requests
   const rateLimitResult = await subscriptionAwareRateLimit(
     request,
-    'API_GENERAL',
-    user.id,
-    'free' // We'll get the actual tier below, but this is a fallback
+    'API_GENERAL'
   )
 
-  if (!rateLimitResult.success) {
-    logRateLimitViolation(`user:${user.id}`, 'API_GENERAL', request)
-    return rateLimitResult.response!
+  if (rateLimitResult) {
+    logRateLimitViolation('API_GENERAL', 'free', user.id)
+    return rateLimitResult
   }
 
   try {
@@ -231,14 +229,12 @@ export async function POST(request: NextRequest) {
     // Apply rate limiting for story creation with subscription awareness
     const rateLimitResult = await subscriptionAwareRateLimit(
       request,
-      'STORY_CREATION',
-      user.id,
-      profile.subscription_tier
+      'STORY_CREATION'
     )
 
-    if (!rateLimitResult.success) {
-      logRateLimitViolation(`user:${user.id}`, 'STORY_CREATION', request)
-      return rateLimitResult.response!
+    if (rateLimitResult) {
+      logRateLimitViolation('STORY_CREATION', 'free', user.id)
+      return rateLimitResult
     }
 
     // Parse and validate request body
