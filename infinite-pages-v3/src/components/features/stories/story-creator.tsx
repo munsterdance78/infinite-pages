@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { createClient } from '@/lib/database/supabase'
-import type { Database } from '@/types/database'
+import type { Database } from '@/lib/types/database'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -301,55 +301,43 @@ export default function UnifiedStoryCreator({
     try {
       setProgress({
         currentStep: 1,
-        totalSteps: 5,
-        stepName: 'Creating story foundation',
+        totalSteps: 1,
+        stepName: 'Generating story foundation with AI',
         isGenerating: true
       })
 
-      // Create story record
-      const storyData = {
-        user_id: userProfile.id,
-        title: formData.title,
-        genre: formData.genre,
-        premise: formData.premise,
-        type: mode,
-        status: 'draft' as StoryStatus,
-        description: formData.description,
-        tone: formData.tone,
-        characters: formData.characters,
-        setting: formData.setting,
-        target_length: formData.target_length,
-        choice_complexity: formData.choice_complexity,
-        target_ending_count: formData.target_ending_count,
-        estimated_length: formData.estimated_length,
-        main_themes: formData.main_themes,
-        target_audience: formData.target_audience
+      // Call the actual API endpoint
+      const response = await fetch('/api/stories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          genre: formData.genre,
+          premise: formData.premise
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to create story')
       }
 
-      const { data: newStory, error } = await supabase
-        .from('stories')
-        .insert(storyData)
-        .select()
-        .single()
+      const data = await response.json()
 
-      if (error) throw error
+      // Update local state with the created story
+      setCurrentStory(data.story as UnifiedStory)
 
-      setCurrentStory(newStory as UnifiedStory)
+      // Show success message with cache info
+      setProgress({
+        currentStep: 1,
+        totalSteps: 1,
+        stepName: data.fromCache ? 'Story created (from cache)' : 'Story created successfully',
+        isGenerating: false
+      })
 
-      // Simulate AI generation steps
-      for (let step = 2; step <= 5; step++) {
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        setProgress(prev => ({
-          ...prev,
-          currentStep: step,
-          stepName: step === 2 ? 'Generating characters' :
-                   step === 3 ? 'Building world' :
-                   step === 4 ? 'Creating chapters' :
-                   'Finalizing story'
-        }))
-      }
-
-      setProgress(prev => ({ ...prev, isGenerating: false }))
+      // Reload stories list and close creator
       await loadStories()
       setIsCreating(false)
 
@@ -358,7 +346,7 @@ export default function UnifiedStoryCreator({
       setProgress(prev => ({
         ...prev,
         isGenerating: false,
-        error: 'Failed to create story. Please try again.'
+        error: error instanceof Error ? error.message : 'Failed to create story. Please try again.'
       }))
     }
   }
